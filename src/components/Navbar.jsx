@@ -1,6 +1,15 @@
 import Image from "next/image"
+import Link from "next/link"
 
 const Navbar = () => {
+const options=[
+  {id:1,name:"Home",link:"/"},
+  {id:1,name:"About Us",link:"/aboutus"},
+  {id:1,name:"Contact Us",link:"/contactus"},
+  {id:1,name:"Privacy Policy",link:"/privacypolicy"},
+
+]
+
   return (
  <div>
       {/* Navigation Bar */}
@@ -13,28 +22,32 @@ const Navbar = () => {
            src={"/navimage.png"}
            width={150}
            height={90}
+           alt="logo"
            />
             </div>
         
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center  border-2 w-[55%] py-3 justify-around rounded-4xl bg-[#E2E0C8]">
-            <a href="#" className="text-[#4E635E] hover:text-gray-200 transition-colors">
-              Home
-            </a>
-            <a href="#" className="text-white hover:text-gray-200 transition-colors">
-              About Us
-            </a>
-            <a href="#" className="text-white hover:text-gray-200 transition-colors">
-              Contact Us
-            </a>
-            <a href="#" className="text-white hover:text-gray-200 transition-colors">
-              Privacy Policy
-            </a>
+         
+          <div className="hidden md:flex items-center  border-2 w-[55%] py-3 justify-around rounded-4xl bg-[#E2E0C8] border-[#A6B493] drop-shadow-lg ">
+          {
+            options.map((option)=>
+            {
+      return (
+        <Link
+          key={option.id}
+          href={`${option.link}`}
+          className="text-[#4E635E] hover:text-[var(--color-muted-green)] transition-colors text-[1.1rem]"
+        >
+          {option.name}
+        </Link>
+      )
+            })
+          }
+        
           </div>
 
           {/* Log In Button */}
-          <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors">
+          <button className="bg-[var(--color-light-beige)] text-gray-700 px-6 py-2 rounded-md hover:bg-[var(--color-sage-green)] hover:text-[var(--color-light-beige)] text-[1rem] drop-shadow-lg cursor-pointer ">
             Log In
           </button>
 
@@ -47,10 +60,6 @@ const Navbar = () => {
         </div>
       </nav>
       
-      {/* Rest of your content */}
-      <div>
-        sds
-      </div>
     </div>
   )
 }
