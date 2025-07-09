@@ -1,8 +1,13 @@
 @import "tailwindcss";
-
+@import url('https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap');
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --main-green:#4E635E;
+  --olivegreen:#818C78;
+--lightgreen:#A6B493;
+  --baige:#E2E0C8;
+   --font-literata: 'Literata', serif;
 }
 
 @theme inline {
@@ -10,17 +15,17 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-main-green: var(--main-green);
+  --color-olive-green: var(--olive-green);
+  --color-light-green: var(--light-green);
+  --color-beige: var(--beige);
+  --font-literata: 'Literata', serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+
 
 body {
-  background: var(--background);
+  background: var(--main-green);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-literata);
 }
