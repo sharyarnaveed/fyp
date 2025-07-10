@@ -20,7 +20,7 @@ export default function RootLayout({
       <body
       >
         <Navbar/>
-        <main className="px-4">
+        <main>
         {children}
         </main>
       </body>

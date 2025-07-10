@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rambla:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -8,6 +10,7 @@
 --lightgreen:#A6B493;
   --baige:#E2E0C8;
    --font-literata: 'Literata', serif;
+   --font-paragraph: 'Rambla', sans-serif;
 }
 
 @theme inline {
@@ -20,6 +23,8 @@
   --color-light-green: var(--light-green);
   --color-beige: var(--beige);
   --font-literata: 'Literata', serif;
+   --font-paragraph: 'Rambla', sans-serif;
+
 }
 
 
