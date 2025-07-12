@@ -229,6 +229,65 @@ export default function Home() {
           </div>
         </div>
       </main>
+{/* section 3 */}
+  <main className="bg-[var(--lightgreen)] py-0 h-[95vh] flex justify-center items-center">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
+          
+
+         <div className="w-full md:w-1/2 text-black">
+  <h2 className="text-2xl md:text-[2.2rem] font-bold mb-4 ">
+    Its easy to start
+    <br />
+    
+    <span className="border-2 border-[var(--main-green)] py-2 px-6 text-[2.3rem] rounded-full bg-[var(--baige)]">Learning</span>
+  </h2>
+  <p
+    className="text-base md:text-lg leading-relaxed max-w-md mb-6"
+    style={{ fontFamily: "var(--font-paragraph)" }}
+  >
+    Our Sign-in Process Lets You Start Your Learning Journey
+    Without Much Hassle. Our Aim Is To Create Learning
+    Experience For You
+  </p>
+
+  <div className="flex flex-col gap-4 "
+   style={{ fontFamily: "var(--font-paragraph)" }}>
+    <div className="flex items-center gap-4">
+      <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.5 32.0834C25.5544 32.0834 32.0833 25.5545 32.0833 17.5001C32.0833 9.44571 25.5544 2.91675 17.5 2.91675C9.44563 2.91675 2.91667 9.44571 2.91667 17.5001C2.91667 25.5545 9.44563 32.0834 17.5 32.0834ZM25.4581 13.7915L16.0417 23.208L9.90646 17.0728L11.9685 15.0107L16.0417 19.0838L23.396 11.7295L25.4581 13.7915Z" fill="#E2E0C8"/>
+      </svg>
+      <span className="text-base md:text-lg font-medium">Create your account</span>
+    </div>
+    
+    <div className="flex items-center gap-4">
+      <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.5 32.0834C25.5544 32.0834 32.0833 25.5545 32.0833 17.5001C32.0833 9.44571 25.5544 2.91675 17.5 2.91675C9.44563 2.91675 2.91667 9.44571 2.91667 17.5001C2.91667 25.5545 9.44563 32.0834 17.5 32.0834ZM25.4581 13.7915L16.0417 23.208L9.90646 17.0728L11.9685 15.0107L16.0417 19.0838L23.396 11.7295L25.4581 13.7915Z" fill="#E2E0C8"/>
+      </svg>
+      <span className="text-base md:text-lg font-medium">Choose Test & Goals</span>
+    </div>
+    
+    <div className="flex items-center gap-4">
+      <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.5 32.0834C25.5544 32.0834 32.0833 25.5545 32.0833 17.5001C32.0833 9.44571 25.5544 2.91675 17.5 2.91675C9.44563 2.91675 2.91667 9.44571 2.91667 17.5001C2.91667 25.5545 9.44563 32.0834 17.5 32.0834ZM25.4581 13.7915L16.0417 23.208L9.90646 17.0728L11.9685 15.0107L16.0417 19.0838L23.396 11.7295L25.4581 13.7915Z" fill="#E2E0C8"/>
+      </svg>
+      <span className="text-base md:text-lg font-medium">Learn with AI</span>
+    </div>
+  </div>
+</div>
+
+
+<div className="w-full md:w-1/2 flex justify-center py-10">
+            <img
+              src="/lastsection.png"
+              alt="Stressed student illustration"
+              className=" w-[90%]"
+            />
+          </div>
+
+
+        </div>
+      </main>
+
     </>
   );
 }
