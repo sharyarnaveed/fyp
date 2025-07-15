@@ -1,0 +1,176 @@
+const page = () => {
+  return (
+    <main className="min-h-screen bg-[#5E7266] flex flex-col">
+      {/* Header */}
+      <section className="w-full flex flex-col justify-center items-center py-12 text-center bg-[var(--main-green)]">
+        <h1 className="text-[3rem] font-bold text-[var(--baige)] mb-2">
+          Privacy Policy
+        </h1>
+        <p className="text-[var(--baige)] max-w-3xl flex justify-center items-center w-80%  text-lg">
+          Welcome to Prepzy an AI powered exam preparation platform designed for
+          students in Pakistan. Your privacy is important to us. This Privacy
+          Policy explains how we collect, use, protect, and handle your personal
+          information when you use our website and services.
+        </p>
+      </section>
+
+      <section className="flex flex-col md:flex-row gap-8 px-6 md:px-10 py-14 bg-[var(--baige)] flex-1">
+        <div
+          className="max-w-3xl mx-5 text-[var(--main-green)] text-base space-y-6"
+          style={{ fontFamily: "var(--font-paragraph)" }}
+        >
+          <h2 className="text-2xl font-semibold mb-4">
+            1. Information We Collect
+          </h2>
+          <p className="font-semibold">a. Personal Information</p>
+          <ul className="list-disc ml-6">
+            <li>Name</li>
+            <li>Email address</li>
+            <li>Exam board and subject preferences</li>
+            <li>Account credentials</li>
+            <li>Messages or content submitted through forms or chatbot</li>
+          </ul>
+          <p className="font-semibold">b. Usage Data</p>
+          <ul className="list-disc ml-6">
+            <li>IP address</li>
+            <li>Browser and device information</li>
+            <li>Pages visited, time spent, and interaction behavior</li>
+            <li>Quiz and learning progress data</li>
+          </ul>
+          <p className="font-semibold">c. AI Interaction Logs</p>
+          <p>
+            We store chatbot interactions and AI-generated recommendations to
+            improve performance and deliver personalized experiences.
+          </p>
+
+          <h2 className="text-2xl font-semibold mt-8 mb-4">
+            2. How We Use Your Information
+          </h2>
+          <ul className="list-disc ml-6">
+            <li>Deliver personalized learning tools and recommendations</li>
+            <li>Generate quizzes, study plans, and performance reports</li>
+            <li>Respond to your support queries</li>
+            <li>Improve our services and AI functionality</li>
+            <li>
+              Communicate updates, offers, and platform-related information
+              (with opt-in consent)
+            </li>
+          </ul>
+
+          <h2 className="text-2xl font-semibold mt-8 mb-4">
+            3. Data Storage and Security
+          </h2>
+          <ul className="list-disc ml-6">
+            <li>Encrypted communication (HTTPS)</li>
+            <li>Secure database access controls</li>
+            <li>Regular backups and monitoring</li>
+            <li>JWT-based user authentication</li>
+          </ul>
+          <p>
+            Your personal data is stored on secure servers, and access is
+            restricted to authorized personnel only.
+          </p>
+
+          <h2 className="text-2xl font-semibold mt-8 mb-4">
+            4. Sharing of Information
+          </h2>
+          <p>
+            We do not sell, rent, or trade your personal data. We may share data
+            only:
+          </p>
+          <ul className="list-disc ml-6">
+            <li>
+              With trusted third-party service providers for hosting and
+              analytics
+            </li>
+            <li>When legally required by authorities</li>
+            <li>To protect our platform against abuse or misuse</li>
+          </ul>
+          <p>
+            All third parties are contractually obligated to protect your data
+            and use it only for the intended purpose.
+          </p>
+
+          <h2 className="text-2xl font-semibold mt-8 mb-4">
+            5. Cookies and Tracking Technologies
+          </h2>
+          <p>Prepzy uses cookies and similar technologies to:</p>
+          <ul className="list-disc ml-6">
+            <li>Maintain login sessions</li>
+            <li>Analyze user behavior</li>
+            <li>Improve platform functionality and user experience</li>
+          </ul>
+          <p>
+            You can disable cookies through your browser settings; however, this
+            may impact some features.
+          </p>
+
+          <h2 className="text-2xl font-semibold mt-8 mb-4">6. AI Data Usage</h2>
+          <p>
+            Your activity on Prepzy, including your interactions with AI
+            features, may be logged to:
+          </p>
+          <ul className="list-disc ml-6">
+            <li>Provide better, more contextual responses</li>
+            <li>Improve the accuracy of our AI systems</li>
+            <li>Identify areas where learners need more support</li>
+          </ul>
+          <p>
+            Data from users is not used to train external AI models and remains
+            within the scope of Prepzy’s internal systems.
+          </p>
+
+          <h2 className="text-2xl font-semibold mt-8 mb-4">
+            7. Children’s Privacy
+          </h2>
+          <p>
+            Prepzy is intended for use by students above the age of 13. We do
+            not knowingly collect data from children under 13 without verified
+            parental consent. If such data is identified, it will be deleted
+            promptly.
+          </p>
+
+          <h2 className="text-2xl font-semibold mt-8 mb-4">8. Your Rights</h2>
+          <ul className="list-disc ml-6">
+            <li>Access the personal data we hold about you</li>
+            <li>Correct inaccurate information</li>
+            <li>Request deletion of your account and data</li>
+            <li>Opt out of non-essential communication</li>
+          </ul>
+          <p>
+            To exercise these rights, contact us at:{" "}
+            <a href="mailto:privacy@prepzy.com" className="underline">
+              privacy@prepzy.com
+            </a>
+          </p>
+
+          <h2 className="text-2xl font-semibold mt-8 mb-4">
+            9. Contact Information
+          </h2>
+          <p>
+            If you have questions or concerns regarding your privacy or this
+            policy, contact us at:
+            <br />
+            <span className="font-semibold">Email:</span>{" "}
+            <a href="mailto:privacy@prepzy.com" className="underline">
+              privacy@prepzy.com
+            </a>
+            <br />
+            <span className="font-semibold">Location:</span> Islamabad, Pakistan
+          </p>
+
+          <h2 className="text-2xl font-semibold mt-8 mb-4">
+            10. Changes to This Privacy Policy
+          </h2>
+          <p>
+            We may update this policy from time to time. Any changes will be
+            posted on this page with an updated effective date. Continued use of
+            the platform constitutes your agreement to the revised policy.
+          </p>
+        </div>
+      </section>
+    </main>
+  );
+};
+
+export default page;
