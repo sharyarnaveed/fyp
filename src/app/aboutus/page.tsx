@@ -58,7 +58,7 @@ const Page = () => {
               <p className="text-lg leading-relaxed" style={{ fontFamily: 'var(--font-paragraph)' }}>
                 Prepzy is your digital exam mentor. Designed specifically for students in Pakistan, 
                 Prepzy blends artificial intelligence with a deep understanding of local education 
-                needs. Whether you're preparing for EETA, NET, MDNS, or other competitive 
+                needs. Whether you&apos;re preparing for EETA, NET, MDNS, or other competitive 
                 exams, Prepzy offers personalized learning tools that make studying efficient, 
                 engaging, and effective.
               </p>
@@ -107,8 +107,8 @@ const Page = () => {
                   Our Belief
                 </h2>
                 <p className="text-[var(--baige)] text-lg leading-relaxed" style={{ fontFamily: 'var(--font-paragraph)' }}>
-                  We believe that learning should be smart, not hard. With Prepzy, you're not alone — 
-                  you've got an AI mentor that learns with you, supports you, and helps you succeed 
+                  We believe that learning should be smart, not hard. With Prepzy, you&apos;re not alone &mdash; 
+                  you&apos;ve got an AI mentor that learns with you, supports you, and helps you succeed 
                   on your own terms.
                 </p>
               </div>
@@ -168,7 +168,7 @@ const Page = () => {
             {/* Who We're For */}
             <div className="bg-[var(--baige)] rounded-2xl p-8 ">
               <h2 className="text-3xl font-bold text-[var(--main-green)] mb-6" style={{ fontFamily: 'var(--font-literata)' }}>
-                Who We're For?
+                Who We&apos;re For?
               </h2>
               <p className="text-[var(--main-green)] font-medium mb-4" style={{ fontFamily: 'var(--font-paragraph)' }}>
                 Prepzy is built for:
@@ -194,6 +194,7 @@ const Page = () => {
             </div>
           </div>
         </section>
+       
         </>
   );
 };
