@@ -7,7 +7,7 @@ const page = () => {
           Contact Us
         </h1>
         <p className="text-[var(--baige)] max-w-xl mx-auto text-sm sm:text-base md:text-lg px-2 sm:px-0">
-          We'd love to hear from you! Whether you have questions, feedback, partnership inquiries, 
+          We&apos;d love to hear from you! Whether you have questions, feedback, partnership inquiries, 
           or just want to say hello, the Preppy team is here to help.
         </p>
       </section>
@@ -25,7 +25,7 @@ const page = () => {
               questions
             </h2>
             <p className="text-[var(--baige)] mb-6 md:mb-8 text-sm sm:text-base md:text-[1.2rem]">
-              We operate remotely with team members. Reach out if you're a school, 
+              We operate remotely with team members. Reach out if you&apos;re a school, 
               teacher, or platform looking to collaborate.
             </p>
           </div>

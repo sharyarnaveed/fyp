@@ -120,11 +120,11 @@ const page = () => {
           </ul>
           <p className="mt-2">
             Data from users is not used to train external AI models and remains
-            within the scope of Prepzy's internal systems.
+            within the scope of Prepzy&apos;s internal systems.
           </p>
 
           <h2 className="text-xl sm:text-2xl font-semibold mt-6 sm:mt-8 mb-3 sm:mb-4">
-            7. Children's Privacy
+            7. Children&apos;s Privacy
           </h2>
           <p>
             Prepzy is intended for use by students above the age of 13. We do

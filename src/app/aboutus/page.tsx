@@ -1,13 +1,5 @@
 import Image from "next/image";
 
-const images = [
-  { src: "/about1.png", alt: "Study desk" },
-  { src: "/about2.png", alt: "Laptop and notes" },
-  { src: "/about3.png", alt: "Group studying" },
-  { src: "/about4.png", alt: "Exam calendar" },
-  { src: "/about5.png", alt: "A+ grade" },
-];
-
 const Page = () => {
   return (
     <>
