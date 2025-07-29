@@ -7,10 +7,10 @@ const page = () => {
           Privacy Policy
         </h1>
         <p className="text-[var(--baige)] max-w-3xl w-full text-sm sm:text-base md:text-lg px-2 sm:px-0">
-          Welcome to Prepzy, an AI powered exam preparation platform designed for
-          students in Pakistan. Your privacy is important to us. This Privacy
-          Policy explains how we collect, use, protect, and handle your personal
-          information when you use our website and services.
+          Welcome to Prepzy, an AI powered exam preparation platform designed
+          for students in Pakistan. Your privacy is important to us. This
+          Privacy Policy explains how we collect, use, protect, and handle your
+          personal information when you use our website and services.
         </p>
       </section>
 

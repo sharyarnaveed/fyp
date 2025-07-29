@@ -1,11 +1,12 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+const navigate=useRouter()
   const options = [
     { id: 1, name: "Home", link: "/" },
     { id: 2, name: "About Us", link: "/aboutus" },
@@ -40,12 +41,15 @@ const Navbar = () => {
             })}
           </div>
 
-          {/* Desktop Log In Button */}
-          <button className="hidden md:block bg-[var(--baige)] text-gray-700 px-6 py-2 rounded-md hover:bg-[var(--olivegreen)] hover:text-[var(--baige)] text-[1rem] drop-shadow-lg cursor-pointer">
+      
+          <button
+             onClick={()=>navigate.push("https://fypdashboard-aqq8.vercel.app/signin")}
+          
+          className="hidden md:block bg-[var(--baige)] text-gray-700 px-6 py-2 rounded-md hover:bg-[var(--olivegreen)] hover:text-[var(--baige)] text-[1rem] drop-shadow-lg cursor-pointer">
             Log In
           </button>
 
-          {/* Mobile Menu Button */}
+      
           <button
             className="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1"
             onClick={toggleMenu}
@@ -73,7 +77,9 @@ const Navbar = () => {
             );
           })}
           <div className="text-center">
-            <button className="bg-[var(--baige)] text-gray-700 px-6 py-2 rounded-md hover:bg-[var(--olivegreen)] hover:text-[var(--baige)] text-[1rem] drop-shadow-lg cursor-pointer">
+            <button
+             onClick={()=>navigate.push("https://fypdashboard-aqq8.vercel.app/signin")}
+            className="bg-[var(--baige)] text-gray-700 px-6 py-2 rounded-md hover:bg-[var(--olivegreen)] hover:text-[var(--baige)] text-[1rem] drop-shadow-lg cursor-pointer">
               Log In
             </button>
           </div>
