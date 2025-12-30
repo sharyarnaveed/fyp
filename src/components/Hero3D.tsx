@@ -1,35 +1,9 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { Float, Environment, PerspectiveCamera, Stars } from "@react-three/drei";
-import { useRef, useState } from "react";
-import * as THREE from "three";
 
-function FloatingShape({ position, color, geometry: Geometry, rotationSpeed = 0.5, scale = 1 }: any) {
-  const meshRef = useRef<THREE.Mesh>(null);
-  
-  useFrame((state, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x += delta * rotationSpeed * 0.5;
-      meshRef.current.rotation.y += delta * rotationSpeed;
-    }
-  });
 
-  return (
-    <Float speed={2} rotationIntensity={1.5} floatIntensity={2}>
-      <mesh ref={meshRef} position={position} scale={scale}>
-        <Geometry />
-        <meshStandardMaterial 
-          color={color} 
-          roughness={0.2} 
-          metalness={0.8}
-          emissive={color}
-          emissiveIntensity={0.2}
-        />
-      </mesh>
-    </Float>
-  );
-}
 
 function Scene() {
   return (
