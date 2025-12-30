@@ -152,7 +152,7 @@ export function Navbar() {
                     className="text-sm text-[#B8A9FF] hover:text-[#B8A9FF]/80 transition-colors"
                     onClick={() => setIsOpen(false)}
                   >
-                    Don't have an account? <span className="font-semibold underline">Sign up</span>
+                    Don&apos;t have an account? <span className="font-semibold underline">Sign up</span>
                   </button>
                 </motion.div>
               </div>
