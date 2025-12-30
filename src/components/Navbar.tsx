@@ -1,9 +1,9 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronRight } from 'lucide-react';
 import Link from "next/link";
 import { useState } from "react";
-
+import { motion, AnimatePresence } from 'framer-motion';
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   
@@ -75,29 +75,91 @@ export function Navbar() {
           </button>
         </div>
       </div>
-
+ <AnimatePresence>
       {/* Mobile Nav */}
-      {isOpen && (
-        <div className="md:hidden bg-background/95 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden mt-4 mx-4">
-          <div className="px-4 py-4 space-y-4">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className="block text-base font-medium text-muted-foreground hover:text-primary hover:bg-white/5 px-3 py-2 rounded-md transition-colors"
-              >
-                {link.name}
-              </a>
-            ))}
-            <div className="pt-2">
-              <button className="w-full bg-primary text-primary-foreground font-bold rounded-full">
-                Login
-              </button>
+ {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="relative"
+          >
+            <div 
+              className="rounded-3xl overflow-hidden backdrop-blur-xl"
+              style={{ 
+                backgroundColor: '#050F2A',
+                border: '1px solid rgba(123, 187, 255, 0.25)',
+                boxShadow: '0 8px 32px rgba(123, 187, 255, 0.15), 0 0 0 1px rgba(123, 187, 255, 0.1), inset 0 1px 0 rgba(242, 253, 255, 0.1)'
+              }}
+            >
+              <div className="p-6 space-y-2">
+                {navLinks.map((link, index) => (
+                  <motion.a
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="group flex items-center justify-between text-lg font-medium text-[#F2FDFF] hover:text-[#7BBBFF] px-4 py-3.5 rounded-xl transition-all duration-300 hover:bg-[#7BBBFF]/10 active:scale-95"
+                    style={{
+                      backdropFilter: 'blur(8px)'
+                    }}
+                  >
+                    <span>{link.name}</span>
+                    <ChevronRight 
+                      className="w-5 h-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" 
+                    />
+                  </motion.a>
+                ))}
+                
+                {/* Divider */}
+                <div className="py-3">
+                  <div 
+                    className="h-px w-full"
+                    style={{
+                      background: 'linear-gradient(90deg, transparent, rgba(123, 187, 255, 0.3), transparent)'
+                    }}
+                  />
+                </div>
+
+                {/* Login Button */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: navLinks.length * 0.05 + 0.1 }}
+                >
+                  <button 
+                    className="w-full py-4 px-6 rounded-full font-bold text-lg text-[#050F2A] bg-[#7BBBFF] hover:bg-[#7BBBFF]/90 active:scale-95 transition-all duration-300"
+                    style={{
+                      boxShadow: '0 4px 24px rgba(123, 187, 255, 0.4), 0 2px 8px rgba(123, 187, 255, 0.3)'
+                    }}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Login
+                  </button>
+                </motion.div>
+
+                {/* Sign Up Link */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: navLinks.length * 0.05 + 0.2 }}
+                  className="text-center pt-2"
+                >
+                  <button 
+                    className="text-sm text-[#B8A9FF] hover:text-[#B8A9FF]/80 transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Don't have an account? <span className="font-semibold underline">Sign up</span>
+                  </button>
+                </motion.div>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+        </AnimatePresence>
     </nav>
   );
 }
