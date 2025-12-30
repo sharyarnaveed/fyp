@@ -1,92 +1,103 @@
 "use client";
-import Image from "next/image";
+
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-const navigate=useRouter()
-  const options = [
-    { id: 1, name: "Home", link: "/" },
-    { id: 2, name: "About Us", link: "/aboutus" },
-    { id: 3, name: "Contact Us", link: "/contactus" },
-    { id: 4, name: "Privacy Policy", link: "/privacypolicy" },
+export function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "Features", href: "#features" },
+    { name: "About", href: "#about" },
+    { name: "Testimonials", href: "#testimonials" },
+    { name: "Contact", href: "#contact" },
+    { name: "Privacy Policy", href: "/privacypolicy" }
   ];
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
-    <div className="relative">
-      <nav className="px-6 py-4">
-        <div className="flex items-center justify-between max-w-6xl mx-auto">
-          <div className="flex items-center space-x-4">
-            <Image src={"/navimage.png"} width={150} height={90} alt="logo" />
-          </div>
+    <nav className="fixed top-0 left-0 right-0 z-50 py-4 px-6 lg:px-12">
+      <div className="flex justify-between items-center">
+        {/* Logo - Left Side */}
+        <Link href="/" className="flex items-center group z-10">
+          <img
+            src="navimage.png"
+            alt="Prepzy"
+            className="h-15 w-auto transition-transform group-hover:scale-105"
+          />
+        </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center border-2 w-[55%] py-3 justify-around rounded-4xl bg-[#E2E0C8] border-[#A6B493] drop-shadow-lg">
-            {options.map((option) => {
-              return (
-                <Link
-                  key={option.id}
-                  href={`${option.link}`}
-                  className="text-[#4E635E] hover:text-[var(--olivegreen)] transition-colors text-[1.1rem]"
-                >
-                  {option.name}
-                </Link>
-              );
-            })}
-          </div>
+        {/* Desktop Nav - Center with curved design */}
+        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center space-x-1 backdrop-blur-xl rounded-full px-8 py-3 shadow-2xl"
+             style={{ 
+               backgroundColor: '#050F2A',
+               border: '1px solid #7BBBFF40',
+               boxShadow: '0 8px 32px rgba(123, 187, 255, 0.15), 0 0 0 1px rgba(123, 187, 255, 0.1)'
+             }}>
+          {navLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              className="text-sm font-medium px-5 py-2 rounded-full transition-all duration-300 relative group"
+              style={{ color: '#F2FDFF' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#7BBBFF20';
+                e.currentTarget.style.color = '#7BBBFF';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.color = '#F2FDFF';
+              }}
+            >
+              {link.name}
+            </a>
+          ))}
+        </div>
 
-      
+        {/* Login Button - Right Side */}
+        <div className="hidden md:flex items-center z-10">
           <button
-             onClick={()=>navigate.push("https://fypdashboard-aqq8.vercel.app/signin")}
-          
-          className="hidden md:block bg-[var(--baige)] text-gray-700 px-6 py-2 rounded-md hover:bg-[var(--olivegreen)] hover:text-[var(--baige)] text-[1rem] drop-shadow-lg cursor-pointer">
-            Log In
-          </button>
-
-      
-          <button
-            className="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1"
-            onClick={toggleMenu}
+            onClick={() => window.location.href = "https://fypdashboard-aqq8.vercel.app/signin"}
+            className="cursor-pointer bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-full px-6 py-3 shadow-lg shadow-primary/25"
           >
-            <span className={`block w-6 h-0.5 bg-[var(--baige)] transition-transform ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-            <span className={`block w-6 h-0.5 bg-[var(--baige)] transition-opacity ${isMenuOpen ? 'opacity-0' : ''}`}></span>
-            <span className={`block w-6 h-0.5 bg-[var(--baige)] transition-transform ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+            Login
           </button>
         </div>
-      </nav>
 
-      {/* Mobile Menu - Now appears as dropdown below navbar */}
-      <div className={`md:hidden absolute left-0 right-0 z-50 transition-all duration-300 ease-in-out ${isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
-        <div className="mx-4 border-2 py-4 rounded-2xl bg-[#E2E0C8] border-[#A6B493] drop-shadow-lg space-y-4">
-          {options.map((option) => {
-            return (
-              <Link
-                key={option.id}
-                href={`${option.link}`}
-                className="block text-center text-[#4E635E] hover:text-[var(--olivegreen)] transition-colors text-[1.1rem]"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {option.name}
-              </Link>
-            );
-          })}
-          <div className="text-center">
-            <button
-             onClick={()=>navigate.push("https://fypdashboard-aqq8.vercel.app/signin")}
-            className="bg-[var(--baige)] text-gray-700 px-6 py-2 rounded-md hover:bg-[var(--olivegreen)] hover:text-[var(--baige)] text-[1rem] drop-shadow-lg cursor-pointer">
-              Log In
-            </button>
-          </div>
+        {/* Mobile Menu Button */}
+        <div className="md:hidden">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-white/5 transition-colors"
+          >
+            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
       </div>
-    </div>
-  );
-};
 
-export default Navbar;
+      {/* Mobile Nav */}
+      {isOpen && (
+        <div className="md:hidden bg-background/95 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden mt-4 mx-4">
+          <div className="px-4 py-4 space-y-4">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className="block text-base font-medium text-muted-foreground hover:text-primary hover:bg-white/5 px-3 py-2 rounded-md transition-colors"
+              >
+                {link.name}
+              </a>
+            ))}
+            <div className="pt-2">
+              <button className="w-full bg-primary text-primary-foreground font-bold rounded-full">
+                Login
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+}
