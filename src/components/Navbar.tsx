@@ -58,7 +58,7 @@ export function Navbar() {
         {/* Login Button - Right Side */}
         <div className="hidden md:flex items-center z-10">
           <button
-            onClick={() => window.location.href = "https://fypdashboard-aqq8.vercel.app/signin"}
+            onClick={() => window.location.href = "https://students.prepzy.tech/signin"}
             className="cursor-pointer bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-full px-6 py-3 shadow-lg shadow-primary/25"
           >
             Login
