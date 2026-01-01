@@ -135,7 +135,10 @@ export function Navbar() {
                     style={{
                       boxShadow: '0 4px 24px rgba(123, 187, 255, 0.4), 0 2px 8px rgba(123, 187, 255, 0.3)'
                     }}
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => {
+                      setIsOpen(false);
+                      window.location.href = "https://students.prepzy.tech/signin";
+                    }}
                   >
                     Login
                   </button>

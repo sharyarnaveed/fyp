@@ -102,7 +102,7 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[80vh] h-auto w-full flex flex-col items-center justify-center overflow-hidden pt-24 pb-12 sm:pt-32 sm:pb-0">
         <Hero3D />
 
         <div className="relative z-10 container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -111,19 +111,19 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-[#F2FDFF] via-[#5BA7FF] to-[#B8A9FF] drop-shadow-[0_0_30px_rgba(123,191,255,0.3)]">
+            <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-[#F2FDFF] via-[#5BA7FF] to-[#B8A9FF] drop-shadow-[0_0_30px_rgba(123,191,255,0.3)]">
               Crack Exams not <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7BBFFF] to-[#B8A9FF] drop-shadow-[0_0_40px_rgba(184,169,255,0.4)]">
                 Your brain
               </span>
             </h1>
 
-            <p className="text-lg md:text-2xl text-[#B0C8E0] mb-10 max-w-2xl mx-auto font-light drop-shadow-[0_2px_10px_rgba(176,200,224,0.2)]">
+            <p className="text-base xs:text-lg md:text-2xl text-[#B0C8E0] mb-8 sm:mb-10 max-w-xl sm:max-w-2xl mx-auto font-light drop-shadow-[0_2px_10px_rgba(176,200,224,0.2)]">
               Smart plans, personalized study, and expert tools designed to help
               you achieve top results.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full max-w-xs sm:max-w-none mx-auto">
               <Button
                 size="lg"
                 className="h-14 px-8 text-lg rounded-full bg-[#7BBFFF] text-[#050F2A] hover:bg-[#7BBFFF]/90 shadow-[0_0_30px_-5px_rgba(123,191,255,0.4)] hover:shadow-[0_0_40px_-5px_rgba(123,191,255,0.6)] transition-all duration-300"
@@ -144,25 +144,25 @@ export default function Home() {
       </section>
 
       {/* About / Stats Section */}
-      <section id="about" className="py-24 bg-[#050F2A] relative">
+      <section id="about" className="py-16 sm:py-24 bg-[#050F2A] relative">
         <div className="absolute top-0 w-full h-px bg-gradient-to-r from-transparent via-[#7BBFFF]/10 to-transparent" />
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 text-[#F2FDFF]">
+              <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6 text-[#F2FDFF]">
                 Why choose <span className="text-[#7BBFFF]">Prepzy?</span>
               </h2>
-              <p className="text-lg text-[#99b3cc] mb-6 leading-relaxed">
+              <p className="text-base xs:text-lg text-[#99b3cc] mb-6 leading-relaxed">
                 Preparing for exams shouldn’t be expensive, confusing, or
                 stressful. Prepzy uses Artificial Intelligence to simplify
                 learning and help you focus on what truly matters.
               </p>
-              <ul className="space-y-4">
+              <ul className="space-y-3 sm:space-y-4">
                 {[
                   "No expensive coaching centers",
                   "No endless PDFs and notes",
@@ -183,7 +183,7 @@ export default function Home() {
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="grid grid-cols-2 gap-4"
+              className="grid grid-cols-2 gap-3 sm:gap-4"
             >
               {[
                 { label: "Active Users", value: "10+" },
@@ -193,9 +193,9 @@ export default function Home() {
               ].map((stat, i) => (
                 <div
                   key={i}
-                  className="p-8 rounded-2xl bg-[#0a1a3a] border border-[#7BBFFF]/10 text-center hover:border-[#7BBFFF]/30 transition-colors"
+                  className="p-5 sm:p-8 rounded-2xl bg-[#0a1a3a] border border-[#7BBFFF]/10 text-center hover:border-[#7BBFFF]/30 transition-colors"
                 >
-                  <div className="text-3xl md:text-4xl font-bold text-[#7BBFFF] mb-2">
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#7BBFFF] mb-2">
                     {stat.value}
                   </div>
                   <div className="text-sm text-[#99b3cc] uppercase tracking-wider">
@@ -209,20 +209,20 @@ export default function Home() {
       </section>
 
       {/* Features Grid */}
-      <section id="features" className="py-24 bg-[#050F2A]/50 relative">
+      <section id="features" className="py-16 sm:py-24 bg-[#050F2A]/50 relative">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-display font-bold mb-4 text-[#F2FDFF]">
+          <div className="text-center mb-10 sm:mb-16">
+            <h2 className="text-2xl xs:text-3xl sm:text-5xl font-display font-bold mb-4 text-[#F2FDFF]">
               Everything you need to{" "}
               <span className="text-[#B8A9FF]">succeed</span>
             </h2>
-            <p className="text-[#99b3cc] text-lg max-w-2xl mx-auto">
+            <p className="text-[#99b3cc] text-base xs:text-lg max-w-xl sm:max-w-2xl mx-auto">
               A complete toolkit designed to optimize every minute of your study
               time.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {features.map((feature, idx) => (
               <FeatureCard key={idx} {...feature} delay={idx * 0.1} />
             ))}
@@ -233,18 +233,18 @@ export default function Home() {
       {/* Testimonials */}
       <section
         id="testimonials"
-        className="py-24 bg-[#050F2A] relative overflow-hidden"
+        className="py-16 sm:py-24 bg-[#050F2A] relative overflow-hidden"
       >
         {/* Background decorative blobs */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#7BBFFF]/5 rounded-full blur-[100px] pointer-events-none translate-x-1/2 -translate-y-1/2" />
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#B8A9FF]/5 rounded-full blur-[100px] pointer-events-none -translate-x-1/2 translate-y-1/2" />
 
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <h2 className="text-3xl md:text-5xl font-display font-bold text-center mb-16 text-[#F2FDFF]">
+          <h2 className="text-2xl xs:text-3xl sm:text-5xl font-display font-bold text-center mb-10 sm:mb-16 text-[#F2FDFF]">
             Trusted by <span className="text-[#7BBFFF]">Top Performers</span>
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             {testimonials.map((testimonial, idx) => (
               <motion.div
                 key={idx}
@@ -281,13 +281,13 @@ export default function Home() {
       </section>
 
       {/* CTA / Contact Section */}
-      <section id="contact" className="py-24 bg-[#050F2A] relative">
+      <section id="contact" className="py-16 sm:py-24 bg-[#050F2A] relative">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-br from-[#0a1a3a] to-[#0a1a3a]/50 border border-[#7BBFFF]/10 rounded-3xl p-8 md:p-16 overflow-hidden relative">
             {/* Decorative background circle */}
             <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#7BBFFF]/20 rounded-full blur-3xl" />
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 relative z-10">
               <div>
                 <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-[#F2FDFF]">
                   Ready to start your journey?
@@ -342,7 +342,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="bg-[#050F2A]/40 p-8 rounded-2xl border border-[#7BBFFF]/10">
+              <div className="bg-[#050F2A]/40 p-5 sm:p-8 rounded-2xl border border-[#7BBFFF]/10">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label
