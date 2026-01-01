@@ -102,10 +102,10 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative min-h-[80vh] h-auto w-full flex flex-col items-center justify-center overflow-hidden pt-24 pb-12 sm:pt-32 sm:pb-0">
+      <section className="relative min-h-[80vh] md:h-screen w-full flex flex-col items-center justify-center overflow-hidden pt-24 pb-12 sm:pt-32 sm:pb-0 px-4">
         <Hero3D />
 
-        <div className="relative z-10 container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative z-10 container max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 text-center w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -144,9 +144,9 @@ export default function Home() {
       </section>
 
       {/* About / Stats Section */}
-      <section id="about" className="py-16 sm:py-24 bg-[#050F2A] relative">
+      <section id="about" className="py-16 sm:py-24 bg-[#050F2A] relative px-6">
         <div className="absolute top-0 w-full h-px bg-gradient-to-r from-transparent via-[#7BBFFF]/10 to-transparent" />
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -209,8 +209,8 @@ export default function Home() {
       </section>
 
       {/* Features Grid */}
-      <section id="features" className="py-16 sm:py-24 bg-[#050F2A]/50 relative">
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="features" className="py-16 sm:py-24 bg-[#050F2A]/50 relative px-4">
+        <div className="container max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
           <div className="text-center mb-10 sm:mb-16">
             <h2 className="text-2xl xs:text-3xl sm:text-5xl font-display font-bold mb-4 text-[#F2FDFF]">
               Everything you need to{" "}
@@ -233,13 +233,13 @@ export default function Home() {
       {/* Testimonials */}
       <section
         id="testimonials"
-        className="py-16 sm:py-24 bg-[#050F2A] relative overflow-hidden"
+        className="py-16 sm:py-24 bg-[#050F2A] relative overflow-hidden px-4"
       >
         {/* Background decorative blobs */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#7BBFFF]/5 rounded-full blur-[100px] pointer-events-none translate-x-1/2 -translate-y-1/2" />
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#B8A9FF]/5 rounded-full blur-[100px] pointer-events-none -translate-x-1/2 translate-y-1/2" />
 
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="container max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 relative z-10 w-full">
           <h2 className="text-2xl xs:text-3xl sm:text-5xl font-display font-bold text-center mb-10 sm:mb-16 text-[#F2FDFF]">
             Trusted by <span className="text-[#7BBFFF]">Top Performers</span>
           </h2>
@@ -281,8 +281,8 @@ export default function Home() {
       </section>
 
       {/* CTA / Contact Section */}
-      <section id="contact" className="py-16 sm:py-24 bg-[#050F2A] relative">
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="contact" className="py-16 sm:py-24 bg-[#050F2A] relative px-4">
+        <div className="container max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-br from-[#0a1a3a] to-[#0a1a3a]/50 border border-[#7BBFFF]/10 rounded-3xl p-8 md:p-16 overflow-hidden relative">
             {/* Decorative background circle */}
             <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#7BBFFF]/20 rounded-full blur-3xl" />

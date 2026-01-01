@@ -153,7 +153,7 @@ export function Navbar() {
                 >
                   <button 
                     className="text-sm text-[#B8A9FF] hover:text-[#B8A9FF]/80 transition-colors"
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => window.location.href="https://students.prepzy.tech/signup"}
                   >
                     Don&apos;t have an account? <span className="font-semibold underline">Sign up</span>
                   </button>
