@@ -9,26 +9,26 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-[#050F2A]  px-6 py-12 md:px-12 lg:px-16 flex flex-col items-center w-full">
-      <div className="flex flex-col md:flex-row justify-between items-center md:items-start w-full max-w-7xl mx-auto gap-12 md:gap-8">
+    <footer className="bg-[#050F2A] px-4 py-10 sm:px-6 sm:py-12 md:px-12 lg:px-16 flex flex-col items-center w-full overflow-x-hidden">
+      <div className="flex flex-col md:flex-row justify-between items-center md:items-start w-full max-w-7xl mx-auto gap-8 sm:gap-10 md:gap-8">
         {/* Left Section */}
-        <div className="flex flex-col items-center md:items-start w-full md:w-auto">
-          <img src="/footerlogo.png" alt="logo" className="w-28 h-auto mb-4 transition-transform hover:scale-105" />
-          <p className="text-[#F2FDFF]/60 text-sm mb-1">Copyright © 2025</p>
-          <p className="text-[#7BBBFF] text-base font-medium">Smarter Prep Starts Here</p>
+        <div className="flex flex-col items-center md:items-start w-full md:w-auto text-center md:text-left">
+          <img src="/footerlogo.png" alt="Prepzy" className="w-24 sm:w-28 h-auto mb-3 sm:mb-4 transition-transform hover:scale-105" />
+          <p className="text-[#F2FDFF]/60 text-xs sm:text-sm mb-1">Copyright © 2025</p>
+          <p className="text-[#7BBBFF] text-sm sm:text-base font-medium">Smarter Prep Starts Here</p>
         </div>
 
         {/* Right Section */}
-        <div className="flex flex-col items-center md:items-end w-full md:w-auto gap-6">
-          <nav className="flex flex-wrap justify-center md:justify-end gap-x-8 gap-y-3">
+        <div className="flex flex-col items-center md:items-end w-full md:w-auto gap-5 sm:gap-6">
+          <nav className="flex flex-wrap justify-center md:justify-end gap-x-6 sm:gap-x-8 gap-y-2 sm:gap-y-3">
             {options.map((option) => (
               <Link
                 key={option.id}
                 href={option.link}
-                className="text-[#F2FDFF]/80 hover:text-[#B8A9FF] transition-colors text-base font-medium relative group"
+                className="text-[#F2FDFF]/80 hover:text-[#B8A9FF] transition-colors text-sm sm:text-base font-medium relative group py-1"
               >
                 {option.name}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#B8A9FF] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#B8A9FF] group-hover:w-full transition-all duration-300" />
               </Link>
             ))}
           </nav>
@@ -59,8 +59,8 @@ const Footer = () => {
       </div>
       
       {/* Bottom divider and extra info */}
-      <div className="w-full max-w-7xl mx-auto mt-10 pt-6 border-t border-[#7BBBFF]/10">
-        <p className="text-[#F2FDFF]/40 text-center text-sm">
+      <div className="w-full max-w-7xl mx-auto mt-8 sm:mt-10 pt-5 sm:pt-6 border-t border-[#7BBBFF]/10 px-2">
+        <p className="text-[#F2FDFF]/40 text-center text-xs sm:text-sm">
           Prepzy - AI-Powered Exam Preparation Platform for Pakistani Students
         </p>
       </div>

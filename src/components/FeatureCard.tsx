@@ -22,7 +22,7 @@ export function FeatureCard({
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
       viewport={{ once: true }}
-      className="group p-6 rounded-2xl glass-card hover:border-primary/50 transition-colors duration-300 relative overflow-hidden"
+      className="group p-6 sm:p-8 rounded-2xl glass-card hover:border-[#7BBFFF]/40 hover:shadow-[0_0_28px_-6px_rgba(123,191,255,0.12)] transition-all duration-300 relative overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
