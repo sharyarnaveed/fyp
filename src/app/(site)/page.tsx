@@ -17,22 +17,42 @@ import {
   BookOpen,
   Stethoscope,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 export default function Home() {
+  const [showToast, setShowToast] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // For demo purposes - just log and reset
-    console.log("Form submitted:", formData);
-    setFormData({ name: "", email: "", message: "" });
-    alert("Message sent! (Demo mode - no backend)");
+    setIsSubmitting(true);
+    setSubmitStatus("idle");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) throw new Error("Failed to send");
+
+      setFormData({ name: "", email: "", message: "" });
+      setSubmitStatus("success");
+      setTimeout(() => setSubmitStatus("idle"), 5000);
+    } catch {
+      setSubmitStatus("error");
+      setTimeout(() => setSubmitStatus("idle"), 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const features = [
@@ -150,6 +170,10 @@ export default function Home() {
               <Button
                 size="lg"
                 className="w-full sm:w-auto h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg rounded-full bg-[#7BBFFF] text-[#050F2A] hover:bg-[#7BBFFF]/90 shadow-[0_0_30px_-5px_rgba(123,191,255,0.4)] hover:shadow-[0_0_40px_-5px_rgba(123,191,255,0.6)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-manipulation"
+                onClick={() => {
+                  setShowToast(true);
+                  setTimeout(() => setShowToast(false), 3000);
+                }}
               >
                 Start Learning
                 <ChevronRight className="ml-2 w-5 h-5 shrink-0" />
@@ -530,16 +554,41 @@ export default function Home() {
 
                   <Button
                     type="submit"
-                    className="w-full h-12 text-lg bg-[#7BBFFF] text-[#050F2A] hover:bg-[#7BBFFF]/90 rounded-xl font-semibold"
+                    disabled={isSubmitting}
+                    className="w-full h-12 text-lg bg-[#7BBFFF] text-[#050F2A] hover:bg-[#7BBFFF]/90 rounded-xl font-semibold disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    Send Message
+                    {isSubmitting ? "Sending..." : "Send Message"}
                   </Button>
+                  {submitStatus === "success" && (
+                    <p className="text-green-400 text-sm text-center mt-2">
+                      Message sent successfully! Check your email for confirmation.
+                    </p>
+                  )}
+                  {submitStatus === "error" && (
+                    <p className="text-red-400 text-sm text-center mt-2">
+                      Failed to send message. Please try again.
+                    </p>
+                  )}
                 </form>
               </div>
             </div>
           </div>
         </div>
       </section>
+      {/* Toast */}
+      <AnimatePresence>
+        {showToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.3 }}
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] px-8 py-4 rounded-2xl bg-[#0a1a3a] border border-[#7BBFFF]/30 shadow-[0_0_40px_-8px_rgba(123,191,255,0.4)] text-[#F2FDFF] text-base sm:text-lg font-semibold"
+          >
+            🚀 Feature coming soon!
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
