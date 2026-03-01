@@ -79,6 +79,26 @@ export async function generateQuiz(input: GenerateQuizInput): Promise<QuizQuesti
   return parseGenerateRaw(raw);
 }
 
+/** Retry a function up to `maxRetries` times with exponential backoff. */
+async function withRetry<T>(
+  fn: () => Promise<T>,
+  maxRetries = 3,
+  baseDelay = 1000
+): Promise<T> {
+  let lastError: unknown;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastError = err;
+      if (attempt < maxRetries) {
+        await new Promise((r) => setTimeout(r, baseDelay * 2 ** attempt));
+      }
+    }
+  }
+  throw lastError;
+}
+
 const STORAGE_KEY = "prepzy_quiz_questions";
 const QUIZ_DATA_KEY = "prepzy_quiz_data";
 
@@ -151,28 +171,31 @@ export function loadQuizData(): QuizData {
 
 export const QUESTIONS_PER_SUBJECT = 10;
 
-/** Prefetch chemistry: random passage from JSONL → API → save. Fire-and-forget; run once per session. */
-export async function prefetchChemistry(): Promise<void> {
-  const passage = await getRandomPassageFromJsonl(JSONL_PATHS.chemistry);
-  if (!passage) return;
+/** Generate quiz for a subject: fetch passage + call API, with retries. Returns true on success. */
+export async function generateQuizForSubject(subject: QuizSubject): Promise<boolean> {
   try {
-    const questions = await generateQuiz({ passage, num_questions: QUESTIONS_PER_SUBJECT });
-    if (questions.length > 0) saveQuestionsForSubject("chemistry", questions);
+    const questions = await withRetry(async () => {
+      const passage = await getRandomPassageFromJsonl(JSONL_PATHS[subject]);
+      if (!passage) throw new Error(`No passage for ${subject}`);
+      const qs = await generateQuiz({ passage, num_questions: QUESTIONS_PER_SUBJECT });
+      if (qs.length === 0) throw new Error(`Empty quiz for ${subject}`);
+      return qs;
+    }, 3, 1500);
+    saveQuestionsForSubject(subject, questions);
+    return true;
   } catch {
-    // non-blocking; ignore
+    return false;
   }
 }
 
-/** Prefetch physics: random passage from JSONL → API → save. Fire-and-forget; run once per session. */
-export async function prefetchPhysics(): Promise<void> {
-  const passage = await getRandomPassageFromJsonl(JSONL_PATHS.physics);
-  if (!passage) return;
-  try {
-    const questions = await generateQuiz({ passage, num_questions: QUESTIONS_PER_SUBJECT });
-    if (questions.length > 0) saveQuestionsForSubject("physics", questions);
-  } catch {
-    // non-blocking; ignore
-  }
+/** Prefetch chemistry: random passage from JSONL → API → save with retries. */
+export async function prefetchChemistry(): Promise<boolean> {
+  return generateQuizForSubject("chemistry");
+}
+
+/** Prefetch physics: random passage from JSONL → API → save with retries. */
+export async function prefetchPhysics(): Promise<boolean> {
+  return generateQuizForSubject("physics");
 }
 
 export function saveQuizToStorage(questions: QuizQuestion[]): void {

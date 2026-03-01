@@ -94,6 +94,7 @@ export function Navbar() {
     }
 
     setSubmitting(true);
+    let trialUserId: number | null = null;
     try {
       // Check if user has already attempted 3 or more times
       const { count: attemptCount, error: countError } = await supabase
@@ -146,11 +147,15 @@ export function Navbar() {
         return;
       }
 
-      const trialUserId = insertData?.id != null ? Number(insertData.id) : null;
+      trialUserId = insertData?.id != null ? Number(insertData.id) : null;
       if (trialUserId != null) setTrialUserId(trialUserId);
 
       const biologyPassage = await getRandomPassageFromJsonl("/mcqsjson/biology.jsonl");
       if (!biologyPassage) {
+        // Remove user record so the trial attempt isn't wasted
+        if (trialUserId != null) {
+          await supabase.from("trailpeoples").delete().eq("id", trialUserId);
+        }
         setSubmitError("Could not load quiz content. Please try again.");
         setSubmitting(false);
         return;
@@ -160,6 +165,10 @@ export function Navbar() {
         num_questions: QUESTIONS_PER_SUBJECT,
       });
       if (questions.length === 0) {
+        // Remove user record so the trial attempt isn't wasted
+        if (trialUserId != null) {
+          await supabase.from("trailpeoples").delete().eq("id", trialUserId);
+        }
         setSubmitError("Could not generate quiz. Please try again.");
         setSubmitting(false);
         return;
@@ -172,6 +181,10 @@ export function Navbar() {
       setLocationValue("");
       router.push("/quiz");
     } catch (err) {
+      // Remove user record on unexpected errors so the trial attempt isn't wasted
+      if (trialUserId != null) {
+        try { await supabase.from("trailpeoples").delete().eq("id", trialUserId); } catch { /* ignore */ }
+      }
       setSubmitError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
