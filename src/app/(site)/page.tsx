@@ -61,36 +61,48 @@ export default function Home() {
       description:
         "Ask questions, clear concepts, and get instant explanations in simple language. Your personal AI tutor is available 24/7.",
       icon: Brain,
+      accentColor: "#7BBFFF",
+      glowColor: "rgba(123,191,255,0.18)",
     },
     {
       title: "AI Quiz Generator",
       description:
-        "Upload your notes or choose a topic  Prepzy automatically generates MCQs to test your understanding and track your progress.",
+        "Upload your notes or choose a topic — Prepzy automatically generates MCQs to test your understanding and track your progress.",
       icon: FileText,
+      accentColor: "#B8A9FF",
+      glowColor: "rgba(184,169,255,0.18)",
     },
     {
       title: "Smart Document Summarization",
       description:
         "Turn long PDFs and notes into short, easy-to-understand summaries so you can revise faster and smarter.",
       icon: Target,
+      accentColor: "#5BE0A7",
+      glowColor: "rgba(91,224,167,0.18)",
     },
     {
       title: "Study Planner",
       description:
         "Dynamic scheduling that adapts to your progress and upcoming deadlines. Never miss a topic.",
       icon: Calendar,
+      accentColor: "#FFB86C",
+      glowColor: "rgba(255,184,108,0.18)",
     },
     {
       title: "Performance Tracking",
       description:
         "Monitor your quiz scores, identify weak areas, and improve step-by-step with clear progress insights.",
       icon: BarChart3,
+      accentColor: "#FF79C6",
+      glowColor: "rgba(255,121,198,0.18)",
     },
     {
       title: "All Study Material in One Place",
       description:
         "Access past papers, notes, and learning resources — or upload your own materials and let AI do the work.",
       icon: Star,
+      accentColor: "#7BBFFF",
+      glowColor: "rgba(123,191,255,0.18)",
     },
   ];
 
@@ -271,13 +283,24 @@ export default function Home() {
       </section>
 
       {/* Features Grid */}
-      <section id="features" aria-labelledby="features-heading" className="py-14 sm:py-20 md:py-28 bg-[#050F2A] relative px-4 sm:px-6">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(123,191,255,0.04)_0%,transparent_50%)] pointer-events-none" />
+      <section id="features" aria-labelledby="features-heading" className="py-14 sm:py-20 md:py-28 bg-gradient-to-b from-[#050F2A] via-[#06122e] to-[#050F2A] relative px-4 sm:px-6">
+        {/* Decorative glows */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(123,191,255,0.05)_0%,transparent_50%)] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#B8A9FF]/[0.03] rounded-full blur-[100px] pointer-events-none -translate-x-1/3" />
+        <div className="absolute top-1/3 right-0 w-[350px] h-[350px] bg-[#7BBFFF]/[0.03] rounded-full blur-[100px] pointer-events-none translate-x-1/3" />
+
         <div className="container max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-12 sm:mb-20">
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="mx-auto mb-5 h-px w-12 origin-center rounded-full bg-gradient-to-r from-transparent via-[#B8A9FF]/60 to-transparent"
+            />
             <h2 id="features-heading" className="text-2xl xs:text-3xl sm:text-5xl font-display font-bold mb-4 text-[#F2FDFF]">
               Everything you need to{" "}
-              <span className="text-[#B8A9FF]">succeed</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7BBFFF] to-[#B8A9FF]">succeed</span>
             </h2>
             <p className="text-[#99b3cc] text-base xs:text-lg max-w-xl sm:max-w-2xl mx-auto">
               A complete toolkit designed to optimize every minute of your study
@@ -285,7 +308,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-7">
             {features.map((feature, idx) => (
               <FeatureCard key={idx} {...feature} delay={idx * 0.08} />
             ))}
