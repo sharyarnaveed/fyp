@@ -43,6 +43,13 @@ export function Navbar() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const router = useRouter();
 
+  // Allow external components to open the trial modal via custom event
+  useEffect(() => {
+    const handler = () => setTrialModalOpen(true);
+    window.addEventListener("open-trial-modal", handler);
+    return () => window.removeEventListener("open-trial-modal", handler);
+  }, []);
+
   // Request browser location when trial modal opens
   useEffect(() => {
     if (!trialModalOpen) return;

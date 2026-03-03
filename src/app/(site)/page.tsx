@@ -155,7 +155,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mx-auto mb-6 h-px w-16 origin-center rounded-full bg-gradient-to-r from-transparent via-[#7BBFFF]/60 to-transparent"
             />
-            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-bold mb-4 sm:mb-6 leading-[1.12] text-transparent bg-clip-text bg-gradient-to-r from-[#F2FDFF] via-[#5BA7FF] to-[#B8A9FF] drop-shadow-[0_0_40px_rgba(123,191,255,0.25)] [text-shadow:0_0_80px_rgba(123,191,255,0.15)] break-words">
+            <h1 className="text-4xl xs:text-5xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-bold mb-4 sm:mb-6 leading-[1.12] text-transparent bg-clip-text bg-gradient-to-r from-[#F2FDFF] via-[#5BA7FF] to-[#B8A9FF] drop-shadow-[0_0_40px_rgba(123,191,255,0.25)] [text-shadow:0_0_80px_rgba(123,191,255,0.15)] break-words">
               Crack Exams not <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7BBFFF] to-[#B8A9FF] drop-shadow-[0_0_50px_rgba(184,169,255,0.3)]">
                 Your brain
@@ -167,9 +167,19 @@ export default function Home() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full max-w-[280px] sm:max-w-none mx-auto">
+              {/* Mobile: single Trial Quiz button */}
               <Button
                 size="lg"
-                className="w-full sm:w-auto h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg rounded-full bg-[#7BBFFF] text-[#050F2A] hover:bg-[#7BBFFF]/90 shadow-[0_0_30px_-5px_rgba(123,191,255,0.4)] hover:shadow-[0_0_40px_-5px_rgba(123,191,255,0.6)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-manipulation"
+                className="sm:hidden w-full h-12 px-6 text-base rounded-full bg-[#7BBFFF] text-[#050F2A] hover:bg-[#7BBFFF]/90 shadow-[0_0_30px_-5px_rgba(123,191,255,0.4)] hover:shadow-[0_0_40px_-5px_rgba(123,191,255,0.6)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-manipulation"
+                onClick={() => window.dispatchEvent(new Event("open-trial-modal"))}
+              >
+                Start the Trial Quiz
+                <ChevronRight className="ml-2 w-5 h-5 shrink-0" />
+              </Button>
+              {/* Desktop: original buttons */}
+              <Button
+                size="lg"
+                className="hidden sm:inline-flex h-14 px-8 text-lg rounded-full bg-[#7BBFFF] text-[#050F2A] hover:bg-[#7BBFFF]/90 shadow-[0_0_30px_-5px_rgba(123,191,255,0.4)] hover:shadow-[0_0_40px_-5px_rgba(123,191,255,0.6)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-manipulation"
                 onClick={() => {
                   setShowToast(true);
                   setTimeout(() => setShowToast(false), 3000);
@@ -181,7 +191,7 @@ export default function Home() {
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full sm:w-auto h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg rounded-full glass-button text-[#F2FDFF] border-[#7BBFFF]/30 bg-[#050F2A]/40 hover:bg-[#7BBFFF]/15 hover:text-[#7BBFFF] hover:border-[#7BBFFF]/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-manipulation"
+                className="hidden sm:inline-flex h-14 px-8 text-lg rounded-full glass-button text-[#F2FDFF] border-[#7BBFFF]/30 bg-[#050F2A]/40 hover:bg-[#7BBFFF]/15 hover:text-[#7BBFFF] hover:border-[#7BBFFF]/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-manipulation"
                 asChild
               >
                 <a href="#courses">View Courses</a>
