@@ -6,8 +6,8 @@ export const TRIAL_QUIZ_PASSAGE = `Chemical kinetics is the branch of chemistry 
 /** Raw question shape from API (inside response.raw JSON string) */
 export interface ApiQuestion {
   question: string;
-  options: Record<string, string>; // e.g. { A: "...", B: "...", C: "...", D: "..." }
-  correct_answer: string; // "A" | "B" | "C" | "D"
+  options: Record<string, string> | string[]; // { A: "...", B: "..." } OR ["opt1", "opt2", ...]
+  correct_answer: string; // "A" | "B" | "C" | "D" or full answer text
   difficulty?: string;
   explanation?: string;
 }
@@ -29,29 +29,137 @@ export interface QuizQuestion {
 
 const OPTION_ORDER = ["A", "B", "C", "D"];
 
-/** Parse API raw string and convert to QuizQuestion[] */
-export function parseGenerateRaw(raw: string): QuizQuestion[] {
-  let parsed: ApiQuestion[];
+/**
+ * Attempt to extract a JSON array from a raw string that may be:
+ * - A plain JSON array
+ * - Wrapped in markdown code fences (```json ... ```)
+ * - Double-encoded (a JSON string of a JSON string)
+ * - An object with a key containing the array (e.g. { questions: [...] })
+ */
+function extractJsonArray(raw: string): ApiQuestion[] {
+  let cleaned = raw.trim();
+
+  // Strip markdown code fences if present
+  cleaned = cleaned.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "");
+  cleaned = cleaned.trim();
+
+  // Attempt parse
+  let result: unknown;
   try {
-    parsed = JSON.parse(raw) as ApiQuestion[];
+    result = JSON.parse(cleaned);
   } catch {
     return [];
   }
-  if (!Array.isArray(parsed)) return [];
 
-  return parsed.map((q, index) => {
-    const optionsArray = OPTION_ORDER.map((key) => q.options?.[key] ?? "").filter(Boolean);
-    const correctLetter = (q.correct_answer ?? "A").toUpperCase();
-    const correctIndex = Math.max(0, OPTION_ORDER.indexOf(correctLetter));
-    return {
-      id: index + 1,
-      question: q.question ?? "",
-      options: optionsArray.length ? optionsArray : ["Option A", "Option B", "Option C", "Option D"],
-      correctIndex: correctIndex < optionsArray.length ? correctIndex : 0,
-      explanation: q.explanation,
-      difficulty: q.difficulty,
-    };
-  });
+  // If we got a string back, it was double-encoded — parse again
+  if (typeof result === "string") {
+    try {
+      result = JSON.parse(result);
+    } catch {
+      return [];
+    }
+  }
+
+  // If result is an array, use it directly
+  if (Array.isArray(result)) return result as ApiQuestion[];
+
+  // If result is an object, look for a key that holds an array (e.g. "questions", "data", "raw")
+  if (result && typeof result === "object") {
+    for (const key of ["questions", "data", "raw", "mcqs", "results"]) {
+      const val = (result as Record<string, unknown>)[key];
+      if (Array.isArray(val)) return val as ApiQuestion[];
+    }
+    // Try the first array-valued key
+    for (const val of Object.values(result as Record<string, unknown>)) {
+      if (Array.isArray(val) && val.length > 0) return val as ApiQuestion[];
+    }
+  }
+
+  return [];
+}
+
+/** Resolve options from either Record<string, string> or string[] to ordered string[] */
+function resolveOptions(options: Record<string, string> | string[] | undefined | null): string[] {
+  if (!options) return [];
+
+  // If it's already an array of strings
+  if (Array.isArray(options)) {
+    return options.map((o) => (typeof o === "string" ? o : String(o))).filter(Boolean);
+  }
+
+  // It's a Record — try ordered keys first
+  if (typeof options === "object") {
+    const fromKeys = OPTION_ORDER.map((key) => options[key] ?? options[key.toLowerCase()] ?? "").filter(Boolean);
+    if (fromKeys.length > 0) return fromKeys;
+    // Fallback: just take all values in insertion order
+    return Object.values(options).filter((v) => typeof v === "string" && v.length > 0);
+  }
+
+  return [];
+}
+
+/** Resolve the correct answer index from the API's correct_answer field */
+function resolveCorrectIndex(correctAnswer: string | number | undefined, optionsArray: string[]): number {
+  if (correctAnswer == null) return 0;
+
+  // If it's a number already, use it as index
+  if (typeof correctAnswer === "number") {
+    return correctAnswer >= 0 && correctAnswer < optionsArray.length ? correctAnswer : 0;
+  }
+
+  const answer = String(correctAnswer).trim();
+
+  // Single letter match: "A", "B", "C", "D" (case-insensitive)
+  const letterMatch = answer.match(/^([A-Da-d])(?:[.):;\s]|$)/);
+  if (letterMatch) {
+    const idx = OPTION_ORDER.indexOf(letterMatch[1].toUpperCase());
+    if (idx >= 0 && idx < optionsArray.length) return idx;
+  }
+
+  // Exact or prefix match against option text
+  const lower = answer.toLowerCase();
+  for (let i = 0; i < optionsArray.length; i++) {
+    if (optionsArray[i].toLowerCase() === lower) return i;
+  }
+  for (let i = 0; i < optionsArray.length; i++) {
+    if (optionsArray[i].toLowerCase().startsWith(lower) || lower.startsWith(optionsArray[i].toLowerCase())) return i;
+  }
+
+  // Fallback: try to parse as index
+  const numIdx = parseInt(answer, 10);
+  if (Number.isFinite(numIdx) && numIdx >= 0 && numIdx < optionsArray.length) return numIdx;
+
+  return 0;
+}
+
+/** Parse API raw string and convert to QuizQuestion[] */
+export function parseGenerateRaw(raw: string): QuizQuestion[] {
+  const parsed = extractJsonArray(raw);
+  if (parsed.length === 0) return [];
+
+  return parsed
+    .filter((q) => q && typeof q === "object" && q.question)
+    .map((q, index) => {
+      const optionsArray = resolveOptions(q.options);
+      const correctIndex = resolveCorrectIndex(q.correct_answer, optionsArray);
+      const correctLabel = OPTION_ORDER[correctIndex] ?? "A";
+      const correctText = optionsArray[correctIndex] ?? "";
+
+      // Build explanation: use API-provided one, or generate a fallback
+      let explanation = q.explanation;
+      if (!explanation || !explanation.trim()) {
+        explanation = `The correct answer is ${correctLabel}` + (correctText ? `: ${correctText}` : "");
+      }
+
+      return {
+        id: index + 1,
+        question: q.question ?? "",
+        options: optionsArray.length >= 2 ? optionsArray : ["Option A", "Option B", "Option C", "Option D"],
+        correctIndex: correctIndex < optionsArray.length ? correctIndex : 0,
+        explanation,
+        difficulty: q.difficulty,
+      };
+    });
 }
 
 export interface GenerateQuizInput {

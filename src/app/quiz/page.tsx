@@ -108,7 +108,7 @@ export default function QuizPage() {
   const isFirst = currentIndex === 0;
   const hasAnswered = selectedOption !== null;
   const isCorrect = Boolean(question && hasAnswered && selectedOption === question.correctIndex);
-  const showExplanation = Boolean(question && hasAnswered && !isCorrect && question.explanation);
+  const showExplanation = Boolean(question && hasAnswered && !isCorrect);
 
   const setSelectedOption = (optionIndex: number) => {
     setAnswers((prev) => {
