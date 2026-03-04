@@ -12,6 +12,7 @@ import {
   getTrialUserId,
   prefetchChemistry,
   prefetchPhysics,
+  saveQuizScore,
   type QuizQuestion,
 } from "@/lib/quiz";
 import supabase from "@/lib/SupabaseClient";
@@ -218,9 +219,27 @@ export default function QuizPage() {
     try {
       const userId = getTrialUserId();
       let correct = 0;
+      let biologyCorrect = 0;
+      let chemistryCorrect = 0;
+      let physicsCorrect = 0;
       questions.forEach((q, i) => {
         const chosen = answers[i];
-        if (chosen != null && chosen === q.correctIndex) correct++;
+        if (chosen != null && chosen === q.correctIndex) {
+          correct++;
+          if (i < biologyCount) biologyCorrect++;
+          else if (i < biologyCount + chemistryCount) chemistryCorrect++;
+          else physicsCorrect++;
+        }
+      });
+      saveQuizScore({
+        correct,
+        total,
+        biologyCorrect,
+        biologyTotal: biologyCount,
+        chemistryCorrect,
+        chemistryTotal: chemistryCount,
+        physicsCorrect,
+        physicsTotal: physicsCount,
       });
       const scoreStr = `${correct}/${total}`;
       const responcemodel = {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -12,8 +12,12 @@ import {
   Home,
   Star,
   Send,
+  Trophy,
+  BookOpen,
+  FlaskConical,
+  Atom,
 } from "lucide-react";
-import { getTrialUserId } from "@/lib/quiz";
+import { getTrialUserId, loadQuizScore, type QuizScore } from "@/lib/quiz";
 import supabase from "@/lib/SupabaseClient";
 
 function FloatingParticle({
@@ -56,6 +60,12 @@ export default function QuizThankYouPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [score, setScore] = useState<QuizScore | null>(null);
+
+  useEffect(() => {
+    const s = loadQuizScore();
+    if (s) setScore(s);
+  }, []);
 
   const handleSubmitFeedback = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -194,6 +204,51 @@ export default function QuizThankYouPage() {
                 hear your thoughts below.
               </motion.p>
             </div>
+
+            {/* Score display */}
+            {score && (
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.55, duration: 0.5 }}
+                className="mb-6 sm:mb-8"
+              >
+                {/* Overall score */}
+                <div className="text-center mb-5 sm:mb-6">
+                  <div className="inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#7BBFFF]/15 to-[#B8A9FF]/15 border border-[#7BBFFF]/20">
+                    <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
+                    <span className="text-xl sm:text-2xl md:text-3xl font-bold text-[#F2FDFF]">
+                      {score.correct}
+                      <span className="text-[#99b3cc] text-base sm:text-lg md:text-xl font-normal">/{score.total}</span>
+                    </span>
+                    <span className="text-xs sm:text-sm text-[#99b3cc] font-medium">
+                      ({score.total > 0 ? Math.round((score.correct / score.total) * 100) : 0}%)
+                    </span>
+                  </div>
+                </div>
+
+                {/* Subject-wise breakdown */}
+                <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                  {[
+                    { label: "Biology", correct: score.biologyCorrect, total: score.biologyTotal, icon: BookOpen, color: "#5BE0A7", bgColor: "rgba(91,224,167,0.12)", borderColor: "rgba(91,224,167,0.2)" },
+                    { label: "Chemistry", correct: score.chemistryCorrect, total: score.chemistryTotal, icon: FlaskConical, color: "#B8A9FF", bgColor: "rgba(184,169,255,0.12)", borderColor: "rgba(184,169,255,0.2)" },
+                    { label: "Physics", correct: score.physicsCorrect, total: score.physicsTotal, icon: Atom, color: "#7BBFFF", bgColor: "rgba(123,191,255,0.12)", borderColor: "rgba(123,191,255,0.2)" },
+                  ].map((sub) => (
+                    <div
+                      key={sub.label}
+                      className="rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border transition-all"
+                      style={{ backgroundColor: sub.bgColor, borderColor: sub.borderColor }}
+                    >
+                      <sub.icon className="w-4 h-4 sm:w-5 sm:h-5 mx-auto mb-1.5 sm:mb-2" style={{ color: sub.color }} />
+                      <p className="text-[10px] sm:text-xs font-medium text-[#99b3cc] mb-1">{sub.label}</p>
+                      <p className="text-sm sm:text-lg font-bold" style={{ color: sub.color }}>
+                        {sub.correct}<span className="text-[#99b3cc] text-xs sm:text-sm font-normal">/{sub.total}</span>
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
 
             {/* Divider */}
             <div className="w-full h-px bg-gradient-to-r from-transparent via-[#7BBFFF]/20 to-transparent mb-6 sm:mb-8" />

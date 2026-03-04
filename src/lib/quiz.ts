@@ -277,3 +277,36 @@ export function saveQuizAnswers(answers: Record<number, number>): void {
     // ignore
   }
 }
+
+const QUIZ_SCORE_KEY = "prepzy_quiz_score";
+
+export interface QuizScore {
+  correct: number;
+  total: number;
+  biologyCorrect: number;
+  biologyTotal: number;
+  chemistryCorrect: number;
+  chemistryTotal: number;
+  physicsCorrect: number;
+  physicsTotal: number;
+}
+
+export function saveQuizScore(score: QuizScore): void {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.setItem(QUIZ_SCORE_KEY, JSON.stringify(score));
+  } catch {
+    // ignore
+  }
+}
+
+export function loadQuizScore(): QuizScore | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const stored = sessionStorage.getItem(QUIZ_SCORE_KEY);
+    if (!stored) return null;
+    return JSON.parse(stored) as QuizScore;
+  } catch {
+    return null;
+  }
+}
