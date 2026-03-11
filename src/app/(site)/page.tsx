@@ -1,7 +1,10 @@
 "use client";
 
+import { animate, stagger, createTimeline } from "animejs";
 import { Hero3D } from "@/components/Hero3D";
+import { HeroCard } from "@/components/HeroCard";
 import { FeatureCard } from "@/components/FeatureCard";
+import { ContactToast } from "@/components/ContactToast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,8 +20,8 @@ import {
   BookOpen,
   Stethoscope,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 export default function Home() {
   const [showToast, setShowToast] = useState(false);
@@ -29,6 +32,121 @@ export default function Home() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const statsAnimated = useRef(false);
+
+  /* ---------- Animate stat counters ---------- */
+  const animateStats = useCallback(() => {
+    if (statsAnimated.current) return;
+    statsAnimated.current = true;
+
+    document.querySelectorAll<HTMLElement>(".stat-value").forEach((el) => {
+      const raw = el.dataset.value ?? "0";
+      const suffix = raw.replace(/[\d.]/g, "");
+      const num = parseFloat(raw);
+      const obj = { v: 0 };
+      animate(obj, {
+        v: num,
+        duration: 1800,
+        ease: "outExpo",
+        onUpdate: () => {
+          el.textContent = (num >= 100 ? Math.round(obj.v) : obj.v.toFixed(0)) + suffix;
+        },
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    /* ---- Hero entrance timeline ---- */
+    const tl = createTimeline({ defaults: { ease: "outExpo" } });
+    tl.add(".hero-reveal", {
+      translateY: [40, 0],
+      opacity: [0, 1],
+      duration: 1000,
+      delay: stagger(140, { start: 200 }),
+    });
+
+    /* ---- Scroll-triggered section reveals ---- */
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const target = entry.target as HTMLElement;
+          const delay = Number(target.dataset.delay ?? 0);
+
+          /* Feature cards get a special entrance */
+          if (target.classList.contains("feature-card")) {
+            animate(target, {
+              opacity: [0, 1],
+              translateY: [50, 0],
+              scale: [0.92, 1],
+              ease: "outElastic(1, .6)",
+              duration: 1200,
+              delay,
+            });
+          } else if (target.classList.contains("stat-tile")) {
+            animate(target, {
+              opacity: [0, 1],
+              translateY: [36, 0],
+              scale: [0.88, 1],
+              ease: "outBack(1.4)",
+              duration: 900,
+              delay,
+            });
+            animateStats();
+          } else if (target.classList.contains("testimonial-card")) {
+            animate(target, {
+              opacity: [0, 1],
+              translateX: [target.classList.contains("tc-left") ? -40 : 40, 0],
+              rotate: [target.classList.contains("tc-left") ? -2 : 2, 0],
+              ease: "outExpo",
+              duration: 1000,
+              delay,
+            });
+          } else if (target.classList.contains("course-card")) {
+            animate(target, {
+              opacity: [0, 1],
+              translateY: [60, 0],
+              scale: [0.9, 1],
+              ease: "outElastic(1, .7)",
+              duration: 1400,
+              delay,
+            });
+          } else {
+            animate(target, {
+              opacity: [0, 1],
+              translateY: [32, 0],
+              ease: "outExpo",
+              duration: 900,
+              delay,
+            });
+          }
+
+          observer.unobserve(target);
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -6% 0px" }
+    );
+
+    document.querySelectorAll<HTMLElement>(".reveal-section").forEach((node) => {
+      observer.observe(node);
+    });
+
+    /* ---- Floating blobs parallax on mouse ---- */
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 30;
+      const y = (e.clientY / window.innerHeight - 0.5) * 30;
+      document.querySelectorAll<HTMLElement>(".hero-blob").forEach((blob, i) => {
+        const factor = i === 0 ? 1 : -0.7;
+        blob.style.transform = `translate3d(${x * factor}px, ${y * factor}px, 0)`;
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [animateStats]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,10 +164,8 @@ export default function Home() {
 
       setFormData({ name: "", email: "", message: "" });
       setSubmitStatus("success");
-      setTimeout(() => setSubmitStatus("idle"), 5000);
     } catch {
       setSubmitStatus("error");
-      setTimeout(() => setSubmitStatus("idle"), 5000);
     } finally {
       setIsSubmitting(false);
     }
@@ -61,48 +177,42 @@ export default function Home() {
       description:
         "Ask questions, clear concepts, and get instant explanations in simple language. Your personal AI tutor is available 24/7.",
       icon: Brain,
-      accentColor: "#7BBFFF",
-      glowColor: "rgba(123,191,255,0.18)",
+      accentColor: "var(--primary)",
     },
     {
       title: "AI Quiz Generator",
       description:
         "Upload your notes or choose a topic — Prepzy automatically generates MCQs to test your understanding and track your progress.",
       icon: FileText,
-      accentColor: "#B8A9FF",
-      glowColor: "rgba(184,169,255,0.18)",
+      accentColor: "var(--accent)",
     },
     {
       title: "Smart Document Summarization",
       description:
         "Turn long PDFs and notes into short, easy-to-understand summaries so you can revise faster and smarter.",
       icon: Target,
-      accentColor: "#5BE0A7",
-      glowColor: "rgba(91,224,167,0.18)",
+      accentColor: "var(--primary)",
     },
     {
       title: "Study Planner",
       description:
         "Dynamic scheduling that adapts to your progress and upcoming deadlines. Never miss a topic.",
       icon: Calendar,
-      accentColor: "#FFB86C",
-      glowColor: "rgba(255,184,108,0.18)",
+      accentColor: "var(--accent)",
     },
     {
       title: "Performance Tracking",
       description:
         "Monitor your quiz scores, identify weak areas, and improve step-by-step with clear progress insights.",
       icon: BarChart3,
-      accentColor: "#FF79C6",
-      glowColor: "rgba(255,121,198,0.18)",
+      accentColor: "var(--primary)",
     },
     {
       title: "All Study Material in One Place",
       description:
         "Access past papers, notes, and learning resources — or upload your own materials and let AI do the work.",
       icon: Star,
-      accentColor: "#7BBFFF",
-      glowColor: "rgba(123,191,255,0.18)",
+      accentColor: "var(--accent)",
     },
   ];
 
@@ -131,497 +241,319 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#050F2A] text-[#F2FDFF] overflow-x-hidden selection:bg-[#7BBFFF]/30 w-full max-w-[100vw]">
-      {/* Hero Section */}
-      <header className="relative min-h-[80vh] md:min-h-[85vh] lg:h-screen w-full flex flex-col items-center justify-center overflow-hidden pt-20 pb-10 sm:pt-28 sm:pb-12 md:pt-32 md:pb-0 px-4 sm:px-6">
-        <Hero3D />
-        {/* Subtle vignette and gradient overlay for depth */}
-        <div
-          className="absolute inset-0 z-[2] pointer-events-none"
-          aria-hidden
-          style={{
-            background: "radial-gradient(ellipse 70% 60% at 50% 45%, transparent 0%, transparent 55%, rgba(5,15,42,0.4) 100%), linear-gradient(180deg, rgba(5,15,42,0.15) 0%, transparent 30%, transparent 70%, rgba(5,15,42,0.5) 100%)",
-          }}
-        />
-        {/* Soft glow behind headline */}
-        <div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(90vw,720px)] h-64 z-[3] pointer-events-none opacity-40"
-          aria-hidden
-          style={{
-            background: "radial-gradient(ellipse 80% 100% at 50% 50%, rgba(123,191,255,0.25) 0%, rgba(184,169,255,0.08) 40%, transparent 70%)",
-            filter: "blur(24px)",
-          }}
-        />
+    <div className="landing-shell min-h-screen overflow-x-hidden selection:bg-[#7BBBFF]/25">
+      <header className="landing-hero relative min-h-screen px-4 pb-14 pt-28 sm:px-6 lg:px-10">
+        <div className="hero-blob hero-blob-a" aria-hidden />
+        <div className="hero-blob hero-blob-b" aria-hidden />
+        <div className="hero-mesh" aria-hidden />
+        <div className="pointer-events-none absolute inset-0 opacity-45 mix-blend-screen">
+          <Hero3D />
+        </div>
 
-        <div className="relative z-10 container max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 text-center w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="relative"
-          >
-            {/* Decorative line above headline */}
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="mx-auto mb-6 h-px w-16 origin-center rounded-full bg-gradient-to-r from-transparent via-[#7BBFFF]/60 to-transparent"
-            />
-            <h1 className="text-4xl xs:text-5xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-bold mb-4 sm:mb-6 leading-[1.12] text-transparent bg-clip-text bg-gradient-to-r from-[#F2FDFF] via-[#5BA7FF] to-[#B8A9FF] drop-shadow-[0_0_40px_rgba(123,191,255,0.25)] [text-shadow:0_0_80px_rgba(123,191,255,0.15)] break-words">
+        <div className="relative z-10 mx-auto grid h-full w-full max-w-7xl grid-cols-12 items-center gap-6 lg:gap-10">
+          <div className="col-span-12 lg:col-span-7 lg:pt-10">
+            <p className="hero-reveal mb-4 text-sm font-semibold uppercase tracking-[0.26em] text-[#7BBBFF]">
+              Smarter prep for ETEA, NMDCAT &amp; more
+            </p>
+            <h1 className="hero-reveal hero-title mb-7 font-display font-extrabold leading-[0.95] tracking-[-0.04em] text-[#0A0F1E]">
               Crack Exams not <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7BBFFF] to-[#B8A9FF] drop-shadow-[0_0_50px_rgba(184,169,255,0.3)]">
-                Your brain
-              </span>
+              <span className="hero-gradient-text">Your brain</span>
             </h1>
-            <p className="text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl text-[#B0C8E0] mb-6 sm:mb-8 md:mb-10 max-w-xl sm:max-w-2xl mx-auto font-light leading-relaxed drop-shadow-[0_2px_12px_rgba(0,0,0,0.2)] px-0">
+            <p className="hero-reveal mb-10 max-w-2xl text-base leading-relaxed text-[#284366] sm:text-xl">
               Smart plans, personalized study, and expert tools designed to help
               you achieve top results.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full max-w-[280px] sm:max-w-none mx-auto">
-              {/* Mobile: single Trial Quiz button */}
+            <div className="hero-reveal flex w-full max-w-md flex-col gap-4 sm:max-w-none sm:flex-row sm:items-center">
               <Button
                 size="lg"
-                className="sm:hidden w-full h-12 px-6 text-base rounded-full bg-[#7BBFFF] text-[#050F2A] hover:bg-[#7BBFFF]/90 shadow-[0_0_30px_-5px_rgba(123,191,255,0.4)] hover:shadow-[0_0_40px_-5px_rgba(123,191,255,0.6)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-manipulation"
+                className="cta-primary animated-cta sm:hidden"
                 onClick={() => window.dispatchEvent(new Event("open-trial-modal"))}
               >
                 Start the Trial Quiz
-                <ChevronRight className="ml-2 w-5 h-5 shrink-0" />
+                <ChevronRight className="h-5 w-5 shrink-0" />
               </Button>
-              {/* Desktop: original buttons */}
+
               <Button
                 size="lg"
-                className="hidden sm:inline-flex h-14 px-8 text-lg rounded-full bg-[#7BBFFF] text-[#050F2A] hover:bg-[#7BBFFF]/90 shadow-[0_0_30px_-5px_rgba(123,191,255,0.4)] hover:shadow-[0_0_40px_-5px_rgba(123,191,255,0.6)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-manipulation"
+                className="cta-primary animated-cta hidden sm:inline-flex"
                 onClick={() => {
                   setShowToast(true);
                   setTimeout(() => setShowToast(false), 3000);
                 }}
               >
                 Start Learning
-                <ChevronRight className="ml-2 w-5 h-5 shrink-0" />
+                <ChevronRight className="h-5 w-5 shrink-0" />
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="hidden sm:inline-flex h-14 px-8 text-lg rounded-full glass-button text-[#F2FDFF] border-[#7BBFFF]/30 bg-[#050F2A]/40 hover:bg-[#7BBFFF]/15 hover:text-[#7BBFFF] hover:border-[#7BBFFF]/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-manipulation"
-                asChild
-              >
+              <Button size="lg" variant="outline" className="cta-secondary hidden sm:inline-flex" asChild>
                 <a href="#courses">View Courses</a>
               </Button>
             </div>
-            {/* Small tagline under buttons */}
-            <p className="mt-6 text-sm text-[#7BBFFF]/70 font-medium tracking-wide">
-              Smarter prep for ETEA, NMDCAT &amp; more
-            </p>
-          </motion.div>
+          </div>
+
+          <div className="col-span-12 lg:col-span-5">
+            <HeroCard />
+          </div>
         </div>
       </header>
 
-      {/* About / Stats Section */}
-      <section id="about" aria-labelledby="about-heading" className="py-14 sm:py-20 md:py-28 bg-gradient-to-b from-[#050F2A] via-[#070d22] to-[#050F2A] relative px-4 sm:px-6">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#7BBFFF]/20 to-transparent" />
-        <div className="container max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              viewport={{ once: true, margin: "-50px" }}
-            >
-              <h2 id="about-heading" className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6 text-[#F2FDFF]">
-                Why choose <span className="text-[#7BBFFF]">Prepzy?</span>
-              </h2>
-              <p className="text-base xs:text-lg text-[#99b3cc] mb-6 leading-relaxed">
-                Preparing for exams shouldn’t be expensive, confusing, or
-                stressful. Prepzy uses Artificial Intelligence to simplify
-                learning and help you focus on what truly matters.
-              </p>
-              <ul className="space-y-3 sm:space-y-4">
-                {[
-                  "No expensive coaching centers",
-                  "No endless PDFs and notes",
-                  "No wasted time",
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center space-x-3">
-                    <div className="w-6 h-6 rounded-full bg-[#7BBFFF]/20 flex items-center justify-center">
-                      <div className="w-2 h-2 rounded-full bg-[#7BBFFF]" />
-                    </div>
-                    <span className="text-[#F2FDFF]/90">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+      <section id="about" aria-labelledby="about-heading" className="px-4 py-16 sm:px-6 md:py-24 lg:px-10">
+        <div className="mx-auto grid w-full max-w-7xl grid-cols-12 gap-8 lg:gap-12">
+          <div className="reveal-section col-span-12 lg:col-span-5" data-delay="0">
+            <h2 id="about-heading" className="mb-6 text-4xl font-display font-bold tracking-[-0.03em] text-[#0A0F1E] sm:text-5xl">
+              Why choose <span className="text-[#7BBBFF]">Prepzy?</span>
+            </h2>
+            <p className="mb-6 text-lg leading-relaxed text-[#284366]">
+              Preparing for exams shouldn’t be expensive, confusing, or
+              stressful. Prepzy uses Artificial Intelligence to simplify
+              learning and help you focus on what truly matters.
+            </p>
+            <ul className="space-y-3">
+              {[
+                "No expensive coaching centers",
+                "No endless PDFs and notes",
+                "No wasted time",
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-3 text-[#10233e]">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#7BBBFF]" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="grid grid-cols-2 gap-3 sm:gap-4"
-            >
+          <div className="reveal-section col-span-12 lg:col-span-7" data-delay="120">
+            <div className="grid grid-cols-2 gap-4">
               {[
                 { label: "Active Users", value: "10+" },
                 { label: "Questions Solved", value: "10M+" },
                 { label: "Exam Categories", value: "100+" },
                 { label: "Success Rate", value: "94%" },
               ].map((stat, i) => (
-                <div
-                  key={i}
-                  className="p-6 sm:p-8 rounded-2xl bg-[#0a1a3a]/80 border border-[#7BBFFF]/15 text-center hover:border-[#7BBFFF]/40 hover:shadow-[0_0_24px_-4px_rgba(123,191,255,0.15)] transition-all duration-300"
-                >
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#7BBFFF] mb-2">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-[#99b3cc] uppercase tracking-wider">
-                    {stat.label}
-                  </div>
-                </div>
+                <article key={stat.label} className={`reveal-section stat-tile glass-tile p-6 text-center sm:p-8 ${i % 2 === 0 ? "sm:translate-y-8" : ""}`} data-delay={String(i * 100)}>
+                  <p className="stat-value mb-1 text-3xl font-bold tracking-tight text-[#0A0F1E] sm:text-4xl" data-value={stat.value}>0</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#4a78a7]">{stat.label}</p>
+                </article>
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section id="features" aria-labelledby="features-heading" className="py-14 sm:py-20 md:py-28 bg-gradient-to-b from-[#050F2A] via-[#06122e] to-[#050F2A] relative px-4 sm:px-6">
-        {/* Decorative glows */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(123,191,255,0.05)_0%,transparent_50%)] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#B8A9FF]/[0.03] rounded-full blur-[100px] pointer-events-none -translate-x-1/3" />
-        <div className="absolute top-1/3 right-0 w-[350px] h-[350px] bg-[#7BBFFF]/[0.03] rounded-full blur-[100px] pointer-events-none translate-x-1/3" />
-
-        <div className="container max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 relative">
-          <div className="text-center mb-12 sm:mb-20">
-            <motion.div
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="mx-auto mb-5 h-px w-12 origin-center rounded-full bg-gradient-to-r from-transparent via-[#B8A9FF]/60 to-transparent"
-            />
-            <h2 id="features-heading" className="text-2xl xs:text-3xl sm:text-5xl font-display font-bold mb-4 text-[#F2FDFF]">
-              Everything you need to{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7BBFFF] to-[#B8A9FF]">succeed</span>
+      <section id="features" aria-labelledby="features-heading" className="px-4 py-16 sm:px-6 md:py-24 lg:px-10">
+        <div className="mx-auto grid w-full max-w-7xl grid-cols-12 gap-8 lg:gap-12">
+          <div className="reveal-section col-span-12 lg:col-span-4" data-delay="0">
+            <h2 id="features-heading" className="mb-4 text-4xl font-display font-bold tracking-[-0.03em] text-[#0A0F1E] sm:text-5xl">
+              Everything you need to <span className="hero-gradient-text">succeed</span>
             </h2>
-            <p className="text-[#99b3cc] text-base xs:text-lg max-w-xl sm:max-w-2xl mx-auto">
+            <p className="max-w-md text-lg leading-relaxed text-[#284366]">
               A complete toolkit designed to optimize every minute of your study
               time.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-7">
+          <div className="col-span-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-8">
             {features.map((feature, idx) => (
-              <FeatureCard key={idx} {...feature} delay={idx * 0.08} />
+              <FeatureCard
+                key={feature.title}
+                {...feature}
+                delay={idx * 100}
+                className={`feature-card ${idx % 3 === 0 ? "sm:col-span-2" : ""}`}
+              />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Courses Section */}
-      <section id="courses" aria-labelledby="courses-heading" className="py-14 sm:py-20 md:py-28 bg-gradient-to-b from-[#050F2A] via-[#070d22] to-[#050F2A] relative px-4 sm:px-6">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#B8A9FF]/20 to-transparent" />
-        <div className="container max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 relative">
-          <div className="text-center mb-12 sm:mb-20">
-            <h2 id="courses-heading" className="text-2xl xs:text-3xl sm:text-5xl font-display font-bold mb-4 text-[#F2FDFF]">
+      <section id="courses" aria-labelledby="courses-heading" className="px-4 py-16 sm:px-6 md:py-24 lg:px-10">
+        <div className="mx-auto max-w-7xl">
+          <div className="reveal-section mb-10 max-w-3xl" data-delay="0">
+            <h2 id="courses-heading" className="mb-4 text-4xl font-display font-bold tracking-[-0.03em] text-[#0A0F1E] sm:text-5xl">
               Prep for <span className="text-[#B8A9FF]">your exam</span>
             </h2>
-            <p className="text-[#99b3cc] text-base xs:text-lg max-w-xl sm:max-w-2xl mx-auto">
+            <p className="text-lg leading-relaxed text-[#284366]">
               Structured preparation for Pakistan&apos;s major entry tests. Choose your course and start studying smarter.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* ETEA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true, margin: "-40px" }}
-              className="group bg-[#0a1a3a]/80 border border-[#7BBFFF]/15 rounded-2xl p-8 hover:border-[#7BBFFF]/35 hover:shadow-[0_0_32px_-8px_rgba(123,191,255,0.2)] transition-all duration-300 overflow-hidden relative"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[#7BBFFF]/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
-              <div className="relative z-10">
-                <div className="w-14 h-14 rounded-xl bg-[#7BBFFF]/20 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
-                  <BookOpen className="w-7 h-7 text-[#7BBFFF]" />
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+            <article className="reveal-section course-card glass-tile lg:col-span-5 lg:translate-y-8" data-delay="80">
+              <div className="p-7 sm:p-8">
+                <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#7BBBFF]/18 text-[#7BBBFF]">
+                  <BookOpen className="h-6 w-6" />
                 </div>
-                <h3 className="text-2xl font-display font-bold text-[#F2FDFF] mb-2">ETEA</h3>
-                <p className="text-sm text-[#7BBFFF] font-medium mb-4">Educational Testing &amp; Evaluation Agency (KPK)</p>
-                <p className="text-[#99b3cc] text-base leading-relaxed mb-6">
-                  ETEA is Khyber Pakhtunkhwa&apos;s official testing body. It conducts <strong className="text-[#F2FDFF]/90">MDCAT</strong>, <strong className="text-[#F2FDFF]/90">ECAT</strong> (engineering), teaching recruitment, and government recruitment tests. Engineering tests: 200 MCQs, 3 hours, with negative marking.
+                <h3 className="mb-2 text-3xl font-display font-bold text-[#0A0F1E]">ETEA</h3>
+                <p className="mb-4 text-sm font-semibold tracking-wide text-[#4a78a7]">Educational Testing &amp; Evaluation Agency (KPK)</p>
+                <p className="mb-6 leading-relaxed text-[#284366]">
+                  ETEA is Khyber Pakhtunkhwa&apos;s official testing body. It conducts <strong className="text-[#0A0F1E]">MDCAT</strong>, <strong className="text-[#0A0F1E]">ECAT</strong> (engineering), teaching recruitment, and government recruitment tests. Engineering tests: 200 MCQs, 3 hours, with negative marking.
                 </p>
-                <ul className="space-y-2 text-sm text-[#B0C8E0]">
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#7BBFFF]" />
-                    Medical &amp; engineering entry tests
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#7BBFFF]" />
-                    Teaching &amp; govt recruitment exams
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#7BBFFF]" />
-                    Online registration via ETEA portal
-                  </li>
+                <ul className="space-y-2 text-sm text-[#284366]">
+                  <li className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-[#7BBBFF]" />Medical &amp; engineering entry tests</li>
+                  <li className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-[#7BBBFF]" />Teaching &amp; govt recruitment exams</li>
+                  <li className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-[#7BBBFF]" />Online registration via ETEA portal</li>
                 </ul>
-                <Button className="mt-6 w-full sm:w-auto bg-[#7BBFFF]/20 text-[#7BBFFF] hover:bg-[#7BBFFF]/30 border border-[#7BBFFF]/30" asChild>
+                <Button className="cta-secondary mt-6" asChild>
                   <a href="https://etea.edu.pk" target="_blank" rel="noopener noreferrer">
-                    Official site <ChevronRight className="w-4 h-4 inline ml-1" />
+                    Official site <ChevronRight className="ml-1 inline h-4 w-4" />
                   </a>
                 </Button>
               </div>
-            </motion.div>
+            </article>
 
-            {/* NMDCAT */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true, margin: "-40px" }}
-              className="group bg-[#0a1a3a]/80 border border-[#B8A9FF]/15 rounded-2xl p-8 hover:border-[#B8A9FF]/35 hover:shadow-[0_0_32px_-8px_rgba(184,169,255,0.2)] transition-all duration-300 overflow-hidden relative"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[#B8A9FF]/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
-              <div className="relative z-10">
-                <div className="w-14 h-14 rounded-xl bg-[#B8A9FF]/20 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
-                  <Stethoscope className="w-7 h-7 text-[#B8A9FF]" />
+            <article className="reveal-section course-card glass-tile lg:col-span-7" data-delay="160">
+              <div className="p-7 sm:p-8">
+                <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#B8A9FF]/22 text-[#7260c6]">
+                  <Stethoscope className="h-6 w-6" />
                 </div>
-                <h3 className="text-2xl font-display font-bold text-[#F2FDFF] mb-2">NMDCAT</h3>
-                <p className="text-sm text-[#B8A9FF] font-medium mb-4">National Medical &amp; Dental College Admission Test</p>
-                <p className="text-[#99b3cc] text-base leading-relaxed mb-6">
-                  NMDCAT (also called MDCAT) is the national entrance exam for <strong className="text-[#F2FDFF]/90">MBBS</strong> and <strong className="text-[#F2FDFF]/90">BDS</strong> in Pakistan, conducted by PM&amp;DC. Format: 180 MCQs (Biology, Chemistry, Physics, English, Logical Reasoning), 3 hours, no negative marking. Minimum 55% for medical and 50% for dental colleges.
+                <h3 className="mb-2 text-3xl font-display font-bold text-[#0A0F1E]">NMDCAT</h3>
+                <p className="mb-4 text-sm font-semibold tracking-wide text-[#6d5fbd]">National Medical &amp; Dental College Admission Test</p>
+                <p className="mb-6 leading-relaxed text-[#284366]">
+                  NMDCAT (also called MDCAT) is the national entrance exam for <strong className="text-[#0A0F1E]">MBBS</strong> and <strong className="text-[#0A0F1E]">BDS</strong> in Pakistan, conducted by PM&amp;DC. Format: 180 MCQs (Biology, Chemistry, Physics, English, Logical Reasoning), 3 hours, no negative marking. Minimum 55% for medical and 50% for dental colleges.
                 </p>
-                <ul className="space-y-2 text-sm text-[#B0C8E0]">
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#B8A9FF]" />
-                    Biology, Chemistry, Physics, English, Logic
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#B8A9FF]" />
-                    Mandatory for MBBS/BDS admission
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#B8A9FF]" />
-                    Register at mdcat.pmdc.pk
-                  </li>
+                <ul className="space-y-2 text-sm text-[#284366]">
+                  <li className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-[#B8A9FF]" />Biology, Chemistry, Physics, English, Logic</li>
+                  <li className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-[#B8A9FF]" />Mandatory for MBBS/BDS admission</li>
+                  <li className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-[#B8A9FF]" />Register at mdcat.pmdc.pk</li>
                 </ul>
-                <Button className="mt-6 w-full sm:w-auto bg-[#B8A9FF]/20 text-[#B8A9FF] hover:bg-[#B8A9FF]/30 border border-[#B8A9FF]/30" asChild>
+                <Button className="cta-secondary mt-6" asChild>
                   <a href="https://mdcat.pmdc.pk" target="_blank" rel="noopener noreferrer">
-                    Official site <ChevronRight className="w-4 h-4 inline ml-1" />
+                    Official site <ChevronRight className="ml-1 inline h-4 w-4" />
                   </a>
                 </Button>
               </div>
-            </motion.div>
+            </article>
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section
-        id="testimonials"
-        aria-labelledby="testimonials-heading"
-        className="py-14 sm:py-20 md:py-28 bg-gradient-to-b from-[#050F2A] via-[#060b1a] to-[#050F2A] relative overflow-hidden px-4 sm:px-6"
-      >
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] bg-[#7BBFFF]/6 rounded-full blur-[120px] pointer-events-none translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] bg-[#B8A9FF]/6 rounded-full blur-[120px] pointer-events-none -translate-x-1/2 translate-y-1/2" />
-
-        <div className="container max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 relative z-10 w-full">
-          <h2 id="testimonials-heading" className="text-2xl xs:text-3xl sm:text-5xl font-display font-bold text-center mb-12 sm:mb-20 text-[#F2FDFF]">
-            Trusted by <span className="text-[#7BBFFF]">Top Performers</span>
+      <section id="testimonials" aria-labelledby="testimonials-heading" className="px-4 py-16 sm:px-6 md:py-24 lg:px-10">
+        <div className="mx-auto max-w-7xl">
+          <h2 id="testimonials-heading" className="reveal-section mb-10 text-4xl font-display font-bold tracking-[-0.03em] text-[#0A0F1E] sm:text-5xl" data-delay="0">
+            Trusted by <span className="text-[#7BBBFF]">Top Performers</span>
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
             {testimonials.map((testimonial, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.12 }}
-                viewport={{ once: true, margin: "-40px" }}
-                className="bg-[#0a1a3a]/40 backdrop-blur-sm border border-[#7BBFFF]/15 p-8 rounded-2xl relative hover:border-[#7BBFFF]/25 hover:shadow-[0_0_30px_-8px_rgba(123,191,255,0.1)] transition-all duration-300"
+              <article
+                key={testimonial.name}
+                className={`reveal-section testimonial-card ${idx === 0 ? "tc-left" : idx === 2 ? "" : "tc-left"} glass-tile relative p-6 sm:p-7 ${idx === 1 ? "md:translate-y-8" : ""}`}
+                data-delay={String(idx * 120)}
               >
-                <Quote className="absolute top-6 right-6 w-8 h-8 text-[#F2FDFF]/10" />
-                <div className="flex gap-1 mb-4">
+                <Quote className="absolute right-6 top-6 h-8 w-8 text-[#7BBBFF]/25" />
+                <div className="mb-4 flex gap-1">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-4 h-4 text-amber-400 fill-amber-400"
-                    />
+                    <Star key={i} className="h-4 w-4 fill-[#7BBBFF] text-[#7BBBFF]" />
                   ))}
                 </div>
-                <p className="text-[#F2FDFF]/90 mb-6 italic leading-relaxed">
-                  &quot;{testimonial.content}&quot;
-                </p>
+                <p className="mb-6 italic leading-relaxed text-[#284366]">&quot;{testimonial.content}&quot;</p>
                 <div>
-                  <div className="font-bold text-lg text-[#F2FDFF]">
-                    {testimonial.name}
-                  </div>
-                  <div className="text-sm text-[#7BBFFF]">
-                    {testimonial.role}
-                  </div>
+                  <p className="text-lg font-semibold text-[#0A0F1E]">{testimonial.name}</p>
+                  <p className="text-sm text-[#4a78a7]">{testimonial.role}</p>
                 </div>
-              </motion.div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA / Contact Section */}
-      <section id="contact" aria-labelledby="contact-heading" className="py-14 sm:py-20 md:py-28 bg-[#050F2A] relative px-4 sm:px-6">
-        <div className="container max-w-7xl mx-auto px-0 sm:px-4 lg:px-8">
-          <div className="bg-gradient-to-br from-[#0a1a3a] to-[#0a1a3a]/60 border border-[#7BBFFF]/15 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 lg:p-16 overflow-hidden relative shadow-[0_0_60px_-20px_rgba(123,191,255,0.08)]">
-            <div className="absolute -top-24 -right-24 w-72 h-72 bg-[#7BBFFF]/15 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#B8A9FF]/10 rounded-full blur-3xl" />
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 relative z-10">
-              <div>
-                <h2 id="contact-heading" className="text-3xl md:text-4xl font-display font-bold mb-6 text-[#F2FDFF]">
-                  Ready to start your journey?
-                </h2>
-                <p className="text-[#99b3cc] mb-8 text-lg leading-relaxed">
-                  Join thousands of students achieving their dreams with
-                  Prepzy. Have questions? Drop us a message.
-                </p>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3 text-[#F2FDFF]/80 flex-wrap">
-                    <div className="w-10 h-10 shrink-0 rounded-full bg-[#7BBFFF]/10 flex items-center justify-center">
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                        />
-                      </svg>
-                    </div>
-                    <span className="break-all">support@prepzy.com</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-[#F2FDFF]/80 flex-wrap">
-                    <div className="w-10 h-10 rounded-full bg-[#7BBFFF]/10 flex items-center justify-center">
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                      </svg>
-                    </div>
-                    <span>Khanpur Rd, Mang</span>
-                  </div>
+      <section id="contact" aria-labelledby="contact-heading" className="px-4 pb-20 pt-16 sm:px-6 md:pb-28 md:pt-24 lg:px-10">
+        <div className="mx-auto grid max-w-7xl grid-cols-12 gap-6">
+          <div className="reveal-section glass-tile col-span-12 p-7 lg:col-span-5 sm:p-8" data-delay="0">
+            <h2 id="contact-heading" className="mb-4 text-4xl font-display font-bold tracking-[-0.03em] text-[#0A0F1E]">
+              Ready to start your journey?
+            </h2>
+            <p className="mb-8 text-lg leading-relaxed text-[#284366]">
+              Join thousands of students achieving their dreams with
+              Prepzy. Have questions? Drop us a message.
+            </p>
+            <div className="space-y-4 text-[#10233e]">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#7BBBFF]/15">
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
                 </div>
+                <span className="break-all">support@prepzy.com</span>
               </div>
-
-              <div className="bg-[#050F2A]/50 p-6 sm:p-8 rounded-2xl border border-[#7BBFFF]/15 backdrop-blur-sm">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium text-[#F2FDFF]/90 mb-2"
-                    >
-                      Name
-                    </label>
-                    <Input
-                      id="name"
-                      placeholder="John Doe"
-                      className="bg-[#7BBFFF]/5 border-[#7BBFFF]/20 focus:border-[#7BBFFF]/50 text-[#F2FDFF]"
-                      value={formData.name}
-                      onChange={(e) =>
-                        setFormData({ ...formData, name: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-[#F2FDFF]/90 mb-2"
-                    >
-                      Email
-                    </label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="john@example.com"
-                      className="bg-[#7BBFFF]/5 border-[#7BBFFF]/20 focus:border-[#7BBFFF]/50 text-[#F2FDFF]"
-                      value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-sm font-medium text-[#F2FDFF]/90 mb-2"
-                    >
-                      Message
-                    </label>
-                    <Textarea
-                      id="message"
-                      placeholder="How can we help you?"
-                      className="bg-[#7BBFFF]/5 border-[#7BBFFF]/20 focus:border-[#7BBFFF]/50 min-h-[120px] text-[#F2FDFF]"
-                      value={formData.message}
-                      onChange={(e) =>
-                        setFormData({ ...formData, message: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full h-12 text-lg bg-[#7BBFFF] text-[#050F2A] hover:bg-[#7BBFFF]/90 rounded-xl font-semibold disabled:opacity-60 disabled:cursor-not-allowed"
-                  >
-                    {isSubmitting ? "Sending..." : "Send Message"}
-                  </Button>
-                  {submitStatus === "success" && (
-                    <p className="text-green-400 text-sm text-center mt-2">
-                      Message sent successfully! Check your email for confirmation.
-                    </p>
-                  )}
-                  {submitStatus === "error" && (
-                    <p className="text-red-400 text-sm text-center mt-2">
-                      Failed to send message. Please try again.
-                    </p>
-                  )}
-                </form>
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#7BBBFF]/15">
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <span>Khanpur Rd, Mang</span>
               </div>
             </div>
           </div>
+
+          <div className="reveal-section glass-tile col-span-12 p-7 lg:col-span-7 sm:p-8" data-delay="120">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="name" className="mb-2 block text-sm font-medium text-[#0A0F1E]">Name</label>
+                <Input
+                  id="name"
+                  placeholder="John Doe"
+                  className="h-12 border-[#7BBBFF]/40 bg-white/70 text-[#0A0F1E]"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="email" className="mb-2 block text-sm font-medium text-[#0A0F1E]">Email</label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="john@example.com"
+                  className="h-12 border-[#7BBBFF]/40 bg-white/70 text-[#0A0F1E]"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="message" className="mb-2 block text-sm font-medium text-[#0A0F1E]">Message</label>
+                <Textarea
+                  id="message"
+                  placeholder="How can we help you?"
+                  className="min-h-[120px] border-[#7BBBFF]/40 bg-white/70 text-[#0A0F1E]"
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  required
+                />
+              </div>
+
+              <Button type="submit" disabled={isSubmitting} className="cta-primary w-full">
+                {isSubmitting ? "Sending..." : "Send Message"}
+              </Button>
+            </form>
+          </div>
         </div>
       </section>
-      {/* Toast */}
+
       <AnimatePresence>
         {showToast && (
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            transition={{ duration: 0.3 }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] px-8 py-4 rounded-2xl bg-[#0a1a3a] border border-[#7BBFFF]/30 shadow-[0_0_40px_-8px_rgba(123,191,255,0.4)] text-[#F2FDFF] text-base sm:text-lg font-semibold"
+            transition={{ duration: 0.25 }}
+            className="fixed bottom-6 left-1/2 z-[100] -translate-x-1/2 rounded-2xl border border-[#7BBBFF]/40 bg-[#F2FDFF] px-8 py-4 text-base font-semibold text-[#0A0F1E] shadow-[0_18px_34px_-16px_rgba(123,187,255,0.55)] sm:text-lg"
           >
             🚀 Feature coming soon!
           </motion.div>
         )}
       </AnimatePresence>
+
+      {(submitStatus === "success" || submitStatus === "error") && (
+        <ContactToast
+          type={submitStatus}
+          onClose={() => setSubmitStatus("idle")}
+        />
+      )}
     </div>
   );
 }

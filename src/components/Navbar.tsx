@@ -1,11 +1,18 @@
 "use client";
 
-import { Menu, X, ChevronRight, MapPin, Loader2, User, Mail } from 'lucide-react';
+import { Menu, X, ChevronRight, MapPin, Loader2, User, Mail } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from 'framer-motion';
-import { generateQuiz, getRandomPassageFromJsonl, saveQuestionsForSubject, setTrialUserId, QUESTIONS_PER_SUBJECT, clearQuizStorage } from "@/lib/quiz";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  generateQuiz,
+  getRandomPassageFromJsonl,
+  saveQuestionsForSubject,
+  setTrialUserId,
+  QUESTIONS_PER_SUBJECT,
+  clearQuizStorage,
+} from "@/lib/quiz";
 import supabase from "@/lib/SupabaseClient";
 import { RocketLoader } from "@/components/RocketLoader";
 
@@ -15,10 +22,7 @@ const MAX_LOCATION_LEN = 300;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function sanitizeText(value: string, maxLen: number): string {
-  return value
-    .trim()
-    .replace(/\s+/g, " ")
-    .slice(0, maxLen);
+  return value.trim().replace(/\s+/g, " ").slice(0, maxLen);
 }
 
 function validateTrialForm(name: string, email: string, location: string): string | null {
@@ -34,31 +38,38 @@ function validateTrialForm(name: string, email: string, location: string): strin
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [trialModalOpen, setTrialModalOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [locationStatus, setLocationStatus] = useState<'idle' | 'requesting' | 'granted' | 'denied'>('idle');
+  const [locationStatus, setLocationStatus] = useState<"idle" | "requesting" | "granted" | "denied">("idle");
   const [locationValue, setLocationValue] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const router = useRouter();
 
-  // Allow external components to open the trial modal via custom event
   useEffect(() => {
     const handler = () => setTrialModalOpen(true);
     window.addEventListener("open-trial-modal", handler);
     return () => window.removeEventListener("open-trial-modal", handler);
   }, []);
 
-  // Request browser location when trial modal opens
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 16);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   useEffect(() => {
     if (!trialModalOpen) return;
-    setLocationStatus('requesting');
+    setLocationStatus("requesting");
     setLocationValue("");
     if (!navigator.geolocation) {
-      setLocationStatus('denied');
+      setLocationStatus("denied");
       return;
     }
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
@@ -70,22 +81,22 @@ export function Navbar() {
           .then((data) => {
             const display = data?.address
               ? [data.address.city ?? data.address.town ?? data.address.village, data.address.state, data.address.country]
-                .filter(Boolean)
-                .join(", ") || `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`
+                  .filter(Boolean)
+                  .join(", ") || `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`
               : `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
             setLocationValue(display);
-            setLocationStatus('granted');
+            setLocationStatus("granted");
           })
           .catch(() => {
             setLocationValue(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
-            setLocationStatus('granted');
+            setLocationStatus("granted");
           });
       },
-      () => setLocationStatus('denied'),
+      () => setLocationStatus("denied"),
       { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 }
     );
   }, [trialModalOpen]);
-  
+
   const handleTrialSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitError(null);
@@ -103,7 +114,6 @@ export function Navbar() {
     setSubmitting(true);
     let trialUserId: number | null = null;
     try {
-      // Check if user has already attempted 3 or more times
       const { count: attemptCount, error: countError } = await supabase
         .from("trailpeoples")
         .select("id", { count: "exact", head: true })
@@ -132,7 +142,6 @@ export function Navbar() {
         // keep "unknown"
       }
 
-      // Save to trailpeoples; get id for trailquiz.userid when user submits quiz
       const { data: insertData, error: insertError } = await supabase
         .from("trailpeoples")
         .insert({
@@ -159,7 +168,6 @@ export function Navbar() {
 
       const biologyPassage = await getRandomPassageFromJsonl("/mcqsjson/biology.jsonl");
       if (!biologyPassage) {
-        // Remove user record so the trial attempt isn't wasted
         if (trialUserId != null) {
           await supabase.from("trailpeoples").delete().eq("id", trialUserId);
         }
@@ -172,7 +180,6 @@ export function Navbar() {
         num_questions: QUESTIONS_PER_SUBJECT,
       });
       if (questions.length === 0) {
-        // Remove user record so the trial attempt isn't wasted
         if (trialUserId != null) {
           await supabase.from("trailpeoples").delete().eq("id", trialUserId);
         }
@@ -188,9 +195,12 @@ export function Navbar() {
       setLocationValue("");
       router.push("/quiz");
     } catch (err) {
-      // Remove user record on unexpected errors so the trial attempt isn't wasted
       if (trialUserId != null) {
-        try { await supabase.from("trailpeoples").delete().eq("id", trialUserId); } catch { /* ignore */ }
+        try {
+          await supabase.from("trailpeoples").delete().eq("id", trialUserId);
+        } catch {
+          // ignore
+        }
       }
       setSubmitError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
@@ -205,135 +215,101 @@ export function Navbar() {
     { name: "About", href: "#about" },
     { name: "Testimonials", href: "#testimonials" },
     { name: "Contact", href: "#contact" },
-    { name: "Privacy Policy", href: "/privacypolicy" }
+    { name: "Privacy Policy", href: "/privacypolicy" },
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 py-3 px-4 sm:py-4 sm:px-6 lg:px-8 xl:px-12">
-      <div className="flex justify-between items-center gap-2">
-        {/* Logo - Left Side */}
-        <Link href="/" className="flex items-center shrink-0 group z-10">
-          <img
-            src="navimage.png"
-            alt="Prepzy"
-            className="h-10 sm:h-12 lg:h-14 w-auto max-h-14 transition-transform group-hover:scale-105"
-          />
+    <nav className="fixed left-0 right-0 top-0 z-50 px-4 py-3 sm:px-6 lg:px-10">
+      <div
+        className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 rounded-full border px-4 py-2.5 transition-all duration-300 sm:px-5"
+        style={{
+          background: isScrolled ? "rgba(248,252,255,0.75)" : "rgba(248,252,255,0.48)",
+          borderColor: "rgba(123,187,255,0.32)",
+          backdropFilter: "blur(12px)",
+          boxShadow: isScrolled
+            ? "0 18px 32px -20px rgba(123,187,255,0.45), inset 0 1px 0 rgba(255,255,255,0.8)"
+            : "0 12px 28px -24px rgba(10,15,30,0.4), inset 0 1px 0 rgba(255,255,255,0.6)",
+        }}
+      >
+        <Link href="/" className="group z-10 flex shrink-0 items-center">
+          <img src="navimage.png" alt="Prepzy" className="h-10 w-auto max-h-14 transition-transform group-hover:scale-105 sm:h-11 lg:h-12" />
         </Link>
 
-        {/* Desktop Nav - Center: only from lg so all links fit on one line */}
-        <div
-          className="hidden lg:flex absolute left-1/2 -translate-x-1/2 items-center flex-nowrap min-h-[48px] backdrop-blur-xl rounded-full px-4 xl:px-6 py-2 shadow-2xl gap-0.5"
-          style={{
-            backgroundColor: '#050F2A',
-            border: '1px solid rgba(123, 187, 255, 0.25)',
-            boxShadow: '0 8px 32px rgba(123, 187, 255, 0.15), 0 0 0 1px rgba(123, 187, 255, 0.1)',
-          }}
-        >
+        <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 lg:flex">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="text-sm font-medium px-3 xl:px-4 py-2.5 rounded-full transition-all duration-300 whitespace-nowrap shrink-0"
-              style={{ color: '#F2FDFF' }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'rgba(123, 187, 255, 0.12)';
-                e.currentTarget.style.color = '#7BBBFF';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = '#F2FDFF';
-              }}
+              className="whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-[#0A0F1E] transition-all duration-200 hover:bg-[#7BBBFF]/14 hover:text-[#2c66a0] xl:px-4"
             >
               {link.name}
             </a>
           ))}
         </div>
 
-        {/* Trial Quiz Button - Right Side */}
-        <div className="hidden lg:flex items-center shrink-0 z-10">
-          <button
-            type="button"
-            onClick={() => setTrialModalOpen(true)}
-            className="cursor-pointer bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-full px-5 xl:px-6 py-2.5 xl:py-3 text-sm xl:text-base shadow-lg shadow-primary/25 whitespace-nowrap inline-block text-center"
-          >
+        <div className="hidden shrink-0 items-center lg:flex">
+          <button type="button" onClick={() => setTrialModalOpen(true)} className="cta-primary text-sm xl:text-base">
             Try a trial quiz
           </button>
         </div>
 
-        {/* Mobile/Tablet Menu Button - shown below lg */}
-        <div className="lg:hidden flex items-center shrink-0">
+        <div className="flex items-center lg:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="p-2.5 rounded-lg text-[#F2FDFF] hover:text-[#7BBBFF] hover:bg-[#7BBBFF]/10 transition-colors touch-manipulation"
+            className="rounded-xl p-2 text-[#0A0F1E] transition-colors hover:bg-[#7BBBFF]/12"
             aria-expanded={isOpen}
             aria-label={isOpen ? "Close menu" : "Open menu"}
           >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </div>
- <AnimatePresence>
-      {/* Mobile Nav */}
- {isOpen && (
+
+      <AnimatePresence>
+        {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="relative"
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.25 }}
+            className="mx-auto mt-3 w-full max-w-7xl"
           >
             <div
-              className="rounded-2xl sm:rounded-3xl overflow-hidden backdrop-blur-xl mt-2 max-h-[calc(100vh-6rem)] overflow-y-auto"
+              className="overflow-hidden rounded-3xl border"
               style={{
-                backgroundColor: '#050F2A',
-                border: '1px solid rgba(123, 187, 255, 0.25)',
-                boxShadow: '0 8px 32px rgba(123, 187, 255, 0.15), 0 0 0 1px rgba(123, 187, 255, 0.1), inset 0 1px 0 rgba(242, 253, 255, 0.1)',
+                background: "rgba(248,252,255,0.86)",
+                borderColor: "rgba(123,187,255,0.34)",
+                backdropFilter: "blur(12px)",
               }}
             >
-              <div className="p-4 sm:p-6 space-y-1 sm:space-y-2">
+              <div className="space-y-1 p-4 sm:p-6">
                 {navLinks.map((link, index) => (
                   <motion.a
                     key={link.name}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: -18 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="group flex items-center justify-between text-lg font-medium text-[#F2FDFF] hover:text-[#7BBBFF] px-4 py-3.5 rounded-xl transition-all duration-300 hover:bg-[#7BBBFF]/10 active:scale-95"
-                    style={{
-                      backdropFilter: 'blur(8px)'
-                    }}
+                    className="group flex items-center justify-between rounded-xl px-4 py-3.5 text-lg font-medium text-[#0A0F1E] transition-all duration-300 hover:bg-[#7BBBFF]/14"
                   >
                     <span>{link.name}</span>
-                    <ChevronRight 
-                      className="w-5 h-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" 
-                    />
+                    <ChevronRight className="h-5 w-5 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100" />
                   </motion.a>
                 ))}
-                
-                {/* Divider */}
-                <div className="py-3">
-                  <div 
-                    className="h-px w-full"
-                    style={{
-                      background: 'linear-gradient(90deg, transparent, rgba(123, 187, 255, 0.3), transparent)'
-                    }}
-                  />
+
+                <div className="py-2">
+                  <div className="h-px w-full bg-gradient-to-r from-transparent via-[#7BBBFF]/40 to-transparent" />
                 </div>
 
-                {/* Trial Quiz Button */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: navLinks.length * 0.05 + 0.1 }}
-                >
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: navLinks.length * 0.05 + 0.1 }}>
                   <button
                     type="button"
-                    onClick={() => { setIsOpen(false); setTrialModalOpen(true); }}
-                    className="block w-full py-4 px-6 rounded-full font-bold text-lg text-center text-[#050F2A] bg-[#7BBBFF] hover:bg-[#7BBBFF]/90 active:scale-95 transition-all duration-300"
-                    style={{
-                      boxShadow: '0 4px 24px rgba(123, 187, 255, 0.4), 0 2px 8px rgba(123, 187, 255, 0.3)'
+                    onClick={() => {
+                      setIsOpen(false);
+                      setTrialModalOpen(true);
                     }}
+                    className="cta-primary block w-full text-center"
                   >
                     Try a trial quiz
                   </button>
@@ -342,9 +318,8 @@ export function Navbar() {
             </div>
           </motion.div>
         )}
-        </AnimatePresence>
+      </AnimatePresence>
 
-      {/* Trial Quiz Modal */}
       <AnimatePresence>
         {trialModalOpen && (
           <motion.div
@@ -352,7 +327,7 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/55 p-4 backdrop-blur-sm"
             onClick={() => !submitting && setTrialModalOpen(false)}
           >
             <motion.div
@@ -360,43 +335,37 @@ export function Navbar() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 8 }}
               transition={{ type: "spring", damping: 28, stiffness: 300 }}
-              className="w-full max-w-md rounded-2xl overflow-hidden"
+              className="w-full max-w-md overflow-hidden rounded-3xl border"
               style={{
-                background: "linear-gradient(180deg, #0a1a3a 0%, #050F2A 100%)",
-                border: "1px solid rgba(123, 187, 255, 0.3)",
-                boxShadow: "0 0 0 1px rgba(123, 187, 255, 0.08), 0 24px 48px -12px rgba(0,0,0,0.5), 0 0 80px -20px rgba(123, 187, 255, 0.2)",
+                background: "linear-gradient(180deg, #F8FCFF 0%, #EEF8FF 100%)",
+                borderColor: "rgba(123,187,255,0.38)",
+                boxShadow: "0 26px 60px -28px rgba(10,15,30,0.45)",
               }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Header with gradient accent */}
-              <div
-                className="h-1 w-full"
-                style={{ background: "linear-gradient(90deg, #7BBFFF, #B8A9FF)" }}
-              />
+              <div className="h-1 w-full bg-gradient-to-r from-[#7BBBFF] to-[#B8A9FF]" />
               <div className="p-6 sm:p-8">
-                <div className="flex justify-between items-start gap-4 mb-2">
+                <div className="mb-2 flex items-start justify-between gap-4">
                   <div>
-                    <h3 className="text-xl sm:text-2xl font-display font-bold text-[#F2FDFF] tracking-tight">
-                      Try a trial quiz
-                    </h3>
-                    <p className="text-sm text-[#99b3cc] mt-1.5">
+                    <h3 className="text-xl font-display font-bold tracking-tight text-[#0A0F1E] sm:text-2xl">Try a trial quiz</h3>
+                    <p className="mt-1.5 text-sm text-[#284366]">
                       Enter your details to start a short chemistry quiz. We use a fixed passage.
                     </p>
                   </div>
                   <button
                     type="button"
                     onClick={() => !submitting && setTrialModalOpen(false)}
-                    className="p-2.5 rounded-xl text-[#99b3cc] hover:text-[#F2FDFF] hover:bg-[#7BBBFF]/10 transition-colors shrink-0"
+                    className="shrink-0 rounded-xl p-2.5 text-[#55769a] transition-colors hover:bg-[#7BBBFF]/14 hover:text-[#0A0F1E]"
                     aria-label="Close"
                   >
-                    <X className="w-5 h-5" />
+                    <X className="h-5 w-5" />
                   </button>
                 </div>
 
-                <form onSubmit={handleTrialSubmit} className="space-y-5 mt-6">
+                <form onSubmit={handleTrialSubmit} className="mt-6 space-y-5">
                   <div>
-                    <label htmlFor="trial-name" className="flex items-center gap-2 text-sm font-medium text-[#F2FDFF] mb-2">
-                      <User className="w-4 h-4 text-[#7BBFFF]" />
+                    <label htmlFor="trial-name" className="mb-2 flex items-center gap-2 text-sm font-medium text-[#0A0F1E]">
+                      <User className="h-4 w-4 text-[#7BBBFF]" />
                       Name
                     </label>
                     <input
@@ -407,12 +376,13 @@ export function Navbar() {
                       value={name}
                       onChange={(e) => setName(e.target.value.slice(0, MAX_NAME_LEN))}
                       placeholder="Your name"
-                      className="w-full rounded-xl px-4 py-3.5 bg-[#050F2A]/80 border border-[#7BBFFF]/25 text-[#F2FDFF] placeholder:text-[#7BBFFF]/35 focus:outline-none focus:ring-2 focus:ring-[#7BBFFF]/40 focus:border-[#7BBFFF]/50 transition-all"
+                      className="w-full rounded-xl border border-[#7BBBFF]/35 bg-white/80 px-4 py-3.5 text-[#0A0F1E] placeholder:text-[#7BBBFF]/45 focus:border-[#7BBBFF]/60 focus:outline-none focus:ring-2 focus:ring-[#7BBBFF]/25"
                     />
                   </div>
+
                   <div>
-                    <label htmlFor="trial-email" className="flex items-center gap-2 text-sm font-medium text-[#F2FDFF] mb-2">
-                      <Mail className="w-4 h-4 text-[#7BBFFF]" />
+                    <label htmlFor="trial-email" className="mb-2 flex items-center gap-2 text-sm font-medium text-[#0A0F1E]">
+                      <Mail className="h-4 w-4 text-[#7BBBFF]" />
                       Email
                     </label>
                     <input
@@ -423,24 +393,23 @@ export function Navbar() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value.slice(0, MAX_EMAIL_LEN))}
                       placeholder="your@email.com"
-                      className="w-full rounded-xl px-4 py-3.5 bg-[#050F2A]/80 border border-[#7BBFFF]/25 text-[#F2FDFF] placeholder:text-[#7BBFFF]/35 focus:outline-none focus:ring-2 focus:ring-[#7BBFFF]/40 focus:border-[#7BBFFF]/50 transition-all"
+                      className="w-full rounded-xl border border-[#7BBBFF]/35 bg-white/80 px-4 py-3.5 text-[#0A0F1E] placeholder:text-[#7BBBFF]/45 focus:border-[#7BBBFF]/60 focus:outline-none focus:ring-2 focus:ring-[#7BBBFF]/25"
                     />
                   </div>
+
                   <div>
-                    <label className="flex items-center gap-2 text-sm font-medium text-[#F2FDFF] mb-2">
-                      <MapPin className="w-4 h-4 text-[#7BBFFF]" />
+                    <label className="mb-2 flex items-center gap-2 text-sm font-medium text-[#0A0F1E]">
+                      <MapPin className="h-4 w-4 text-[#7BBBFF]" />
                       Location
                     </label>
                     {locationStatus === "requesting" && (
-                      <div className="rounded-xl px-4 py-3.5 bg-[#050F2A]/80 border border-[#7BBFFF]/25 text-[#99b3cc] text-sm flex items-center gap-2">
-                        <Loader2 className="w-4 h-4 animate-spin shrink-0 text-[#7BBFFF]" />
+                      <div className="flex items-center gap-2 rounded-xl border border-[#7BBBFF]/35 bg-white/80 px-4 py-3.5 text-sm text-[#284366]">
+                        <Loader2 className="h-4 w-4 shrink-0 animate-spin text-[#7BBBFF]" />
                         Allow location access in your browser to use your current location.
                       </div>
                     )}
                     {locationStatus === "granted" && (
-                      <div className="rounded-xl px-4 py-3.5 bg-[#050F2A]/80 border border-[#7BBFFF]/25 text-[#B0C8E0] text-sm">
-                        {locationValue}
-                      </div>
+                      <div className="rounded-xl border border-[#7BBBFF]/35 bg-white/80 px-4 py-3.5 text-sm text-[#284366]">{locationValue}</div>
                     )}
                     {locationStatus === "denied" && (
                       <input
@@ -450,35 +419,38 @@ export function Navbar() {
                         value={locationValue}
                         onChange={(e) => setLocationValue(e.target.value.slice(0, MAX_LOCATION_LEN))}
                         placeholder="Enter your city or location"
-                        className="w-full rounded-xl px-4 py-3.5 bg-[#050F2A]/80 border border-[#7BBFFF]/25 text-[#F2FDFF] placeholder:text-[#7BBFFF]/35 focus:outline-none focus:ring-2 focus:ring-[#7BBFFF]/40 focus:border-[#7BBFFF]/50 transition-all"
+                        className="w-full rounded-xl border border-[#7BBBFF]/35 bg-white/80 px-4 py-3.5 text-[#0A0F1E] placeholder:text-[#7BBBFF]/45 focus:border-[#7BBBFF]/60 focus:outline-none focus:ring-2 focus:ring-[#7BBBFF]/25"
                       />
                     )}
                   </div>
+
                   {submitError && (
                     <motion.div
                       initial={{ opacity: 0, y: -4 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="rounded-xl border border-amber-400/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-200"
+                      className="rounded-xl border border-amber-400/45 bg-amber-500/12 px-4 py-3 text-sm text-amber-900"
                     >
                       {submitError}
                     </motion.div>
                   )}
+
                   <div className="flex gap-3 pt-1">
                     <button
                       type="button"
                       onClick={() => !submitting && setTrialModalOpen(false)}
-                      className="flex-1 py-3.5 rounded-xl font-medium border border-[#7BBFFF]/30 text-[#F2FDFF] hover:bg-[#7BBBFF]/10 hover:border-[#7BBFFF]/40 transition-all"
+                      className="flex-1 rounded-xl border border-[#7BBBFF]/40 py-3.5 font-medium text-[#0A0F1E] transition-all hover:bg-[#7BBBFF]/10"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="flex-1 inline-flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold bg-[#7BBFFF] text-[#050F2A] hover:bg-[#7BBFFF]/90 disabled:opacity-70 disabled:pointer-events-none transition-all shadow-[0_0_20px_-4px_rgba(123,191,255,0.4)]"
+                      className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#7BBBFF] py-3.5 font-semibold text-white transition-all hover:bg-[#6aaef5] disabled:pointer-events-none disabled:opacity-70"
+                      style={{ boxShadow: "0 0 20px rgba(123,187,255,0.4)" }}
                     >
                       {submitting ? (
                         <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <Loader2 className="h-5 w-5 animate-spin" />
                           Starting…
                         </>
                       ) : (
@@ -493,10 +465,7 @@ export function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* Full-screen rocket loader while MCQs are being fetched */}
-      <AnimatePresence>
-        {submitting && <RocketLoader key="rocket-loader" />}
-      </AnimatePresence>
+      <AnimatePresence>{submitting && <RocketLoader key="rocket-loader" />}</AnimatePresence>
     </nav>
   );
 }
