@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { type LucideIcon } from "lucide-react";
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useState, useEffect } from "react";
 import { animate } from "animejs";
 
 interface FeatureCardProps {
@@ -23,8 +23,19 @@ export function FeatureCard({
   const cardRef = useRef<HTMLDivElement>(null);
   const iconRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const handleMouseEnter = useCallback(() => {
+    // Skip complex animations on mobile
+    if (isMobile) return;
+    
     if (iconRef.current) {
       animate(iconRef.current, {
         scale: [1, 1.18, 1.08],
@@ -48,9 +59,12 @@ export function FeatureCard({
         ease: "outExpo",
       });
     }
-  }, []);
+  }, [isMobile]);
 
   const handleMouseLeave = useCallback(() => {
+    // Skip complex animations on mobile
+    if (isMobile) return;
+    
     if (iconRef.current) {
       animate(iconRef.current, {
         scale: 1,
@@ -74,7 +88,7 @@ export function FeatureCard({
         ease: "outExpo",
       });
     }
-  }, []);
+  }, [isMobile]);
 
   return (
     <article

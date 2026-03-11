@@ -4,7 +4,20 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, CheckCircle2, ArrowLeft, XCircle, Lightbulb, FileQuestion, Loader2 } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  CheckCircle2,
+  ArrowLeft,
+  XCircle,
+  Lightbulb,
+  FileQuestion,
+  Loader2,
+  Sparkles,
+  BookOpen,
+  Atom,
+  FlaskConical,
+} from "lucide-react";
 import {
   loadQuizData,
   loadQuizAnswers,
@@ -25,6 +38,72 @@ const SUBJECT_LABELS: Record<SubjectKey, string> = {
   biology: "Biology",
   chemistry: "Chemistry",
   physics: "Physics",
+};
+
+const SUBJECT_ICONS: Record<SubjectKey, React.ElementType> = {
+  biology: BookOpen,
+  chemistry: FlaskConical,
+  physics: Atom,
+};
+
+const SUBJECT_COLORS: Record<SubjectKey, { bg: string; text: string; border: string; glow: string }> = {
+  biology: {
+    bg: "bg-emerald-500/10",
+    text: "text-emerald-600",
+    border: "border-emerald-500/30",
+    glow: "shadow-[0_0_20px_-4px_rgba(16,185,129,0.3)]",
+  },
+  chemistry: {
+    bg: "bg-purple-500/10",
+    text: "text-purple-600",
+    border: "border-purple-500/30",
+    glow: "shadow-[0_0_20px_-4px_rgba(168,85,247,0.3)]",
+  },
+  physics: {
+    bg: "bg-blue-500/10",
+    text: "text-blue-600",
+    border: "border-blue-500/30",
+    glow: "shadow-[0_0_20px_-4px_rgba(59,130,246,0.3)]",
+  },
+};
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.95, y: 20 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    x: -20,
+    transition: { duration: 0.3 },
+  },
+};
+
+const optionVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: { delay: i * 0.08, duration: 0.4, ease: "easeOut" },
+  }),
 };
 
 function buildFlatQuestions(
@@ -78,7 +157,7 @@ export default function QuizPage() {
   const physicsPrefetchDone = useRef(false);
   const router = useRouter();
 
-  // Redirect to home if user has no trial user ID (must complete trial form first)
+  // Redirect to home if user has no trial user ID
   useEffect(() => {
     const userId = getTrialUserId();
     if (userId == null) {
@@ -99,12 +178,9 @@ export default function QuizPage() {
   const selectedOption = answers[currentIndex] ?? null;
   const progress = total > 0 ? ((currentIndex + 1) / total) * 100 : 0;
   const atEndOfBiology = biologyCount > 0 && currentIndex === biologyCount - 1;
-  const atEndOfChemistry =
-    chemistryCount > 0 && currentIndex === biologyCount + chemistryCount - 1;
-  const showNextToSection =
-    atEndOfBiology || atEndOfChemistry;
-  const isLast =
-    total > 0 && currentIndex === total - 1 && !showNextToSection;
+  const atEndOfChemistry = chemistryCount > 0 && currentIndex === biologyCount + chemistryCount - 1;
+  const showNextToSection = atEndOfBiology || atEndOfChemistry;
+  const isLast = total > 0 && currentIndex === total - 1 && !showNextToSection;
   const isFirst = currentIndex === 0;
   const hasAnswered = selectedOption !== null;
   const isCorrect = Boolean(question && hasAnswered && selectedOption === question.correctIndex);
@@ -117,30 +193,21 @@ export default function QuizPage() {
       return next;
     });
   };
+
   const biologyAttempted = Object.keys(answers).filter((i) => {
     const idx = parseInt(i, 10);
     return idx >= 0 && idx < biologyCount;
   }).length;
+
   const chemistryAttempted = Object.keys(answers).filter((i) => {
     const idx = parseInt(i, 10);
     return idx >= biologyCount && idx < biologyCount + chemistryCount;
   }).length;
 
-  const currentSubject =
-    total > 0
-      ? getSubjectAt(currentIndex, biologyCount, chemistryCount)
-      : "biology";
-  const sectionProgress =
-    total > 0
-      ? getSectionProgress(
-          currentIndex,
-          biologyCount,
-          chemistryCount,
-          physicsCount
-        )
-      : null;
+  const currentSubject = total > 0 ? getSubjectAt(currentIndex, biologyCount, chemistryCount) : "biology";
+  const sectionProgress = total > 0 ? getSectionProgress(currentIndex, biologyCount, chemistryCount, physicsCount) : null;
 
-  // Prefetch chemistry when user has attempted 2 biology MCQs (once)
+  // Prefetch chemistry
   useEffect(() => {
     if (biologyCount === 0) return;
     if (chemistryPrefetchDone.current) return;
@@ -151,7 +218,7 @@ export default function QuizPage() {
     }
   }, [biologyAttempted, biologyCount, chemistryCount]);
 
-  // Prefetch physics when user has attempted 2 chemistry MCQs (once)
+  // Prefetch physics
   useEffect(() => {
     if (chemistryCount === 0) return;
     if (physicsPrefetchDone.current) return;
@@ -162,7 +229,7 @@ export default function QuizPage() {
     }
   }, [chemistryAttempted, biologyCount, chemistryCount, physicsCount]);
 
-  // Poll for next section when user is waiting (e.g. clicked Next at end of section)
+  // Poll for next section
   useEffect(() => {
     if (!loadingNextSection || !pendingSection) return;
     const id = setInterval(() => {
@@ -260,273 +327,386 @@ export default function QuizPage() {
         responcemodel,
       });
       if (userId != null) {
-        await supabase
-          .from("trailpeoples")
-          .update({ score: scoreStr })
-          .eq("id", userId);
+        await supabase.from("trailpeoples").update({ score: scoreStr }).eq("id", userId);
       }
       router.push("/quiz/thank-you");
     } catch {
-      // non-blocking; user still completed quiz
+      // non-blocking
     } finally {
       setSubmitting(false);
     }
   };
 
-  // No user ID: redirecting to home — show brief loading so we don't flash quiz
+  // Loading state
   if (hasUserId !== true) {
     return (
-      <div className="min-h-screen bg-[#050F2A] text-[#F2FDFF] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-10 h-10 text-[#7BBFFF] animate-spin" />
-          <p className="text-sm text-[#99b3cc]">Redirecting…</p>
-        </div>
+      <div className="min-h-screen landing-shell flex items-center justify-center relative overflow-hidden">
+        {/* Background elements */}
+        <div className="hero-mesh" />
+        <div className="hero-blob hero-blob-a" />
+        <div className="hero-blob hero-blob-b" />
+        
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex flex-col items-center gap-4 relative z-10"
+        >
+          <div className="relative">
+            <Loader2 className="w-12 h-12 text-primary animate-spin" />
+            <div className="absolute inset-0 w-12 h-12 rounded-full border-2 border-primary/30 animate-ping" />
+          </div>
+          <p className="text-sm text-muted-foreground font-medium">Preparing your quiz...</p>
+        </motion.div>
       </div>
     );
   }
 
-  // No quiz loaded yet or empty — show start quiz CTA
+  // No quiz data
   if (questions.length === 0) {
     return (
-      <div className="min-h-screen bg-[#050F2A] text-[#F2FDFF] overflow-x-hidden selection:bg-[#7BBFFF]/30">
-        <main className="pt-10 sm:pt-12 pb-16 px-4 sm:px-6">
-          <div className="max-w-2xl mx-auto">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-sm text-[#99b3cc] hover:text-[#7BBFFF] transition-colors mb-8"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to home
-            </Link>
-            <div className="rounded-2xl border border-[#7BBFFF]/20 bg-[#0a1a3a]/80 p-8 sm:p-12 text-center">
-              <FileQuestion className="w-14 h-14 text-[#7BBFFF]/60 mx-auto mb-4" />
-              <h2 className="text-xl font-display font-bold text-[#F2FDFF] mb-2">
-                No quiz yet
-              </h2>
-              <p className="text-[#99b3cc] text-sm mb-6 max-w-sm mx-auto">
-                Start a trial quiz from the nav: click &quot;Try a trial quiz&quot; and enter your details.
-              </p>
+      <div className="min-h-screen landing-shell relative overflow-hidden">
+        <div className="hero-mesh" />
+        <div className="hero-blob hero-blob-a" />
+        <div className="hero-blob hero-blob-b" />
+
+        <main className="relative z-10 pt-10 sm:pt-16 pb-16 px-4 sm:px-6">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className="max-w-2xl mx-auto"
+          >
+            <motion.div variants={itemVariants}>
               <Link
                 href="/"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold bg-[#7BBFFF] text-[#050F2A] hover:bg-[#7BBFFF]/90 shadow-[0_0_24px_-6px_rgba(123,191,255,0.4)] transition-all"
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-8 group"
               >
-                Go to home
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                Back to home
+              </Link>
+            </motion.div>
+
+            <motion.div
+              variants={cardVariants}
+              className="glass-tile p-8 sm:p-12 text-center"
+            >
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+                className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center mx-auto mb-6"
+              >
+                <FileQuestion className="w-10 h-10 text-primary" />
+              </motion.div>
+              
+              <h2 className="text-2xl font-display font-bold text-foreground mb-3">
+                No Quiz Available
+              </h2>
+              <p className="text-muted-foreground text-sm mb-8 max-w-sm mx-auto leading-relaxed">
+                Start a trial quiz from the navigation bar. Click &quot;Try a trial quiz&quot; and enter your details to begin.
+              </p>
+              
+              <Link
+                href="/"
+                className="cta-primary inline-flex items-center gap-2 px-8 py-3.5 text-base"
+              >
+                Go to Home
                 <ChevronRight className="w-5 h-5" />
               </Link>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </main>
       </div>
     );
   }
 
-  return (
-    <div className="min-h-screen bg-[#050F2A] text-[#F2FDFF] overflow-x-hidden selection:bg-[#7BBFFF]/30">
-      <main className="pt-6 sm:pt-10 md:pt-12 pb-10 sm:pb-16 px-3 sm:px-5 md:px-6">
-        <div className="max-w-2xl mx-auto w-full">
-          {/* Back link */}
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-[#99b3cc] hover:text-[#7BBFFF] transition-colors mb-4 sm:mb-6"
-          >
-            <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            Back to home
-          </Link>
+  const SubjectIcon = SUBJECT_ICONS[currentSubject];
+  const subjectColor = SUBJECT_COLORS[currentSubject];
 
-          {/* Section chips: Biology | Chemistry | Physics */}
-          <div className="flex items-center gap-1.5 sm:gap-2 mb-4 sm:mb-6 flex-wrap">
+  return (
+    <div className="min-h-screen landing-shell relative overflow-hidden selection:bg-primary/20">
+      {/* Background decorations */}
+      <div className="hero-mesh" />
+      <div className="hero-blob hero-blob-a" />
+      <div className="hero-blob hero-blob-b" />
+
+      <main className="relative z-10 pt-6 sm:pt-10 md:pt-12 pb-10 sm:pb-16 px-4 sm:px-6">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+          className="max-w-3xl mx-auto w-full"
+        >
+          {/* Back link */}
+          <motion.div variants={itemVariants}>
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-6 group"
+            >
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+              Back to home
+            </Link>
+          </motion.div>
+
+          {/* Subject tabs */}
+          <motion.div variants={itemVariants} className="flex items-center gap-2 sm:gap-3 mb-6 flex-wrap">
             {(["biology", "chemistry", "physics"] as const).map((sub) => {
-              const count =
-                sub === "biology"
-                  ? biologyCount
-                  : sub === "chemistry"
-                    ? chemistryCount
-                    : physicsCount;
+              const count = sub === "biology" ? biologyCount : sub === "chemistry" ? chemistryCount : physicsCount;
               const isActive = currentSubject === sub;
-              const isLoading =
-                pendingSection === sub || (loadingNextSection && pendingSection === sub);
+              const isLoading = pendingSection === sub || (loadingNextSection && pendingSection === sub);
               const isDone =
                 (sub === "biology" && biologyCount > 0 && currentIndex >= biologyCount) ||
-                (sub === "chemistry" &&
-                  chemistryCount > 0 &&
-                  currentIndex >= biologyCount + chemistryCount) ||
-                (sub === "physics" &&
-                  physicsCount > 0 &&
-                  currentIndex >= biologyCount + chemistryCount + physicsCount);
+                (sub === "chemistry" && chemistryCount > 0 && currentIndex >= biologyCount + chemistryCount) ||
+                (sub === "physics" && physicsCount > 0 && currentIndex >= biologyCount + chemistryCount + physicsCount);
+
               if (count === 0 && !isActive && !isLoading) return null;
+
+              const Icon = SUBJECT_ICONS[sub];
+              const colors = SUBJECT_COLORS[sub];
+
               return (
-                <span
+                <motion.span
                   key={sub}
-                  className={`inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${
                     isLoading
-                      ? "bg-amber-500/15 text-amber-300 border border-amber-400/30"
+                      ? "bg-amber-100 text-amber-700 border border-amber-300"
                       : isActive
-                        ? "bg-[#7BBFFF] text-[#050F2A] shadow-[0_0_16px_-4px_rgba(123,191,255,0.5)]"
+                        ? `${colors.bg} ${colors.text} ${colors.border} border ${colors.glow}`
                         : isDone
-                          ? "bg-emerald-500/20 text-emerald-300 border border-emerald-400/30"
-                          : "bg-[#0a1a3a]/80 text-[#99b3cc] border border-[#7BBFFF]/20"
+                          ? "bg-emerald-100 text-emerald-700 border border-emerald-300"
+                          : "glass-card text-muted-foreground border border-primary/10"
                   }`}
                 >
+                  <Icon className="w-4 h-4" />
                   {SUBJECT_LABELS[sub]}
-                  {isLoading && (
-                    <Loader2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 animate-spin opacity-80" />
-                  )}
+                  {isLoading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                   {count > 0 && !isLoading && (
-                    <span className="opacity-80">
+                    <span className="opacity-70 text-xs">
                       {isActive && sectionProgress
                         ? `${sectionProgress.current}/${sectionProgress.total}`
                         : count}
                     </span>
                   )}
-                </span>
+                  {isDone && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />}
+                </motion.span>
               );
             })}
-          </div>
+          </motion.div>
 
-          {/* Header + overall progress */}
-          <div className="mb-4 sm:mb-6">
-            <h1 className="text-base sm:text-xl md:text-2xl font-display font-bold text-[#F2FDFF] mb-2 sm:mb-3 leading-tight">
-              {sectionProgress
-                ? `${SUBJECT_LABELS[sectionProgress.subject]} — Q ${sectionProgress.current}/${sectionProgress.total}`
-                : "Attempt your quiz"}
-            </h1>
-            <div className="h-1.5 sm:h-2 rounded-full bg-[#0a1a3a] overflow-hidden">
+          {/* Header + Progress */}
+          <motion.div variants={itemVariants} className="mb-6">
+            <div className="flex items-center justify-between mb-3">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-foreground flex items-center gap-3">
+                <span className={`p-2 rounded-xl ${subjectColor.bg}`}>
+                  <SubjectIcon className={`w-5 h-5 sm:w-6 sm:h-6 ${subjectColor.text}`} />
+                </span>
+                {sectionProgress
+                  ? `${SUBJECT_LABELS[sectionProgress.subject]}`
+                  : "Quiz Time"}
+              </h1>
+              <span className="text-sm font-medium text-muted-foreground bg-white/60 px-3 py-1.5 rounded-lg border border-primary/10">
+                Q {sectionProgress?.current || 1} of {sectionProgress?.total || total}
+              </span>
+            </div>
+
+            {/* Progress bar */}
+            <div className="h-2.5 rounded-full bg-white/80 border border-primary/10 overflow-hidden shadow-inner">
               <motion.div
-                className="h-full rounded-full bg-gradient-to-r from-[#7BBFFF] to-[#B8A9FF]"
+                className="h-full rounded-full bg-gradient-to-r from-primary via-accent to-primary"
+                style={{ backgroundSize: "200% 100%" }}
                 initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
+                animate={{
+                  width: `${progress}%`,
+                  backgroundPosition: ["0% 50%", "100% 50%"],
+                }}
+                transition={{
+                  width: { duration: 0.5, ease: "easeOut" },
+                  backgroundPosition: { duration: 3, repeat: Infinity, ease: "linear" },
+                }}
               />
             </div>
-            <p className="text-[10px] sm:text-xs text-[#99b3cc] mt-1.5 sm:mt-2">
-              Overall: {currentIndex + 1} of {total} questions
+            <p className="text-xs text-muted-foreground mt-2 flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-accent" />
+              Overall progress: {currentIndex + 1} of {total} questions
             </p>
-          </div>
+          </motion.div>
 
           {/* Loading next section */}
-          {loadingNextSection && (
-            <div className="rounded-xl sm:rounded-2xl border border-[#7BBFFF]/30 bg-[#0a1a3a]/90 p-6 sm:p-10 md:p-14 flex flex-col items-center justify-center gap-4 sm:gap-5 text-center shadow-[0_0_40px_-12px_rgba(123,191,255,0.12)]">
-              <div className="relative">
-                <Loader2 className="w-10 h-10 sm:w-14 sm:h-14 text-[#7BBFFF] animate-spin" />
-                <div className="absolute inset-0 w-10 h-10 sm:w-14 sm:h-14 rounded-full border-2 border-[#7BBFFF]/30 animate-ping opacity-20" />
-              </div>
-              <div>
-                <p className="text-[#F2FDFF] font-semibold text-base sm:text-lg">
-                  Loading next section…
-                </p>
-                <p className="text-[#99b3cc] text-xs sm:text-sm mt-1">
-                  Preparing your {pendingSection === "chemistry" ? "Chemistry" : "Physics"} questions.
-                </p>
-              </div>
-            </div>
-          )}
+          <AnimatePresence mode="wait">
+            {loadingNextSection && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="glass-tile p-10 sm:p-16 flex flex-col items-center justify-center gap-6 text-center"
+              >
+                <div className="relative">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  >
+                    <Loader2 className="w-16 h-16 text-primary" />
+                  </motion.div>
+                  <div className="absolute inset-0 w-16 h-16 rounded-full border-2 border-primary/20 animate-ping" />
+                </div>
+                <div>
+                  <p className="text-foreground font-display font-bold text-xl mb-2">
+                    Loading {pendingSection === "chemistry" ? "Chemistry" : "Physics"}...
+                  </p>
+                  <p className="text-muted-foreground text-sm">
+                    Preparing your next set of questions
+                  </p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Question card */}
-          {!loadingNextSection && question && (
           <AnimatePresence mode="wait">
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, x: 12 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -12 }}
-              transition={{ duration: 0.25 }}
-              className="rounded-xl sm:rounded-2xl border border-[#7BBFFF]/20 bg-[#0a1a3a]/80 p-4 sm:p-6 md:p-8 shadow-[0_0_40px_-12px_rgba(123,191,255,0.08)]"
-            >
-              <div className="flex items-center justify-between gap-2 mb-3 sm:mb-6">
-                <span className="inline-flex items-center px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-[#7BBFFF]/15 text-[#7BBFFF] text-[10px] sm:text-xs font-medium">
-                  {SUBJECT_LABELS[currentSubject]}
-                </span>
-              </div>
-              <p className="text-sm sm:text-lg md:text-xl text-[#F2FDFF] leading-relaxed mb-5 sm:mb-8 font-medium">
-                {question.question}
-              </p>
-
-              <ul className="space-y-2 sm:space-y-3">
-                {question.options.map((opt, idx) => {
-                  const isSelected = selectedOption === idx;
-                  const isCorrectOption = idx === question.correctIndex;
-                  const showAsCorrect = hasAnswered && isCorrectOption;
-                  const showAsWrong = hasAnswered && isSelected && !isCorrectOption;
-                  return (
-                    <li key={idx}>
-                      <button
-                        type="button"
-                        onClick={() => setSelectedOption(idx)}
-                        className={`w-full text-left flex items-center gap-2.5 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl border transition-all duration-200 ${
-                          showAsWrong
-                            ? "border-amber-400/60 bg-amber-500/10 text-[#F2FDFF]"
-                            : showAsCorrect
-                              ? "border-emerald-400/60 bg-emerald-500/15 text-[#F2FDFF]"
-                              : isSelected
-                                ? "border-[#7BBFFF] bg-[#7BBFFF]/15 text-[#F2FDFF] shadow-[0_0_20px_-6px_rgba(123,191,255,0.3)]"
-                                : "border-[#7BBFFF]/20 bg-[#050F2A]/50 text-[#B0C8E0] hover:border-[#7BBFFF]/40 hover:bg-[#7BBFFF]/5"
-                        }`}
-                      >
-                        <span
-                          className={`flex-shrink-0 w-7 h-7 sm:w-9 sm:h-9 rounded-md sm:rounded-lg flex items-center justify-center text-xs sm:text-sm font-semibold ${
-                            showAsWrong
-                              ? "bg-amber-400/30 text-amber-300"
-                              : showAsCorrect
-                                ? "bg-emerald-400/30 text-emerald-300"
-                                : isSelected
-                                  ? "bg-[#7BBFFF] text-[#050F2A]"
-                                  : "bg-[#7BBFFF]/10 text-[#7BBFFF]"
-                          }`}
-                        >
-                          {OPTION_LABELS[idx]}
-                        </span>
-                        <span className="flex-1 text-xs sm:text-sm md:text-base leading-snug">{opt}</span>
-                        {showAsWrong && <XCircle className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 flex-shrink-0" />}
-                        {(showAsCorrect || (isSelected && isCorrect)) && (
-                          <CheckCircle2 className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${showAsCorrect ? "text-emerald-400" : "text-[#7BBFFF]"}`} />
-                        )}
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-
-              {/* Explanation shown when user selects wrong answer */}
-              <AnimatePresence>
-                {showExplanation && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.25 }}
-                    className="mt-4 sm:mt-6 rounded-lg sm:rounded-xl border border-amber-400/30 bg-amber-500/10 overflow-hidden"
+            {!loadingNextSection && question && (
+              <motion.div
+                key={currentIndex}
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="glass-tile p-5 sm:p-8 md:p-10"
+              >
+                {/* Question badge */}
+                <div className="flex items-center justify-between gap-3 mb-6">
+                  <span
+                    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold ${subjectColor.bg} ${subjectColor.text} ${subjectColor.border} border`}
                   >
-                    <div className="p-3 sm:p-4 md:p-5">
-                      <p className="flex items-center gap-2 text-amber-200/90 font-medium text-xs sm:text-sm mb-1.5 sm:mb-2">
-                        <Lightbulb className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
-                        Explanation
-                      </p>
-                      <p className="text-[#F2FDFF]/90 text-xs sm:text-sm md:text-base leading-relaxed">
-                        {question.explanation}
-                      </p>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
+                    <SubjectIcon className="w-3.5 h-3.5" />
+                    {SUBJECT_LABELS[currentSubject]}
+                  </span>
+                  <span className="text-xs text-muted-foreground bg-white/60 px-2.5 py-1 rounded-md">
+                    Question {sectionProgress?.current || currentIndex + 1}
+                  </span>
+                </div>
+
+                {/* Question text */}
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-base sm:text-lg md:text-xl text-foreground leading-relaxed mb-8 font-medium"
+                >
+                  {question.question}
+                </motion.p>
+
+                {/* Options */}
+                <ul className="space-y-3">
+                  {question.options.map((opt, idx) => {
+                    const isSelected = selectedOption === idx;
+                    const isCorrectOption = idx === question.correctIndex;
+                    const showAsCorrect = hasAnswered && isCorrectOption;
+                    const showAsWrong = hasAnswered && isSelected && !isCorrectOption;
+
+                    return (
+                      <motion.li
+                        key={idx}
+                        custom={idx}
+                        variants={optionVariants}
+                        initial="hidden"
+                        animate="visible"
+                      >
+                        <motion.button
+                          type="button"
+                          onClick={() => setSelectedOption(idx)}
+                          whileHover={{ scale: hasAnswered ? 1 : 1.01 }}
+                          whileTap={{ scale: hasAnswered ? 1 : 0.99 }}
+                          disabled={hasAnswered}
+                          className={`w-full text-left flex items-center gap-4 p-4 sm:p-5 rounded-xl border-2 transition-all duration-300 ${
+                            showAsWrong
+                              ? "border-amber-400 bg-amber-50 shadow-[0_0_20px_-4px_rgba(251,191,36,0.3)]"
+                              : showAsCorrect
+                                ? "border-emerald-400 bg-emerald-50 shadow-[0_0_20px_-4px_rgba(52,211,153,0.3)]"
+                                : isSelected
+                                  ? "border-primary bg-primary/5 shadow-[0_0_24px_-4px_rgba(123,187,255,0.4)]"
+                                  : "border-transparent bg-white/70 hover:bg-white hover:border-primary/30 hover:shadow-lg"
+                          } ${hasAnswered && !isSelected && !showAsCorrect ? "opacity-60" : ""}`}
+                        >
+                          <span
+                            className={`flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center text-sm sm:text-base font-bold transition-all ${
+                              showAsWrong
+                                ? "bg-amber-400 text-white"
+                                : showAsCorrect
+                                  ? "bg-emerald-400 text-white"
+                                  : isSelected
+                                    ? "bg-primary text-white"
+                                    : "bg-gradient-to-br from-primary/10 to-accent/10 text-primary"
+                            }`}
+                          >
+                            {OPTION_LABELS[idx]}
+                          </span>
+                          <span className="flex-1 text-sm sm:text-base text-foreground leading-relaxed">
+                            {opt}
+                          </span>
+                          {showAsWrong && (
+                            <XCircle className="w-6 h-6 text-amber-500 flex-shrink-0" />
+                          )}
+                          {(showAsCorrect || (isSelected && isCorrect)) && (
+                            <CheckCircle2
+                              className={`w-6 h-6 flex-shrink-0 ${
+                                showAsCorrect ? "text-emerald-500" : "text-primary"
+                              }`}
+                            />
+                          )}
+                        </motion.button>
+                      </motion.li>
+                    );
+                  })}
+                </ul>
+
+                {/* Explanation */}
+                <AnimatePresence>
+                  {showExplanation && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                      animate={{ opacity: 1, height: "auto", marginTop: 24 }}
+                      exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="rounded-xl border-2 border-amber-300 bg-gradient-to-br from-amber-50 to-orange-50 p-5 sm:p-6">
+                        <p className="flex items-center gap-2 text-amber-700 font-semibold text-sm mb-3">
+                          <Lightbulb className="w-5 h-5" />
+                          Explanation
+                        </p>
+                        <p className="text-foreground/90 text-sm sm:text-base leading-relaxed">
+                          {question.explanation}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            )}
           </AnimatePresence>
-          )}
 
           {/* Navigation */}
-          <div className="flex items-center justify-between mt-6 sm:mt-10 gap-2 sm:gap-4">
-            <button
+          <motion.div
+            variants={itemVariants}
+            className="flex items-center justify-between mt-8 gap-4"
+          >
+            <motion.button
               type="button"
               onClick={goPrev}
               disabled={isFirst}
-              className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-5 py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base font-medium border border-[#7BBFFF]/30 text-[#F2FDFF] hover:bg-[#7BBFFF]/10 hover:border-[#7BBFFF]/50 disabled:opacity-40 disabled:pointer-events-none transition-all shrink-0"
+              whileHover={{ scale: isFirst ? 1 : 1.02 }}
+              whileTap={{ scale: isFirst ? 1 : 0.98 }}
+              className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-semibold glass-card border border-primary/20 text-foreground hover:border-primary/40 hover:bg-white disabled:opacity-40 disabled:pointer-events-none transition-all"
             >
-              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span className="hidden xs:inline sm:inline">Prev</span>
-            </button>
+              <ChevronLeft className="w-5 h-5" />
+              <span className="hidden sm:inline">Previous</span>
+            </motion.button>
 
-            {/* Section-only dots: one dot per question in current section */}
+            {/* Dots */}
             {sectionProgress && sectionProgress.total <= 12 && (
-              <div className="flex gap-1 sm:gap-1.5 justify-center py-1 flex-wrap max-w-[40vw] sm:max-w-none">
+              <div className="flex gap-2 justify-center py-1 flex-wrap">
                 {Array.from({ length: sectionProgress.total }, (_, i) => {
                   const globalIndex =
                     currentSubject === "biology"
@@ -534,62 +714,70 @@ export default function QuizPage() {
                       : currentSubject === "chemistry"
                         ? biologyCount + i
                         : biologyCount + chemistryCount + i;
+                  const isActive = currentIndex === globalIndex;
+                  const isAnswered = answers[globalIndex] !== undefined;
+
                   return (
-                    <button
+                    <motion.button
                       key={globalIndex}
                       type="button"
                       onClick={() => setCurrentIndex(globalIndex)}
-                      className={`shrink-0 w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all ${
-                        currentIndex === globalIndex
-                          ? "bg-[#7BBFFF] scale-125 ring-2 ring-[#7BBFFF]/40"
-                          : answers[globalIndex] !== undefined
-                            ? "bg-[#7BBFFF]/60 hover:bg-[#7BBFFF]/70"
-                            : "bg-[#7BBFFF]/20 hover:bg-[#7BBFFF]/40"
+                      whileHover={{ scale: 1.2 }}
+                      className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all ${
+                        isActive
+                          ? "bg-primary scale-125 ring-4 ring-primary/20"
+                          : isAnswered
+                            ? "bg-primary/60 hover:bg-primary/80"
+                            : "bg-primary/20 hover:bg-primary/40"
                       }`}
-                      aria-label={`Go to question ${i + 1} of ${sectionProgress.total}`}
+                      aria-label={`Go to question ${i + 1}`}
                     />
                   );
                 })}
               </div>
             )}
             {sectionProgress && sectionProgress.total > 12 && (
-              <p className="text-[10px] sm:text-xs text-[#99b3cc] py-1">
+              <p className="text-sm text-muted-foreground font-medium">
                 {sectionProgress.current} / {sectionProgress.total}
               </p>
             )}
 
             {isLast ? (
-              <button
+              <motion.button
                 type="button"
                 onClick={handleSubmitQuiz}
                 disabled={submitting}
-                className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold bg-emerald-500 text-white hover:bg-emerald-500/90 shadow-[0_0_24px_-6px_rgba(52,211,153,0.4)] transition-all shrink-0 disabled:opacity-60 disabled:pointer-events-none"
+                whileHover={{ scale: submitting ? 1 : 1.02 }}
+                whileTap={{ scale: submitting ? 1 : 0.98 }}
+                className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-bold bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-[0_0_30px_-6px_rgba(52,211,153,0.5)] hover:shadow-[0_0_40px_-6px_rgba(52,211,153,0.6)] transition-all disabled:opacity-60 disabled:pointer-events-none"
               >
                 {submitting ? (
                   <>
-                    <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
-                    <span className="hidden sm:inline">Saving…</span>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span>Submitting...</span>
                   </>
                 ) : (
                   <>
-                    Submit
-                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                    Submit Quiz
+                    <CheckCircle2 className="w-5 h-5" />
                   </>
                 )}
-              </button>
+              </motion.button>
             ) : (
-              <button
+              <motion.button
                 type="button"
                 onClick={goNext}
                 disabled={loadingNextSection}
-                className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-5 py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold bg-[#7BBFFF] text-[#050F2A] hover:bg-[#7BBFFF]/90 shadow-[0_0_24px_-6px_rgba(123,191,255,0.4)] transition-all disabled:opacity-60 disabled:pointer-events-none shrink-0"
+                whileHover={{ scale: loadingNextSection ? 1 : 1.02 }}
+                whileTap={{ scale: loadingNextSection ? 1 : 0.98 }}
+                className="cta-primary px-6 sm:px-8 py-3 sm:py-3.5 text-sm sm:text-base disabled:opacity-60 disabled:pointer-events-none"
               >
                 Next
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
+                <ChevronRight className="w-5 h-5" />
+              </motion.button>
             )}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </main>
     </div>
   );

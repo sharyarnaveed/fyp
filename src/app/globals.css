@@ -289,6 +289,57 @@ body {
   }
 }
 
+/* Mobile performance optimizations */
+@media (max-width: 767px) {
+  .hero-blob-a,
+  .hero-blob-b {
+    width: 200px;
+    height: 200px;
+    filter: blur(40px);
+    opacity: 0.15;
+    animation: none; /* Disable blob animation on mobile */
+  }
+  
+  .hero-mesh {
+    opacity: 0.5;
+  }
+  
+  /* Simplify glass effects on mobile */
+  .glass-tile {
+    backdrop-filter: blur(8px);
+  }
+  
+  /* Reduce animation complexity */
+  .reveal-section {
+    will-change: auto;
+  }
+  
+  .hero-reveal {
+    will-change: auto;
+  }
+  
+  /* Disable hover shimmer animation on mobile */
+  .feature-card:hover::after {
+    animation: none;
+  }
+  
+  /* Simplify course card animations */
+  .course-card::before {
+    transition: transform 300ms ease;
+  }
+  
+  /* Reduce stat tile pseudo-element */
+  .stat-tile::before {
+    display: none;
+  }
+  
+  /* Disable gradient animation on mobile for better performance */
+  .animated-cta::before {
+    animation: none;
+    background-position: 0% 50%;
+  }
+}
+
 /* ---- Anime.js enhanced styles ---- */
 
 /* Stat counter pulse ring */
@@ -387,4 +438,29 @@ body {
 .glass-tile span {
   position: relative;
   z-index: 1;
+}
+
+/* Respect user's reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .hero-blob {
+    animation: none;
+  }
+  
+  .animated-cta::before {
+    animation: none;
+  }
+  
+  .reveal-section,
+  .hero-reveal {
+    opacity: 1;
+    transform: none;
+  }
 }

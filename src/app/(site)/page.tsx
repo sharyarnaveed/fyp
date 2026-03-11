@@ -33,6 +33,15 @@ export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const statsAnimated = useRef(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Mobile detection
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   /* ---------- Animate stat counters ---------- */
   const animateStats = useCallback(() => {
@@ -46,23 +55,23 @@ export default function Home() {
       const obj = { v: 0 };
       animate(obj, {
         v: num,
-        duration: 1800,
-        ease: "outExpo",
+        duration: isMobile ? 1200 : 1800,
+        ease: isMobile ? "outQuad" : "outExpo",
         onUpdate: () => {
           el.textContent = (num >= 100 ? Math.round(obj.v) : obj.v.toFixed(0)) + suffix;
         },
       });
     });
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
-    /* ---- Hero entrance timeline ---- */
-    const tl = createTimeline({ defaults: { ease: "outExpo" } });
+    /* ---- Hero entrance timeline - simplified on mobile ---- */
+    const tl = createTimeline({ defaults: { ease: isMobile ? "outQuad" : "outExpo" } });
     tl.add(".hero-reveal", {
-      translateY: [40, 0],
+      translateY: [isMobile ? 24 : 40, 0],
       opacity: [0, 1],
-      duration: 1000,
-      delay: stagger(140, { start: 200 }),
+      duration: isMobile ? 700 : 1000,
+      delay: stagger(isMobile ? 100 : 140, { start: isMobile ? 150 : 200 }),
     });
 
     /* ---- Scroll-triggered section reveals ---- */
@@ -73,51 +82,51 @@ export default function Home() {
           const target = entry.target as HTMLElement;
           const delay = Number(target.dataset.delay ?? 0);
 
-          /* Feature cards get a special entrance */
+          /* Feature cards get a special entrance - simplified on mobile */
           if (target.classList.contains("feature-card")) {
             animate(target, {
               opacity: [0, 1],
-              translateY: [50, 0],
-              scale: [0.92, 1],
-              ease: "outElastic(1, .6)",
-              duration: 1200,
-              delay,
+              translateY: [isMobile ? 30 : 50, 0],
+              scale: [0.95, 1],
+              ease: isMobile ? "outQuad" : "outElastic(1, .6)",
+              duration: isMobile ? 600 : 1200,
+              delay: isMobile ? delay * 0.6 : delay,
             });
           } else if (target.classList.contains("stat-tile")) {
             animate(target, {
               opacity: [0, 1],
-              translateY: [36, 0],
-              scale: [0.88, 1],
-              ease: "outBack(1.4)",
-              duration: 900,
-              delay,
+              translateY: [isMobile ? 20 : 36, 0],
+              scale: [0.92, 1],
+              ease: isMobile ? "outQuad" : "outBack(1.4)",
+              duration: isMobile ? 500 : 900,
+              delay: isMobile ? delay * 0.5 : delay,
             });
             animateStats();
           } else if (target.classList.contains("testimonial-card")) {
             animate(target, {
               opacity: [0, 1],
-              translateX: [target.classList.contains("tc-left") ? -40 : 40, 0],
-              rotate: [target.classList.contains("tc-left") ? -2 : 2, 0],
-              ease: "outExpo",
-              duration: 1000,
-              delay,
+              translateX: [target.classList.contains("tc-left") ? (isMobile ? -20 : -40) : (isMobile ? 20 : 40), 0],
+              rotate: isMobile ? [0, 0] : [target.classList.contains("tc-left") ? -2 : 2, 0],
+              ease: isMobile ? "outQuad" : "outExpo",
+              duration: isMobile ? 600 : 1000,
+              delay: isMobile ? delay * 0.6 : delay,
             });
           } else if (target.classList.contains("course-card")) {
             animate(target, {
               opacity: [0, 1],
-              translateY: [60, 0],
-              scale: [0.9, 1],
-              ease: "outElastic(1, .7)",
-              duration: 1400,
-              delay,
+              translateY: [isMobile ? 30 : 60, 0],
+              scale: [0.95, 1],
+              ease: isMobile ? "outQuad" : "outElastic(1, .7)",
+              duration: isMobile ? 700 : 1400,
+              delay: isMobile ? delay * 0.5 : delay,
             });
           } else {
             animate(target, {
               opacity: [0, 1],
-              translateY: [32, 0],
-              ease: "outExpo",
-              duration: 900,
-              delay,
+              translateY: [isMobile ? 20 : 32, 0],
+              ease: isMobile ? "outQuad" : "outExpo",
+              duration: isMobile ? 500 : 900,
+              delay: isMobile ? delay * 0.6 : delay,
             });
           }
 
@@ -131,22 +140,27 @@ export default function Home() {
       observer.observe(node);
     });
 
-    /* ---- Floating blobs parallax on mouse ---- */
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 30;
-      const y = (e.clientY / window.innerHeight - 0.5) * 30;
-      document.querySelectorAll<HTMLElement>(".hero-blob").forEach((blob, i) => {
-        const factor = i === 0 ? 1 : -0.7;
-        blob.style.transform = `translate3d(${x * factor}px, ${y * factor}px, 0)`;
-      });
-    };
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    /* ---- Floating blobs parallax on mouse - disabled on mobile ---- */
+    let handleMouseMove: ((e: MouseEvent) => void) | null = null;
+    if (!isMobile) {
+      handleMouseMove = (e: MouseEvent) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 30;
+        const y = (e.clientY / window.innerHeight - 0.5) * 30;
+        document.querySelectorAll<HTMLElement>(".hero-blob").forEach((blob, i) => {
+          const factor = i === 0 ? 1 : -0.7;
+          blob.style.transform = `translate3d(${x * factor}px, ${y * factor}px, 0)`;
+        });
+      };
+      window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    }
 
     return () => {
       observer.disconnect();
-      window.removeEventListener("mousemove", handleMouseMove);
+      if (handleMouseMove) {
+        window.removeEventListener("mousemove", handleMouseMove);
+      }
     };
-  }, [animateStats]);
+  }, [animateStats, isMobile]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

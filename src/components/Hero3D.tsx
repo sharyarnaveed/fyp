@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useRef, useMemo } from "react";
+import { Suspense, useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   Environment,
@@ -11,6 +11,18 @@ import { EffectComposer, Bloom, ChromaticAberration } from "@react-three/postpro
 import * as THREE from "three";
 import type { Group, Points, Mesh } from "three";
 import { Vector2 } from "three";
+
+/* Mobile detection hook */
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
 
 /* Site palette */
 const COLORS = {
@@ -24,9 +36,9 @@ const COLORS = {
 
 /* ---------------------- EXHAUST PARTICLE SYSTEM ---------------------- */
 
-function ExhaustParticles() {
+function ExhaustParticles({ isMobile }: { isMobile: boolean }) {
   const pointsRef = useRef<Points>(null);
-  const count = 600;
+  const count = isMobile ? 150 : 600; // Reduced particles on mobile
 
   const { positions, vel, life } = useMemo(() => {
     const positions = new Float32Array(count * 3);
@@ -44,7 +56,7 @@ function ExhaustParticles() {
       life[i]        = Math.random();
     }
     return { positions, vel, life };
-  }, []);
+  }, [count]);
 
   useFrame((_, delta) => {
     if (!pointsRef.current) return;
@@ -91,17 +103,28 @@ function ExhaustParticles() {
 
 /* ---------------------- LAYERED FLAME ---------------------- */
 
-function RocketFlame({ flameRef }: { flameRef: React.RefObject<Group | null> }) {
+function RocketFlame({ flameRef, isMobile }: { flameRef: React.RefObject<Group | null>; isMobile: boolean }) {
   const innerRef  = useRef<Mesh>(null);
   const midRef    = useRef<Mesh>(null);
   const outerRef  = useRef<Mesh>(null);
   const glowRef   = useRef<Mesh>(null);
   const shockRef  = useRef<Mesh>(null);
+  const frameSkip = useRef(0);
+
+  const segments = isMobile ? 16 : 32;
 
   useFrame((state) => {
+    // Skip frames on mobile for better performance
+    if (isMobile) {
+      frameSkip.current++;
+      if (frameSkip.current % 2 !== 0) return;
+    }
+
     const t = state.clock.elapsedTime;
-    // Layered flicker frequencies for organic feel
-    const flicker  = 1 + Math.sin(t * 48) * 0.07 + Math.sin(t * 27) * 0.04 + Math.sin(t * 13) * 0.03;
+    // Simplified flicker on mobile
+    const flicker = isMobile 
+      ? 1 + Math.sin(t * 24) * 0.08
+      : 1 + Math.sin(t * 48) * 0.07 + Math.sin(t * 27) * 0.04 + Math.sin(t * 13) * 0.03;
     const sway     = Math.sin(t * 11) * 0.025;
     const sway2    = Math.cos(t * 7)  * 0.015;
 
@@ -110,62 +133,66 @@ function RocketFlame({ flameRef }: { flameRef: React.RefObject<Group | null> }) 
       flameRef.current.position.x = sway;
       flameRef.current.position.z = sway2;
     }
-    if (innerRef.current)  (innerRef.current.material  as THREE.MeshBasicMaterial).opacity = 0.94 + Math.sin(t * 60) * 0.05;
-    if (midRef.current)    (midRef.current.material    as THREE.MeshBasicMaterial).opacity = 0.68 + Math.sin(t * 35) * 0.10;
-    if (outerRef.current)  (outerRef.current.material  as THREE.MeshBasicMaterial).opacity = 0.28 + Math.sin(t * 20) * 0.08;
-    if (glowRef.current)   (glowRef.current.material   as THREE.MeshBasicMaterial).opacity = 0.10 + Math.sin(t * 15) * 0.04;
+    if (innerRef.current)  (innerRef.current.material  as THREE.MeshBasicMaterial).opacity = 0.94 + Math.sin(t * 30) * 0.05;
+    if (midRef.current)    (midRef.current.material    as THREE.MeshBasicMaterial).opacity = 0.68 + Math.sin(t * 20) * 0.10;
+    if (outerRef.current)  (outerRef.current.material  as THREE.MeshBasicMaterial).opacity = 0.28 + Math.sin(t * 12) * 0.08;
+    if (glowRef.current)   (glowRef.current.material   as THREE.MeshBasicMaterial).opacity = 0.10 + Math.sin(t * 10) * 0.04;
     // Mach shock disc flicker
     if (shockRef.current)  {
-      const s = 0.85 + Math.sin(t * 22) * 0.1;
+      const s = 0.85 + Math.sin(t * 14) * 0.1;
       shockRef.current.scale.set(s, 1, s);
-      (shockRef.current.material as THREE.MeshBasicMaterial).opacity = 0.35 + Math.sin(t * 18) * 0.15;
+      (shockRef.current.material as THREE.MeshBasicMaterial).opacity = 0.35 + Math.sin(t * 12) * 0.15;
     }
   });
 
   return (
     <group ref={flameRef} position={[0, -5.1, 0]}>
-      {/* Wide volumetric glow halo */}
-      <mesh ref={glowRef} scale={[1, 1.05, 1]}>
-        <coneGeometry args={[1.4, 7.5, 32]} />
-        <meshBasicMaterial color={COLORS.primary} transparent opacity={0.1} depthWrite={false} blending={THREE.AdditiveBlending} />
-      </mesh>
+      {/* Wide volumetric glow halo - skip on mobile */}
+      {!isMobile && (
+        <mesh ref={glowRef} scale={[1, 1.05, 1]}>
+          <coneGeometry args={[1.4, 7.5, segments]} />
+          <meshBasicMaterial color={COLORS.primary} transparent opacity={0.1} depthWrite={false} blending={THREE.AdditiveBlending} />
+        </mesh>
+      )}
       {/* Outer flame - cool blue */}
       <mesh ref={outerRef} scale={[1, 1.02, 1]}>
-        <coneGeometry args={[0.85, 6.2, 32]} />
+        <coneGeometry args={[0.85, 6.2, segments]} />
         <meshBasicMaterial color="#4b9eff" transparent opacity={0.28} depthWrite={false} blending={THREE.AdditiveBlending} />
       </mesh>
       {/* Mid flame - blue-white */}
       <mesh ref={midRef}>
-        <coneGeometry args={[0.52, 4.8, 32]} />
+        <coneGeometry args={[0.52, 4.8, segments]} />
         <meshBasicMaterial color="#9ecfff" transparent opacity={0.65} depthWrite={false} blending={THREE.AdditiveBlending} />
       </mesh>
       {/* Inner core - near-white hot */}
       <mesh ref={innerRef}>
-        <coneGeometry args={[0.24, 3.2, 24]} />
+        <coneGeometry args={[0.24, 3.2, isMobile ? 12 : 24]} />
         <meshBasicMaterial color="#ddf0ff" transparent opacity={0.95} depthWrite={false} blending={THREE.AdditiveBlending} />
       </mesh>
-      {/* Mach shock disc at nozzle exit */}
-      <mesh ref={shockRef} position={[0, 0.6, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[0.28, 0.65, 64]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={0.35} depthWrite={false} blending={THREE.AdditiveBlending} side={THREE.DoubleSide} />
-      </mesh>
+      {/* Mach shock disc at nozzle exit - skip on mobile */}
+      {!isMobile && (
+        <mesh ref={shockRef} position={[0, 0.6, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <ringGeometry args={[0.28, 0.65, 32]} />
+          <meshBasicMaterial color="#ffffff" transparent opacity={0.35} depthWrite={false} blending={THREE.AdditiveBlending} side={THREE.DoubleSide} />
+        </mesh>
+      )}
 
-      {/* Lighting */}
-      <pointLight color="#7BBBFF" intensity={12}  distance={30} decay={2} />
-      <pointLight color="#ddf0ff" intensity={6}   distance={14} decay={2} />
-      <pointLight color="#4b9eff" intensity={3}   distance={50} decay={2} position={[0, -4, 0]} />
+      {/* Lighting - reduced on mobile */}
+      <pointLight color="#7BBBFF" intensity={isMobile ? 8 : 12} distance={30} decay={2} />
+      {!isMobile && <pointLight color="#ddf0ff" intensity={6} distance={14} decay={2} />}
+      {!isMobile && <pointLight color="#4b9eff" intensity={3} distance={50} decay={2} position={[0, -4, 0]} />}
 
-      <ExhaustParticles />
+      <ExhaustParticles isMobile={isMobile} />
     </group>
   );
 }
 
 /* ---------------------- PANEL DETAIL STRIPE ---------------------- */
 
-function PanelStripe({ y, color, emissive, opacity = 1 }: { y: number; color: string; emissive?: string; opacity?: number }) {
+function PanelStripe({ y, color, emissive, opacity = 1, isMobile = false }: { y: number; color: string; emissive?: string; opacity?: number; isMobile?: boolean }) {
   return (
     <mesh position={[0, y, 0]}>
-      <cylinderGeometry args={[0.585, 0.585, 0.06, 64, 1, true]} />
+      <cylinderGeometry args={[0.585, 0.585, 0.06, isMobile ? 24 : 64, 1, true]} />
       <meshStandardMaterial
         color={color}
         metalness={0.7}
@@ -182,18 +209,19 @@ function PanelStripe({ y, color, emissive, opacity = 1 }: { y: number; color: st
 
 /* ---------------------- WINDOW PORTHOLE ---------------------- */
 
-function Porthole({ angle, y }: { angle: number; y: number }) {
+function Porthole({ angle, y, isMobile = false }: { angle: number; y: number; isMobile?: boolean }) {
   const r = 0.585;
+  const segments = isMobile ? 16 : 32;
   return (
     <group position={[Math.cos(angle) * r, y, Math.sin(angle) * r]} rotation={[0, -angle + Math.PI / 2, 0]}>
       {/* Outer ring */}
       <mesh>
-        <cylinderGeometry args={[0.1, 0.1, 0.04, 32, 1, true]} />
+        <cylinderGeometry args={[0.1, 0.1, 0.04, segments, 1, true]} />
         <meshStandardMaterial color="#c8d8e8" metalness={0.9} roughness={0.15} />
       </mesh>
       {/* Glass */}
       <mesh position={[0, 0, 0.001]}>
-        <circleGeometry args={[0.08, 32]} />
+        <circleGeometry args={[0.08, segments]} />
         <meshStandardMaterial color="#a0d0ff" metalness={0.1} roughness={0} transparent opacity={0.75} envMapIntensity={2} />
       </mesh>
     </group>
@@ -202,17 +230,30 @@ function Porthole({ angle, y }: { angle: number; y: number }) {
 
 /* ---------------------- REALISTIC ROCKET ---------------------- */
 
-function Rocket() {
+function Rocket({ isMobile }: { isMobile: boolean }) {
   const groupRef  = useRef<Group>(null);
   const flameRef  = useRef<Group>(null);
   const progress  = useRef(0);
+  const frameSkip = useRef(0);
 
   const START_Y  = -22;
   const END_Y    = 22;
   const DURATION = 7; // seconds per full pass
+  
+  // Reduced geometry segments for mobile
+  const highSeg = isMobile ? 32 : 80;
+  const midSeg = isMobile ? 24 : 64;
+  const lowSeg = isMobile ? 16 : 32;
 
   useFrame((state, delta) => {
     if (!groupRef.current) return;
+    
+    // Skip every other frame on mobile for smoother performance
+    if (isMobile) {
+      frameSkip.current++;
+      if (frameSkip.current % 2 !== 0) return;
+    }
+    
     progress.current += delta / DURATION;
     if (progress.current > 1) progress.current = 0;
 
@@ -221,8 +262,10 @@ function Rocket() {
     const eased = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 
     groupRef.current.position.y = START_Y + eased * (END_Y - START_Y);
-    groupRef.current.rotation.y += delta * 0.12;
-    state.camera.position.x = Math.sin(state.clock.elapsedTime * 0.5) * 0.06;
+    groupRef.current.rotation.y += delta * (isMobile ? 0.08 : 0.12);
+    if (!isMobile) {
+      state.camera.position.x = Math.sin(state.clock.elapsedTime * 0.5) * 0.06;
+    }
   });
 
   const metalWhite: THREE.MeshStandardMaterialParameters = {
@@ -243,41 +286,41 @@ function Rocket() {
     <group ref={groupRef}>
       {/* ── NOSE CONE (ogive profile via lathe) ─────────────── */}
       <mesh position={[0, 5.9, 0]}>
-        <coneGeometry args={[0.52, 2.6, 80]} />
+        <coneGeometry args={[0.52, 2.6, highSeg]} />
         <meshStandardMaterial {...metalWhite} />
       </mesh>
       {/* Nose tip cap */}
       <mesh position={[0, 7.2, 0]}>
-        <sphereGeometry args={[0.08, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
+        <sphereGeometry args={[0.08, lowSeg, lowSeg, 0, Math.PI * 2, 0, Math.PI / 2]} />
         <meshStandardMaterial color="#D0E8FF" metalness={0.9} roughness={0.1} />
       </mesh>
 
       {/* ── INTERSTAGE COLLAR (nose ↔ upper body) ────────────── */}
       <mesh position={[0, 4.7, 0]}>
-        <cylinderGeometry args={[0.56, 0.58, 0.25, 64]} />
+        <cylinderGeometry args={[0.56, 0.58, 0.25, midSeg]} />
         <meshStandardMaterial {...metalDark} />
       </mesh>
       {/* Riveted ring detail */}
-      <PanelStripe y={4.58}  color="#8ab4cc" />
-      <PanelStripe y={4.82}  color="#8ab4cc" />
+      <PanelStripe y={4.58} color="#8ab4cc" isMobile={isMobile} />
+      <PanelStripe y={4.82} color="#8ab4cc" isMobile={isMobile} />
 
       {/* ── UPPER BODY ──────────────────────────────────────── */}
       <mesh position={[0, 2.5, 0]}>
-        <cylinderGeometry args={[0.58, 0.58, 4.1, 80]} />
+        <cylinderGeometry args={[0.58, 0.58, 4.1, highSeg]} />
         <meshStandardMaterial {...metalWhite} />
       </mesh>
       {/* Logo band stripe */}
-      <PanelStripe y={2.8}  color={COLORS.primary} emissive={COLORS.primary} />
-      <PanelStripe y={2.6}  color={COLORS.primary} emissive={COLORS.primary} />
-      <PanelStripe y={1.4}  color={COLORS.accent}  emissive={COLORS.accent} />
+      <PanelStripe y={2.8} color={COLORS.primary} emissive={COLORS.primary} isMobile={isMobile} />
+      <PanelStripe y={2.6} color={COLORS.primary} emissive={COLORS.primary} isMobile={isMobile} />
+      <PanelStripe y={1.4} color={COLORS.accent} emissive={COLORS.accent} isMobile={isMobile} />
 
-      {/* Portholes */}
-      {[0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2].map((a, i) => (
-        <Porthole key={i} angle={a} y={2.2} />
+      {/* Portholes - reduced on mobile */}
+      {(isMobile ? [0, Math.PI] : [0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2]).map((a, i) => (
+        <Porthole key={i} angle={a} y={2.2} isMobile={isMobile} />
       ))}
 
-      {/* Panel detail lines (longitudinal seams) - thin strips */}
-      {[0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2].map((angle, i) => (
+      {/* Panel detail lines (longitudinal seams) - skip on mobile */}
+      {!isMobile && [0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2].map((angle, i) => (
         <mesh key={i} position={[Math.cos(angle) * 0.582, 2.5, Math.sin(angle) * 0.582]} rotation={[0, -angle, 0]}>
           <boxGeometry args={[0.008, 3.9, 0.005]} />
           <meshStandardMaterial color="#a0b8cc" metalness={0.6} roughness={0.3} />
@@ -286,11 +329,11 @@ function Rocket() {
 
       {/* ── MID INTERSTAGE ──────────────────────────────────── */}
       <mesh position={[0, 0.35, 0]}>
-        <cylinderGeometry args={[0.60, 0.62, 0.35, 64]} />
+        <cylinderGeometry args={[0.60, 0.62, 0.35, midSeg]} />
         <meshStandardMaterial {...metalDark} />
       </mesh>
-      <PanelStripe y={0.17}  color="#7a9ab0" />
-      <PanelStripe y={0.53}  color="#7a9ab0" />
+      <PanelStripe y={0.17} color="#7a9ab0" isMobile={isMobile} />
+      <PanelStripe y={0.53} color="#7a9ab0" isMobile={isMobile} />
 
       {/* ── LOWER BODY (fuel tank section) ──────────────────── */}
       <mesh position={[0, -1.6, 0]}>
@@ -377,27 +420,30 @@ function Rocket() {
         </group>
       ))}
 
-      <RocketFlame flameRef={flameRef} />
+      <RocketFlame flameRef={flameRef} isMobile={isMobile} />
     </group>
   );
 }
 
 /* ---------------------- SCENE ---------------------- */
 
-function Scene() {
+function Scene({ isMobile }: { isMobile: boolean }) {
   return (
     <>
       <ambientLight intensity={0.25} />
-      <directionalLight position={[8, 12, 6]} intensity={2.2} castShadow />
-      <directionalLight position={[-6, 4, -4]} intensity={0.6} color="#a0c8ff" />
-      <Stars radius={220} depth={90} count={6000} factor={4.5} fade speed={0.5} />
+      <directionalLight position={[8, 12, 6]} intensity={2.2} castShadow={!isMobile} />
+      {!isMobile && <directionalLight position={[-6, 4, -4]} intensity={0.6} color="#a0c8ff" />}
+      <Stars radius={220} depth={90} count={isMobile ? 1500 : 6000} factor={4.5} fade speed={0.5} />
       <Environment preset="night" />
-      <Rocket />
+      <Rocket isMobile={isMobile} />
 
-      <EffectComposer>
-        <Bloom intensity={1.8} luminanceThreshold={0.18} luminanceSmoothing={0.92} mipmapBlur />
-        <ChromaticAberration offset={new Vector2(0.0008, 0.0008)} />
-      </EffectComposer>
+      {/* Disable post-processing on mobile for better performance */}
+      {!isMobile && (
+        <EffectComposer>
+          <Bloom intensity={1.8} luminanceThreshold={0.18} luminanceSmoothing={0.92} mipmapBlur />
+          <ChromaticAberration offset={new Vector2(0.0008, 0.0008)} />
+        </EffectComposer>
+      )}
     </>
   );
 }
@@ -405,12 +451,23 @@ function Scene() {
 /* ---------------------- HERO ---------------------- */
 
 export function Hero3D() {
+  const isMobile = useIsMobile();
+  
   return (
     <div className="absolute inset-0">
-      <Canvas gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.1 }}>
+      <Canvas 
+        gl={{ 
+          antialias: !isMobile, 
+          toneMapping: THREE.ACESFilmicToneMapping, 
+          toneMappingExposure: 1.1,
+          powerPreference: isMobile ? "low-power" : "high-performance",
+        }}
+        dpr={isMobile ? [1, 1.5] : [1, 2]}
+        performance={{ min: 0.5 }}
+      >
         <PerspectiveCamera makeDefault position={[0, 0, 16]} fov={50} />
         <Suspense fallback={null}>
-          <Scene />
+          <Scene isMobile={isMobile} />
         </Suspense>
       </Canvas>
     </div>
