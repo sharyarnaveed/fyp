@@ -17,6 +17,7 @@ import {
   BookOpen,
   Atom,
   FlaskConical,
+  type LucideIcon,
 } from "lucide-react";
 import {
   loadQuizData,
@@ -40,7 +41,7 @@ const SUBJECT_LABELS: Record<SubjectKey, string> = {
   physics: "Physics",
 };
 
-const SUBJECT_ICONS: Record<SubjectKey, React.ElementType> = {
+const SUBJECT_ICONS: Record<SubjectKey, LucideIcon> = {
   biology: BookOpen,
   chemistry: FlaskConical,
   physics: Atom,
@@ -461,7 +462,7 @@ export default function QuizPage() {
 
               if (count === 0 && !isActive && !isLoading) return null;
 
-              const Icon = SUBJECT_ICONS[sub];
+              const Icon = SUBJECT_ICONS[sub] as React.FC<{ className?: string }>;
               const colors = SUBJECT_COLORS[sub];
 
               return (
