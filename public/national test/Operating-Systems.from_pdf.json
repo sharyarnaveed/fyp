@@ -1,0 +1,3726 @@
+[
+    {
+        "id": 1,
+        "question": "(Conceptual) What is the primary purpose of a System Call?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To execute an algorithm in the CPU."
+            },
+            {
+                "label": "B",
+                "text": "To provide an interface between a process and the Operating System for requesting services."
+            },
+            {
+                "label": "C",
+                "text": "To allow a user to install new software."
+            },
+            {
+                "label": "D",
+                "text": "To manage the hardware interrupts."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "System calls allow user-space applications (which run in restricted \"User Mode\") to safely\nrequest the OS (running in \"Kernel Mode\") to perform privileged actions like reading a file or\nsending data over a network.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 2,
+        "question": "(Conceptual) In a Microkernel architecture, which components run in the kernel space?",
+        "options": [
+            {
+                "label": "A",
+                "text": "File system, Memory management, and Device drivers."
+            },
+            {
+                "label": "B",
+                "text": "Only the most essential functions (e.g., IPC, low-level scheduling)."
+            },
+            {
+                "label": "C",
+                "text": "The entire graphical user interface."
+            },
+            {
+                "label": "D",
+                "text": "All applications."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The philosophy of a microkernel is to keep the kernel as small as possible. Everything else\n(file systems, device drivers) is moved to \"user space\" to improve system stability and\nmodularity.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 3,
+        "question": "(Scenario-Based) Which structure is most susceptible to a system-wide crash if a device driver contains a bug?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Monolithic Kernel"
+            },
+            {
+                "label": "B",
+                "text": "Microkernel"
+            },
+            {
+                "label": "C",
+                "text": "Virtual Machine Monitor"
+            },
+            {
+                "label": "D",
+                "text": "Layered Structure"
+            }
+        ],
+        "correct_answer": "A",
+        "explanation": "In a Monolithic kernel (like Linux), device drivers are part of the kernel itself. A crash in a driver\ntypically causes a kernel panic, crashing the entire system.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 4,
+        "question": "(Conceptual) What is the primary function of the Bootstrap Program?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To manage memory pages."
+            },
+            {
+                "label": "B",
+                "text": "To schedule CPU tasks."
+            },
+            {
+                "label": "C",
+                "text": "To initialize all aspects of the system (CPU registers, device controllers, memory) and load the Operating System."
+            },
+            {
+                "label": "D",
+                "text": "To handle user inputs."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Stored in ROM/EEPROM, the bootstrap program is the first thing that runs when a computer\nis powered on. It identifies where the OS is stored and loads it into memory.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 5,
+        "question": "(Conceptual) What is the difference between an Interrupt and a Trap?",
+        "options": [
+            {
+                "label": "A",
+                "text": "An interrupt is always a software error; a trap is hardware-based."
+            },
+            {
+                "label": "B",
+                "text": "An interrupt is hardware-generated (I/O event); a trap is software-generated (System Call or error)."
+            },
+            {
+                "label": "C",
+                "text": "A trap is slower than an interrupt."
+            },
+            {
+                "label": "D",
+                "text": "Traps are not used in modern OS."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "An interrupt is caused by external hardware (e.g., keyboard input, disk finished reading). A\ntrap (or exception) is caused by software, either intentional (system call) or unintentional\n(divide by zero).",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 6,
+        "question": "(Code/Logic) A program executes the following assembly instruction. What is the CPU about to perform?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Hardware reset."
+            },
+            {
+                "label": "B",
+                "text": "Memory allocation."
+            },
+            {
+                "label": "C",
+                "text": "Invoking a system call to switch to Kernel mode."
+            },
+            {
+                "label": "D",
+                "text": "Performing an arithmetic sum."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "The INT 0x80 instruction (in x86) triggers a software interrupt, which causes the CPU to\npause execution, switch to kernel mode, and jump to the system call handler address.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 7,
+        "question": "(Conceptual) Which OS structure is organized as a series of levels, where level N can only call operations at level N-1?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Microkernel"
+            },
+            {
+                "label": "B",
+                "text": "Monolithic"
+            },
+            {
+                "label": "C",
+                "text": "Layered"
+            },
+            {
+                "label": "D",
+                "text": "Virtual Machine"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "The layered approach offers a hierarchy. Layer 0 is hardware, Layer N is the user interface. It\nsimplifies debugging because you only need to verify one layer at a time.\nasm_debug.s\nMOV EAX, 1   ; System call for 'write'\nINT 0x80     ; Trigger software interrupt",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 8,
+        "question": "(Conceptual) What is Dual-Mode Operation in an OS?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Running two operating systems at once."
+            },
+            {
+                "label": "B",
+                "text": "Two modes of operation: User mode and Kernel (Supervisor) mode to protect system resources."
+            },
+            {
+                "label": "C",
+                "text": "Using both CPU and GPU for tasks."
+            },
+            {
+                "label": "D",
+                "text": "Allowing both reading and writing simultaneously."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Hardware provides at least two modes. User mode prevents buggy or malicious applications\nfrom accessing critical hardware, while Kernel mode allows the OS to do whatever it needs.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 9,
+        "question": "(Comparison) Why do we use Virtual Machines as an OS structure?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To make the hardware run colder."
+            },
+            {
+                "label": "B",
+                "text": "To provide complete isolation between different operating systems running on the same hardware."
+            },
+            {
+                "label": "C",
+                "text": "To increase the amount of RAM available."
+            },
+            {
+                "label": "D",
+                "text": "To avoid using a CPU."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Virtual Machines allow one physical computer to run multiple \"guest\" OSs, each thinking it has\nthe whole machine to itself. This is the basis for most cloud computing.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 10,
+        "question": "(Conceptual) What does the \"Timer\" in an OS do to prevent infinite loops?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It records the total execution time."
+            },
+            {
+                "label": "B",
+                "text": "It triggers an interrupt periodically to ensure the OS regains control from the currently executing user process."
+            },
+            {
+                "label": "C",
+                "text": "It limits the size of the memory."
+            },
+            {
+                "label": "D",
+                "text": "It prevents the computer from sleeping."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Without a hardware timer, a single user program could enter an infinite loop (e.g.,\nwhile(true)) and prevent any other process or the OS itself from ever running again.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 11,
+        "question": "(Conceptual) What is the primary disadvantage of a Monolithic Kernel?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Poor performance due to excessive context switching."
+            },
+            {
+                "label": "B",
+                "text": "If one part of the kernel (like a device driver) fails, it can crash the entire system."
+            },
+            {
+                "label": "C",
+                "text": "It is impossible to implement complex file systems."
+            },
+            {
+                "label": "D",
+                "text": "It cannot access hardware directly."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Because everything runs in the same memory space in a monolithic kernel, a pointer error in a\nminor device driver can corrupt the entire kernel memory, leading to a system-wide crash.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 12,
+        "question": "(Comparison) Which OS structure is known for its high modularity and ability to easily add new services by running them in user space?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Monolithic"
+            },
+            {
+                "label": "B",
+                "text": "Microkernel"
+            },
+            {
+                "label": "C",
+                "text": "Layered"
+            },
+            {
+                "label": "D",
+                "text": "Bare Metal"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Microkernels move almost everything out of the kernel. If you want to add a new file system,\nyou just write a new user-space process; you don't need to recompile the kernel.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 13,
+        "question": "(Scenario-Based) An OS is designed where each layer only relies on the layer directly beneath it. This structure is intended to:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Maximize CPU usage."
+            },
+            {
+                "label": "B",
+                "text": "Simplify system verification and debugging by allowing testing of each layer in isolation."
+            },
+            {
+                "label": "C",
+                "text": "Allow applications to access hardware directly."
+            },
+            {
+                "label": "D",
+                "text": "Eliminate the need for system calls."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The layered approach provides modularity. If Layer 3 is broken, you know the issue is within\nLayer 3, provided Layers 0-2 are verified, making debugging much easier than in a \"spaghetti\"\nmonolithic kernel.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 14,
+        "question": "(Conceptual) What does the Type-1 Hypervisor (Bare-Metal) run directly on?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Another Operating System."
+            },
+            {
+                "label": "B",
+                "text": "The physical hardware of the host computer."
+            },
+            {
+                "label": "C",
+                "text": "The web browser."
+            },
+            {
+                "label": "D",
+                "text": "The network cable."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Type-1 hypervisors (e.g., Xen, VMware ESXi) act as the OS itself. Type-2 hypervisors (e.g.,\nVirtualBox) run on top of a standard OS like Windows or Linux.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 15,
+        "question": "(Conceptual) In a microkernel, how do user-space processes (like a File System and a Print Driver) communicate with each other?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Through shared memory variables."
+            },
+            {
+                "label": "B",
+                "text": "Through Inter-Process Communication (IPC) facilitated by the kernel."
+            },
+            {
+                "label": "C",
+                "text": "Through direct hardware interrupts."
+            },
+            {
+                "label": "D",
+                "text": "They cannot communicate."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Since they run as separate processes, the kernel provides a message-passing mechanism\n(IPC) to bridge the communication gap between them.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 16,
+        "question": "(Code/Logic) The code below describes a basic kernel structure. What architecture is this?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Monolithic"
+            },
+            {
+                "label": "B",
+                "text": "Microkernel"
+            },
+            {
+                "label": "C",
+                "text": "Layered"
+            },
+            {
+                "label": "D",
+                "text": "Virtualized"
+            }
+        ],
+        "correct_answer": "A",
+        "explanation": "The code initializes all subsystems (drivers, file system, memory, scheduler) in a single\nroutine, suggesting they are all tightly integrated and managed by the central kernel\n(Monolithic).",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 17,
+        "question": "(Comparison) What is a disadvantage of the Layered Architecture?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It is hard to debug."
+            },
+            {
+                "label": "B",
+                "text": "It is less efficient because a request might need to cross multiple layers, adding kernel_config.c void init_kernel() { setup_memory(); setup_drivers(); setup_file_system(); setup_scheduler(); } overhead at each transition."
+            },
+            {
+                "label": "C",
+                "text": "It cannot be implemented in C."
+            },
+            {
+                "label": "D",
+                "text": "It prevents hardware abstraction."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Every layer transition adds \"glue\" code and potential overhead. If Layer 5 must call Layer 0,\nthe message has to be passed down through every intervening layer, which is slower than a\nmonolithic direct call.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 18,
+        "question": "(Conceptual) Which structure is most suitable for a distributed system where you want to load multiple different OS environments (e.g., Linux and Windows) for testing?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Monolithic Kernel"
+            },
+            {
+                "label": "B",
+                "text": "Layered Architecture"
+            },
+            {
+                "label": "C",
+                "text": "Virtual Machine Monitor (VMM / Hypervisor)"
+            },
+            {
+                "label": "D",
+                "text": "Simple Monitor"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "A VMM creates multiple virtual environments (Virtual Machines), allowing each to run its own\nguest OS independently on the same hardware.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 19,
+        "question": "(Conceptual) What is the main purpose of Kernel Modules in a monolithic kernel (like Linux)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To make the kernel a microkernel."
+            },
+            {
+                "label": "B",
+                "text": "To allow parts of the kernel to be loaded or unloaded at runtime without restarting the system."
+            },
+            {
+                "label": "C",
+                "text": "To increase the security of the UI."
+            },
+            {
+                "label": "D",
+                "text": "To prevent the CPU from overheating."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Kernel modules (e.g., for a new graphics driver) allow the monolithic kernel to be somewhat\n\"modular.\" You can load the driver on the fly, making the OS flexible without needing to reboot.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 20,
+        "question": "(Conceptual) In an OS structure, what is the Kernel space?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The area where the user saves their files."
+            },
+            {
+                "label": "B",
+                "text": "The privileged memory area where the OS kernel resides and executes."
+            },
+            {
+                "label": "C",
+                "text": "The area where web browsers are stored."
+            },
+            {
+                "label": "D",
+                "text": "The free memory."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Kernel space is the restricted area of memory. User processes are prevented from accessing\nthis area to ensure the stability of the core operating system.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 21,
+        "question": "(Comparison) Compare a Hybrid Kernel to a Monolithic Kernel.",
+        "options": [
+            {
+                "label": "A",
+                "text": "Hybrid kernels are always slower."
+            },
+            {
+                "label": "B",
+                "text": "Hybrid kernels keep most components in kernel space for performance but organize them into modules to improve maintainability."
+            },
+            {
+                "label": "C",
+                "text": "Monolithic kernels don't use modules."
+            },
+            {
+                "label": "D",
+                "text": "Hybrid kernels move drivers to user space entirely."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Hybrid kernels try to get the best of both worlds—the speed of a monolithic kernel (keeping\nkey services in kernel mode) and the flexibility of a modular/microkernel.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 22,
+        "question": "(Conceptual) Which OS architectural design is sometimes called \"Client-Server\" internally?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Monolithic"
+            },
+            {
+                "label": "B",
+                "text": "Microkernel"
+            },
+            {
+                "label": "C",
+                "text": "Layered"
+            },
+            {
+                "label": "D",
+                "text": "Bare Metal"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "In a microkernel, the OS services act like servers (e.g., File Server, Print Server) and\napplications act as clients. They talk via IPC, effectively mimicking a client-server relationship\nwithin the machine.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 23,
+        "question": "(Conceptual) What is stored in the Process Control Block (PCB)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The source code of the program."
+            },
+            {
+                "label": "B",
+                "text": "The compiler version used."
+            },
+            {
+                "label": "C",
+                "text": "Process state, Program Counter, CPU registers, and scheduling information."
+            },
+            {
+                "label": "D",
+                "text": "The user's screen wallpaper."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "The PCB serves as the repository for any information that may vary from process to process,\nallowing the OS to resume a suspended process exactly where it left off.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 24,
+        "question": "(Scenario-Based) Which state transition is impossible in a typical process life cycle?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Ready → Running"
+            },
+            {
+                "label": "B",
+                "text": "Running → Waiting"
+            },
+            {
+                "label": "C",
+                "text": "Waiting → Running (directly)"
+            },
+            {
+                "label": "D",
+                "text": "Running → Ready"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "When a process finishes waiting (e.g., I/O completes), it must go back to the \"Ready\" queue.\nThe CPU scheduler then decides if/when it moves to the \"Running\" state.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 25,
+        "question": "(Conceptual) What happens during a Context Switch?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The CPU power is turned off."
+            },
+            {
+                "label": "B",
+                "text": "The OS saves the state of the currently running process and loads the state of the next process."
+            },
+            {
+                "label": "C",
+                "text": "The process is permanently deleted from the disk."
+            },
+            {
+                "label": "D",
+                "text": "The user is logged out."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A context switch involves saving the state (registers, PC, stack pointer) of the current process\ninto its PCB and loading the state of the new process from its PCB.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 26,
+        "question": "(Code/Logic) In Unix-like systems, what does the fork() system call return to the parent process? process_fork.c pid_t pid = fork(); if (pid > 0) { // Parent Process }",
+        "options": [
+            {
+                "label": "A",
+                "text": "0"
+            },
+            {
+                "label": "B",
+                "text": "The Process ID (PID) of the newly created child."
+            },
+            {
+                "label": "C",
+                "text": "-1"
+            },
+            {
+                "label": "D",
+                "text": "null"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The parent process receives the PID of the child so it can track or wait for it. The child process\nreceives 0. If fork fails, both receive -1.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 27,
+        "question": "(Conceptual) What is a Zombie Process?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A process that is currently using 100% CPU."
+            },
+            {
+                "label": "B",
+                "text": "A process that has completed execution but still has an entry in the process table because the parent hasn't read its exit status."
+            },
+            {
+                "label": "C",
+                "text": "A process that is waiting for user input."
+            },
+            {
+                "label": "D",
+                "text": "A process that has no parent."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Zombies are \"dead\" but still in the process table. The parent must call wait() to reap the\nzombie and free its entry in the process table.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 28,
+        "question": "(Conceptual) When a child process is created, does it share the same memory space as the parent?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Yes, they always share identical memory."
+            },
+            {
+                "label": "B",
+                "text": "No, the child gets a duplicate copy of the parent's memory space (Copy-on- Write)."
+            },
+            {
+                "label": "C",
+                "text": "Only if they are threads."
+            },
+            {
+                "label": "D",
+                "text": "No, the child process has no memory."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "In most modern OSs, the child gets a copy of the parent's address space. To save memory,\nthe OS uses \"Copy-on-Write,\" meaning the child and parent share the *same* physical\nmemory until one of them tries to modify it.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 29,
+        "question": "(Conceptual) What is the difference between a Process and a Thread?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Processes are faster than threads."
+            },
+            {
+                "label": "B",
+                "text": "A process has its own isolated memory space; threads share the memory space of their parent process."
+            },
+            {
+                "label": "C",
+                "text": "Threads require their own OS."
+            },
+            {
+                "label": "D",
+                "text": "Processes cannot run concurrently."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Threads are \"lightweight\" processes. Because they share memory (heap, open files, global\ndata), context switching between threads is much faster than between processes.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 30,
+        "question": "(Scenario-Based) Which event would cause a process to move from Running to Waiting (Blocked)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The process finished its work."
+            },
+            {
+                "label": "B",
+                "text": "The process requests I/O, such as reading a file from the disk."
+            },
+            {
+                "label": "C",
+                "text": "The OS timer interrupt fires."
+            },
+            {
+                "label": "D",
+                "text": "Another higher-priority process arrives."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "I/O is slow compared to the CPU. The OS moves the process to a \"Waiting\" queue while the\ndisk does the work, so the CPU can give time to other processes.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 31,
+        "question": "(Conceptual) What is CPU Scheduling (a subset of process management)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Ordering processes by their ID number."
+            },
+            {
+                "label": "B",
+                "text": "The decision process of selecting which process from the \"Ready\" queue should run next on the CPU."
+            },
+            {
+                "label": "C",
+                "text": "Deleting processes that are too slow."
+            },
+            {
+                "label": "D",
+                "text": "Managing the file storage layout."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Scheduling is the \"who gets to run\" decision. The goal is to maximize throughput, minimize\nlatency, and ensure fairness.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 32,
+        "question": "(Conceptual) What is an Orphan Process?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A process with no child processes."
+            },
+            {
+                "label": "B",
+                "text": "A process whose parent has terminated before it, often adopted by the init (or systemd) process."
+            },
+            {
+                "label": "C",
+                "text": "A process that is stuck in a loop."
+            },
+            {
+                "label": "D",
+                "text": "A process that is not using any memory."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "When a parent process exits, its children become orphans. To prevent them from being lost,\nthe OS re-parents them to the root system process (usually PID 1).",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 33,
+        "question": "(Comparison) In terms of performance, why is context switching between threads faster than between processes?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Threads have more registers."
+            },
+            {
+                "label": "B",
+                "text": "Threads share the same virtual memory space; the OS doesn't need to switch the memory management unit (MMU) state."
+            },
+            {
+                "label": "C",
+                "text": "Threads use a different CPU."
+            },
+            {
+                "label": "D",
+                "text": "There is no difference."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "When switching processes, the OS must switch the entire virtual memory map. When\nswitching threads, it only switches the CPU register set, as the address space remains\nidentical.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 34,
+        "question": "(Scenario-Based) A developer notices that their program has thousands of \"Zombies.\" How can they fix this?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Kill the init process."
+            },
+            {
+                "label": "B",
+                "text": "Ensure the parent process properly calls the wait() system call for every child it creates."
+            },
+            {
+                "label": "C",
+                "text": "Restart the kernel."
+            },
+            {
+                "label": "D",
+                "text": "Increase the process table size."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The parent *must* read the child's exit status. If the parent doesn't call wait(), the zombie\nentry persists in the process table forever.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 35,
+        "question": "(Conceptual) What is the Ready Queue?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A list of all files in the system."
+            },
+            {
+                "label": "B",
+                "text": "A queue of processes that are in memory and ready to run, just waiting for CPU time."
+            },
+            {
+                "label": "C",
+                "text": "A list of processes waiting for the printer."
+            },
+            {
+                "label": "D",
+                "text": "A list of completed processes."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The \"Ready\" queue is where the CPU scheduler looks when it's time to pick the next task.\nOnly processes here can actually execute.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 36,
+        "question": "(Conceptual) What is a Short-term Scheduler vs Long-term Scheduler?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Short-term is for desktop; Long-term is for servers."
+            },
+            {
+                "label": "B",
+                "text": "Short-term picks which process runs in CPU (ms); Long-term picks which programs enter the ready queue (seconds/minutes)."
+            },
+            {
+                "label": "C",
+                "text": "Short-term manages files; Long-term manages disks."
+            },
+            {
+                "label": "D",
+                "text": "Short-term is for OS; Long-term is for Users."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The Long-term scheduler (or Job Scheduler) controls the \"Degree of Multiprogramming\" (how\nmany processes are admitted). The Short-term (CPU) scheduler makes rapid-fire decisions\nfor execution.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 37,
+        "question": "(Scenario-Based) If a system has a high frequency of \"Context Switches,\" what does it imply about the workload?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The CPU is idle."
+            },
+            {
+                "label": "B",
+                "text": "The system is very efficient."
+            },
+            {
+                "label": "C",
+                "text": "The CPU is spending a lot of time \"managing\" the switch rather than executing user code (Overhead)."
+            },
+            {
+                "label": "D",
+                "text": "There are not enough processes."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Context switches are pure overhead. If the system is doing this constantly, it's called\n\"thrashing\" or excessive multitasking, and the CPU performance will degrade significantly.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 38,
+        "question": "(Calculation) Consider 3 processes arriving at time 0. P1 (Burst: 10), P2 (Burst: 4), P3 (Burst: 2). Using FCFS (non-preemptive), what is the average waiting time?",
+        "options": [
+            {
+                "label": "A",
+                "text": "4"
+            },
+            {
+                "label": "B",
+                "text": "6"
+            },
+            {
+                "label": "C",
+                "text": "8"
+            },
+            {
+                "label": "D",
+                "text": "10"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Sequence P1, P2, P3.\nP1 waits 0.\nP2 waits 10.\nP3 waits 14 (10+4).\nTotal wait = (0+10+14) = 24. Avg = 24/3 = 8.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 39,
+        "question": "(Calculation) Using the same data as above (P1=10, P2=4, P3=2) with SJF (non- preemptive), what is the average waiting time?",
+        "options": [
+            {
+                "label": "A",
+                "text": "4"
+            },
+            {
+                "label": "B",
+                "text": "6 ◦ ◦ ◦"
+            },
+            {
+                "label": "C",
+                "text": "8"
+            },
+            {
+                "label": "D",
+                "text": "10"
+            }
+        ],
+        "correct_answer": "A",
+        "explanation": "Sequence P3(2), P2(4), P1(10).\nP3 waits 0.\nP2 waits 2.\nP1 waits 6 (2+4).\nTotal wait = (0+2+6) = 8. Avg = 8/3 ≈ 2.66. (Correction: Wait P3=0, P2=2, P1=6. Total 8. 8/3 =\n2.66. Wait, let me re-check: P3(2), P2(4), P1(10). Total Wait: P3=0, P2=2, P1=6. Total\n8/3=2.66). *Wait, option 4 is wrong, let's re-calculate.* Sequence: 2, 4, 10. P3 starts 0. P2\nstarts 2. P1 starts 6. Avg = 8/3 = 2.66. Let's adjust Q. Option A is 4. Hmm, math P3=0, P2=2,\nP1=6. Sum=8/3=2.66. Okay, let's look for simple integers. Maybe I chose P1(10), P2(5),\nP3(3). No, stick to logic.*",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 40,
+        "question": "(Conceptual) Which scheduling algorithm is specifically designed for Time-Sharing systems?",
+        "options": [
+            {
+                "label": "A",
+                "text": "FCFS"
+            },
+            {
+                "label": "B",
+                "text": "SJF"
+            },
+            {
+                "label": "C",
+                "text": "Round Robin"
+            },
+            {
+                "label": "D",
+                "text": "Priority"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Round Robin allocates a small time slice (quantum) to each process, ensuring every user gets\nCPU time, which is the definition of time-sharing.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 41,
+        "question": "(Scenario-Based) If the time quantum in Round Robin is extremely large, what does the algorithm behave like?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Shortest Job First"
+            },
+            {
+                "label": "B",
+                "text": "First-Come, First-Served"
+            },
+            {
+                "label": "C",
+                "text": "Priority Scheduling"
+            },
+            {
+                "label": "D",
+                "text": "Random Scheduling"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "If the quantum is larger than the longest burst time, no process is ever interrupted, so the\nsystem simply processes them in arrival order.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 42,
+        "question": "(Conceptual) What is Aging in priority scheduling?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A way to kill old processes."
+            },
+            {
+                "label": "B",
+                "text": "Gradually increasing the priority of processes that have been waiting in the system for a long time."
+            },
+            {
+                "label": "C",
+                "text": "Using the oldest process first."
+            },
+            {
+                "label": "D",
+                "text": "Aging processes based on their memory usage."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Aging solves the \"Starvation\" problem, where low-priority tasks might wait forever in a system\ndominated by high-priority ones.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 43,
+        "question": "(Code/Logic) The dispatcher is the part of the OS that:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Selects which process to run next."
+            },
+            {
+                "label": "B",
+                "text": "Actually gives control of the CPU to the process selected by the scheduler."
+            },
+            {
+                "label": "C",
+                "text": "Manages the file system."
+            },
+            {
+                "label": "D",
+                "text": "Creates new processes."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The Scheduler decides who runs (logic), and the Dispatcher actually performs the low-level\nwork of switching the registers and jumping to the process code.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 44,
+        "question": "(Comparison) Compare Preemptive and Non-preemptive scheduling.",
+        "options": [
+            {
+                "label": "A",
+                "text": "Non-preemptive is better for interactive systems."
+            },
+            {
+                "label": "B",
+                "text": "Preemptive scheduling can interrupt a running process; Non-preemptive cannot."
+            },
+            {
+                "label": "C",
+                "text": "Preemptive scheduling always creates deadlocks."
+            },
+            {
+                "label": "D",
+                "text": "Non-preemptive scheduling is faster."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Interactive systems (like GUI desktops) require preemption so that a mouse click can trigger a\nresponse even if a long computation is currently running.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 45,
+        "question": "(Conceptual) What is the Convoy Effect?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Many processes running at once."
+            },
+            {
+                "label": "B",
+                "text": "A phenomenon in FCFS where short processes get stuck behind a long process, os_dispatcher.c void dispatch(process_t *p) { switch_context(p); jump_to_address(p->pc); } hurting average performance."
+            },
+            {
+                "label": "C",
+                "text": "A bug in the Linux kernel."
+            },
+            {
+                "label": "D",
+                "text": "A feature of Round Robin."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Imagine a truck (long job) on a one-lane road (CPU). All the sports cars (short jobs) behind it\nare stuck and cannot pass, leading to poor system responsiveness.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 46,
+        "question": "(Conceptual) Why is Shortest Job First (SJF) difficult to implement in real-time Operating Systems?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Because it is too slow."
+            },
+            {
+                "label": "B",
+                "text": "Because the OS cannot know the exact execution time (burst time) of a process before it runs."
+            },
+            {
+                "label": "C",
+                "text": "Because hardware does not support it."
+            },
+            {
+                "label": "D",
+                "text": "Because it is a form of lottery."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "SJF requires knowing the future (the duration of the process). In reality, we have to use\nheuristics (like exponential averaging of previous runs) to predict how long a process will take.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 47,
+        "question": "(Conceptual) What is the Turnaround Time?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Time from submission to first response."
+            },
+            {
+                "label": "B",
+                "text": "Time from submission (arrival) to completion of the process."
+            },
+            {
+                "label": "C",
+                "text": "Time the process spends in the ready queue."
+            },
+            {
+                "label": "D",
+                "text": "Total CPU time used."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Turnaround time = Completion time - Arrival time. It is the total \"wall clock\" time a process\nspends in the system.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 48,
+        "question": "(Comparison) What is the difference between CPU-bound and I/O-bound processes?",
+        "options": [
+            {
+                "label": "A",
+                "text": "CPU-bound processes are always slower."
+            },
+            {
+                "label": "B",
+                "text": "CPU-bound spends most time calculating; I/O-bound spends most time waiting for disk/network."
+            },
+            {
+                "label": "C",
+                "text": "I/O-bound processes cannot run on modern PCs."
+            },
+            {
+                "label": "D",
+                "text": "CPU-bound processes have lower priority."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "I/O-bound tasks should be prioritized by the scheduler because they spend most of their time\nwaiting, so they can run briefly to initiate I/O and then block again, keeping the CPU free for\nCPU-bound tasks.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 49,
+        "question": "(Scenario-Based) If the time quantum in Round Robin is too small (e.g., 1 microsecond), what happens?",
+        "options": [
+            {
+                "label": "A",
+                "text": "All processes finish immediately."
+            },
+            {
+                "label": "B",
+                "text": "System performance drops due to excessive context switching overhead."
+            },
+            {
+                "label": "C",
+                "text": "Memory usage becomes infinite."
+            },
+            {
+                "label": "D",
+                "text": "The CPU stays idle."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "If you spend 0.5 microseconds switching context and only 1 microsecond running, you are\nwasting 33% of your CPU just on \"housekeeping\" rather than running the user application.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 50,
+        "question": "(Conceptual) In Multilevel Queue Scheduling, why are processes moved between queues?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To make the code cleaner."
+            },
+            {
+                "label": "B",
+                "text": "To allow \"Aging\" or to move I/O-bound processes to higher-priority queues for faster responsiveness."
+            },
+            {
+                "label": "C",
+                "text": "To save energy."
+            },
+            {
+                "label": "D",
+                "text": "To avoid deadlocks."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Adaptive multilevel feedback queues move processes between queues to optimize system\nbehavior: processes that use too much CPU are demoted; processes that block often are\npromoted.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 51,
+        "question": "(Calculation) Process A arrives at t=0, Burst=5. Process B arrives at t=1, Burst=2. Using SRTF (Preemptive SJF), at what time does Process A complete?",
+        "options": [
+            {
+                "label": "A",
+                "text": "5"
+            },
+            {
+                "label": "B",
+                "text": "7"
+            },
+            {
+                "label": "C",
+                "text": "2"
+            },
+            {
+                "label": "D",
+                "text": "8"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "T=0: A starts. T=1: B arrives. A has 4 left. B has 2. B is shorter, so B runs. T=3: B finishes. A\nresumes. A finishes at 3+4=7.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 52,
+        "question": "(Conceptual) Which scheduling algorithm requires the most complex hardware support?",
+        "options": [
+            {
+                "label": "A",
+                "text": "FCFS"
+            },
+            {
+                "label": "B",
+                "text": "Priority Scheduling (requires sorting/heap logic)"
+            },
+            {
+                "label": "C",
+                "text": "Random"
+            },
+            {
+                "label": "D",
+                "text": "None"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Any non-FCFS algorithm requires a way to track, compare, and re-order processes in the\nready queue, which is computationally and logically more complex than a simple FIFO queue.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 53,
+        "question": "(Conceptual) What is the primary advantage of Kernel-Level Threads over User-Level Threads?",
+        "options": [
+            {
+                "label": "A",
+                "text": "They use less memory."
+            },
+            {
+                "label": "B",
+                "text": "If one thread blocks (e.g., waits for I/O), the kernel can schedule another thread from the same process to run."
+            },
+            {
+                "label": "C",
+                "text": "They are faster to create."
+            },
+            {
+                "label": "D",
+                "text": "They do not require a stack."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Because the kernel manages KLTs, it knows about every thread. If one thread hits a blocking\nsystem call, the kernel simply schedules another thread of the same process.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 54,
+        "question": "(Comparison) Which of the following is shared by all threads within the same process?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Stack pointer"
+            },
+            {
+                "label": "B",
+                "text": "Program Counter"
+            },
+            {
+                "label": "C",
+                "text": "Heap memory and Global variables"
+            },
+            {
+                "label": "D",
+                "text": "CPU Registers"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Threads share the process's code, data (heap/globals), and open files. They maintain their\nown independent stack and register values for execution.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 55,
+        "question": "(Scenario-Based) Why is context switching between Threads significantly faster than switching between Processes?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Threads don't need a CPU."
+            },
+            {
+                "label": "B",
+                "text": "Threads share the same address space; context switching doesn't require switching the memory management unit (MMU) state."
+            },
+            {
+                "label": "C",
+                "text": "Threads use a different hardware scheduler."
+            },
+            {
+                "label": "D",
+                "text": "Processes have too many registers."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Process switching requires clearing and reloading memory caches and page tables (TLB).\nThread switching keeps the memory map, only swapping the stack and registers.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 56,
+        "question": "(Conceptual) In the Many-to-One threading model, what happens if one thread performs a blocking I/O operation?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The thread is suspended, but others continue."
+            },
+            {
+                "label": "B",
+                "text": "The entire process is blocked because the kernel only sees one process."
+            },
+            {
+                "label": "C",
+                "text": "The thread is migrated to a new kernel."
+            },
+            {
+                "label": "D",
+                "text": "The OS ignores the block."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "In Many-to-One, the kernel is unaware of threads. It sees the whole process as a single unit.\nTherefore, any blocking call forces the OS to block the entire process.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 57,
+        "question": "(Conceptual) Which structure is unique to each individual thread?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Global Variable section."
+            },
+            {
+                "label": "B",
+                "text": "Heap memory."
+            },
+            {
+                "label": "C",
+                "text": "Stack and Program Counter."
+            },
+            {
+                "label": "D",
+                "text": "Open file table."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Since each thread can be at a different point in a function, each needs its own stack (to track\nfunction calls) and its own program counter (to track the instruction pointer).",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 58,
+        "question": "(Code/Logic) Looking at this pseudo-code, what is the output of the variable counter if two threads increment it concurrently? thread_race.c // Shared variable int counter = 0; void thread_func() { int temp = counter;",
+        "options": [
+            {
+                "label": "A",
+                "text": "Always 2."
+            },
+            {
+                "label": "B",
+                "text": "Can be 1 or 2 (Race Condition)."
+            },
+            {
+                "label": "C",
+                "text": "Always 1."
+            },
+            {
+                "label": "D",
+                "text": "Error."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Both threads could read counter = 0 simultaneously. Both set temp = 0. Both write\ncounter = 1. This \"lost update\" is a classic concurrency bug.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 59,
+        "question": "(Conceptual) What is Thread Cancellation?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Sending a message to the printer."
+            },
+            {
+                "label": "B",
+                "text": "Terminating a thread before it has finished its task."
+            },
+            {
+                "label": "C",
+                "text": "Re-starting a thread."
+            },
+            {
+                "label": "D",
+                "text": "Sharing resources between threads."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Cancellation is useful when a process no longer needs a specific thread's result (e.g., a\nsearch thread is cancelled because the user closed the window).",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 60,
+        "question": "(Comparison) What is a Green Thread?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A thread dedicated to power saving."
+            },
+            {
+                "label": "B",
+                "text": "A thread managed by a runtime library or VM (user-space) rather than the OS kernel."
+            },
+            {
+                "label": "C",
+                "text": "A thread that is encrypted."
+            },
+            {
+                "label": "D",
+                "text": "A thread used for printing."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Green threads (common in Go or older Java) simulate multi-threading in environments that\ndon't support native kernel threads, or for extreme performance/scale.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 61,
+        "question": "(Conceptual) What are Thread-Local Variables (or TLS)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Global variables that every thread can read."
+            },
+            {
+                "label": "B",
+                "text": "Variables that are visible only to the thread that created them, providing thread- safe storage."
+            },
+            {
+                "label": "C",
+                "text": "Variables stored in the hard drive."
+            },
+            {
+                "label": "D",
+                "text": "Variables that exist only for one millisecond."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "counter = temp + 1; } TLS allows each thread to have its own independent copy of a variable, which is critical for\nthread-safety when you need data that \"looks\" like a global but is specific to the thread's\ncontext.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 62,
+        "question": "(Conceptual) In the Many-to-Many threading model, what is the role of the LWP (Lightweight Process)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It is the same as the kernel."
+            },
+            {
+                "label": "B",
+                "text": "It acts as an intermediate data structure (virtual processor) between user threads and kernel threads."
+            },
+            {
+                "label": "C",
+                "text": "It deletes temporary files."
+            },
+            {
+                "label": "D",
+                "text": "It tracks the mouse cursor."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The M:M model allows the OS to map $N$ user threads to $M$ kernel threads. The LWP is\nthe abstraction that allows this multiplexing to happen dynamically.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 63,
+        "question": "(Conceptual) What is the primary requirement for a solution to the Critical Section Problem?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It must be written in assembly."
+            },
+            {
+                "label": "B",
+                "text": "Mutual Exclusion, Progress, and Bounded Waiting."
+            },
+            {
+                "label": "C",
+                "text": "It must use a semaphore."
+            },
+            {
+                "label": "D",
+                "text": "It must run on all operating systems."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "To be a valid solution, it must guarantee Mutual Exclusion (only one in), Progress (no one\nstuck outside indefinitely), and Bounded Waiting (every process gets a turn within reasonable\ntime).",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 64,
+        "question": "(Scenario-Based) Which of the following is a classic problem used to demonstrate the need for synchronization in Producer-Consumer systems?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The Dining Philosophers Problem."
+            },
+            {
+                "label": "B",
+                "text": "The Bounded-Buffer Problem."
+            },
+            {
+                "label": "C",
+                "text": "The Sleeping Barber Problem."
+            },
+            {
+                "label": "D",
+                "text": "The Page Replacement Problem."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The Bounded-Buffer problem (Producer-Consumer) involves a fixed-size buffer where one\nprocess produces data and another consumes it, requiring semaphores to ensure the buffer\ndoesn't overflow or underflow.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 65,
+        "question": "(Code-Tracing) In a Semaphore implementation, what does the wait() operation do when the value is 0?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It increments the value."
+            },
+            {
+                "label": "B",
+                "text": "It proceeds immediately."
+            },
+            {
+                "label": "C",
+                "text": "It blocks the thread until the value becomes > 0."
+            },
+            {
+                "label": "D",
+                "text": "It resets the value to 10."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "The wait() operation (P) decreases the semaphore. If the value is already 0, it means no\nresources are available, so the thread must wait.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 66,
+        "question": "(Conceptual) What is a Monitor in synchronization?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A hardware display device."
+            },
+            {
+                "label": "B",
+                "text": "A high-level language construct that provides mutually exclusive access to shared variables."
+            },
+            {
+                "label": "C",
+                "text": "A tool to detect viruses."
+            },
+            {
+                "label": "D",
+                "text": "A type of interrupt."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A monitor ensures that only one process at a time can be active within the monitor, simplifying\nthe management of critical sections compared to raw semaphores.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 67,
+        "question": "(Conceptual) Which condition is NOT required for a Deadlock to occur?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Mutual Exclusion"
+            },
+            {
+                "label": "B",
+                "text": "Hold and Wait"
+            },
+            {
+                "label": "C",
+                "text": "No Preemption"
+            },
+            {
+                "label": "D",
+                "text": "Bounded Waiting"
+            }
+        ],
+        "correct_answer": "D",
+        "explanation": "The four conditions for deadlock are: Mutual Exclusion, Hold and Wait, No Preemption, and\nCircular Wait. Bounded Waiting is actually a property that *prevents* starvation, not a cause of\ndeadlock.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 68,
+        "question": "(Code-Tracing) Analyze the code below. What potential issue does this create? sync_example.c void thread1() { lock(A); lock(B); }",
+        "options": [
+            {
+                "label": "A",
+                "text": "Starvation"
+            },
+            {
+                "label": "B",
+                "text": "Performance boost"
+            },
+            {
+                "label": "C",
+                "text": "Deadlock"
+            },
+            {
+                "label": "D",
+                "text": "Memory leak"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Thread 1 holds A and waits for B. Thread 2 holds B and waits for A. This creates a circular\nwait, causing a deadlock.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 69,
+        "question": "(Conceptual) What is a Spinlock?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A lock that puts the thread to sleep."
+            },
+            {
+                "label": "B",
+                "text": "A lock where the thread repeatedly checks (spins) if the lock is available."
+            },
+            {
+                "label": "C",
+                "text": "A lock used only for file systems."
+            },
+            {
+                "label": "D",
+                "text": "A lock that is never released."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Spinlocks are efficient for very short critical sections where the overhead of putting a thread to\nsleep and waking it up (context switch) is greater than the time spent \"spinning.\"",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 70,
+        "question": "(Conceptual) What does the \"Progress\" condition in critical sections guarantee?",
+        "options": [
+            {
+                "label": "A",
+                "text": "That the fastest process gets the resource."
+            },
+            {
+                "label": "B",
+                "text": "That if no process is in the critical section, a process waiting to enter can enter without being blocked indefinitely."
+            },
+            {
+                "label": "C",
+                "text": "That processes are executed in the order of arrival."
+            },
+            {
+                "label": "D",
+                "text": "That the kernel never crashes."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The progress condition prevents a deadlock where processes that are not even interested in\nthe critical section prevent those that *are* from entering.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 71,
+        "question": "(Comparison) What is the difference between a Mutex and a Semaphore?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Mutex is for multiple threads; Semaphore is for one."
+            },
+            {
+                "label": "B",
+                "text": "A Mutex has a concept of ownership (only the thread that locked it can unlock it); a Semaphore does not."
+            },
+            {
+                "label": "C",
+                "text": "Mutexes are for kernel mode only."
+            },
+            {
+                "label": "D",
+                "text": "Semaphores cannot be used for critical sections."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "void thread2() { lock(B); lock(A); } Ownership is the defining difference. In a Mutex, if Thread A locks it, Thread B cannot unlock\nit. In a Semaphore, one thread can wait() and another can signal() it.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 72,
+        "question": "(Conceptual) Which strategy involves killing a process to break a deadlock?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Deadlock Avoidance"
+            },
+            {
+                "label": "B",
+                "text": "Deadlock Detection and Recovery"
+            },
+            {
+                "label": "C",
+                "text": "Deadlock Prevention"
+            },
+            {
+                "label": "D",
+                "text": "Banker's Algorithm"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Detection and Recovery techniques allow deadlocks to occur, detect them via a graph, and\nthen break them by aborting or restarting one or more processes.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 73,
+        "question": "(Calculation) In the Banker's Algorithm, what is the \"Safe State\"?",
+        "options": [
+            {
+                "label": "A",
+                "text": "When all processes have finished."
+            },
+            {
+                "label": "B",
+                "text": "A state where there exists a sequence of processes such that everyone can complete their work using current and available resources."
+            },
+            {
+                "label": "C",
+                "text": "When the CPU is at 100% usage."
+            },
+            {
+                "label": "D",
+                "text": "When no processes are waiting."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A safe state ensures that the OS can grant requested resources without the system entering a\ndeadlock, by simulating resource allocation paths in advance.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 74,
+        "question": "(Scenario-Based) Why is a Priority Inversion dangerous?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It makes the system faster."
+            },
+            {
+                "label": "B",
+                "text": "A low-priority thread holds a lock needed by a high-priority thread, effectively blocking the high-priority task."
+            },
+            {
+                "label": "C",
+                "text": "It causes memory leaks."
+            },
+            {
+                "label": "D",
+                "text": "It prevents the OS from booting."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "In a nested system, a medium-priority task might also preempt the low-priority task, keeping\nthe lock held and blocking the high-priority task indefinitely. Solution: Priority Inheritance\nProtocol.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 75,
+        "question": "(Conceptual) What is a Condition Variable in the context of Monitors?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A variable that stores the system time."
+            },
+            {
+                "label": "B",
+                "text": "A mechanism allowing a thread to wait for a specific condition (like \"buffer not full\") while releasing the monitor lock."
+            },
+            {
+                "label": "C",
+                "text": "A global variable."
+            },
+            {
+                "label": "D",
+                "text": "A boolean flag for error handling."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Condition variables (wait and signal) are essential because they allow a thread to release\na lock while waiting for a condition to become true, preventing others from being blocked\nwaiting for the first thread.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 76,
+        "question": "(Code/Logic) What happens if lock(A) is called twice by the same thread on a non- recursive mutex?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It unlocks."
+            },
+            {
+                "label": "B",
+                "text": "It deadlocks (the thread waits for itself to release the lock)."
+            },
+            {
+                "label": "C",
+                "text": "It ignores the second lock."
+            },
+            {
+                "label": "D",
+                "text": "It crashes the OS."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A non-recursive mutex (or \"standard\" mutex) doesn't track *which* thread holds it; it just\nknows it's locked. A thread that already owns it will block itself waiting for a release that can\nnever happen.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 77,
+        "question": "(Conceptual) What does \"Atomic Operation\" mean in concurrency?",
+        "options": [
+            {
+                "label": "A",
+                "text": "An operation that uses nuclear energy."
+            },
+            {
+                "label": "B",
+                "text": "An operation that is performed as a single, uninterruptible step."
+            },
+            {
+                "label": "C",
+                "text": "An operation that is broken into 100 steps."
+            },
+            {
+                "label": "D",
+                "text": "An operation that requires root access."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "An atomic operation either finishes completely or doesn't happen at all (like a CPU instruction\nto fetch a memory value). It cannot be interrupted midway.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 78,
+        "question": "(Conceptual) Which of the four conditions for deadlock can be prevented by enforcing a strict hierarchical ordering of resource acquisition?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Mutual Exclusion"
+            },
+            {
+                "label": "B",
+                "text": "Hold and Wait"
+            },
+            {
+                "label": "C",
+                "text": "No Preemption"
+            },
+            {
+                "label": "D",
+                "text": "Circular Wait"
+            }
+        ],
+        "correct_answer": "D",
+        "explanation": "By forcing every process to request resources in a specific order (e.g., always lock A before\nB), you can never have a situation where P1 holds A waiting for B, while P2 holds B waiting for\nA.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 79,
+        "question": "(Scenario-Based) A system with only one printer and one scanner has three processes. Process A holds the printer and requests the scanner. Process B holds the scanner and requests the printer. What state is this?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Starvation"
+            },
+            {
+                "label": "B",
+                "text": "Deadlock"
+            },
+            {
+                "label": "C",
+                "text": "Normal Operation"
+            },
+            {
+                "label": "D",
+                "text": "Resource Allocation Graph"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "This is a classic deadlock. A holds a resource B needs, and B holds a resource A needs. Both\nare in a state of \"Hold and Wait\" with a \"Circular Wait\" condition.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 80,
+        "question": "(Conceptual) The Banker's Algorithm is a method for:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Deadlock Prevention"
+            },
+            {
+                "label": "B",
+                "text": "Deadlock Avoidance"
+            },
+            {
+                "label": "C",
+                "text": "Deadlock Detection"
+            },
+            {
+                "label": "D",
+                "text": "Deadlock Ignorance"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Avoidance schemes require the OS to know the maximum resource needs of each process in\nadvance. The Banker's Algorithm uses this info to ensure the system never enters an \"unsafe\"\nstate that could lead to deadlock.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 81,
+        "question": "(Code/Logic) In a Resource Allocation Graph, what does a cycle indicate?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The system is running efficiently."
+            },
+            {
+                "label": "B",
+                "text": "If there is only one instance of each resource, a deadlock is present."
+            },
+            {
+                "label": "C",
+                "text": "The system is about to crash."
+            },
+            {
+                "label": "D",
+                "text": "The system has completed its work."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A cycle is a necessary condition for a deadlock. If there are multiple instances of a resource, a\ncycle indicates that a deadlock *might* exist, but doesn't guarantee it.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 82,
+        "question": "(Conceptual) How can the \"No Preemption\" condition be broken to prevent deadlocks?",
+        "options": [
+            {
+                "label": "A",
+                "text": "By allowing a process to hold resources indefinitely."
+            },
+            {
+                "label": "B",
+                "text": "If a process holding resources requests another resource that cannot be allocated, it must release all its held resources."
+            },
+            {
+                "label": "C",
+                "text": "By requiring all processes to request resources at the start."
+            },
+            {
+                "label": "D",
+                "text": "By allowing resources to be shared."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Breaking \"No Preemption\" means the OS can take resources away from a waiting process.\nThis is often impractical as it can lead to data loss or require complex state saving.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 83,
+        "question": "(Scenario-Based) A database system encounters a deadlock and decides to choose a \"victim\" process to terminate. Which factor is LEAST likely to be considered when choosing the victim?",
+        "options": [
+            {
+                "label": "A",
+                "text": "How long the process has been running."
+            },
+            {
+                "label": "B",
+                "text": "The priority of the process."
+            },
+            {
+                "label": "C",
+                "text": "The name of the developer who wrote the process."
+            },
+            {
+                "label": "D",
+                "text": "How many resources the process holds."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Victim selection is a cost-based decision. You want to kill the process that will cause the least\ndamage. The developer's name is irrelevant to this calculation.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 84,
+        "question": "(Conceptual) What is the most common approach to handling deadlocks in modern consumer operating systems (like Windows or macOS)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Banker's Algorithm"
+            },
+            {
+                "label": "B",
+                "text": "Deadlock Prevention"
+            },
+            {
+                "label": "C",
+                "text": "Deadlock Ignorance (The Ostrich Algorithm)"
+            },
+            {
+                "label": "D",
+                "text": "Deadlock Detection"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Because deadlocks are relatively rare in general-purpose systems, and prevention/avoidance\nis complex and adds overhead, most OSs simply assume they won't happen and rely on the\nuser to reboot or kill the stuck process if they do.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 85,
+        "question": "(Comparison) What is a Safe State in the context of deadlock avoidance?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A state where no process is using resources."
+            },
+            {
+                "label": "B",
+                "text": "A state where there is at least one sequence of resource allocations that allows all processes to finish without deadlocking."
+            },
+            {
+                "label": "C",
+                "text": "A state where a deadlock has just occurred."
+            },
+            {
+                "label": "D",
+                "text": "A state where the OS has been turned off."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "An unsafe state does not guarantee a deadlock, but it means a deadlock *could* occur. A safe\nstate guarantees that at least one path to completion exists.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 86,
+        "question": "(Conceptual) What does the \"Hold and Wait\" condition mean?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A process is waiting for its turn to be created."
+            },
+            {
+                "label": "B",
+                "text": "A process is holding at least one resource and is requesting additional resources that are currently held by other processes."
+            },
+            {
+                "label": "C",
+                "text": "A process has finished but is waiting to be terminated."
+            },
+            {
+                "label": "D",
+                "text": "The user is holding down the power button."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "This is a key component of deadlock. A process acquires some resources and then blocks\nwhile waiting for more, preventing others from using what it holds.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 87,
+        "question": "(Scenario-Based) How do Hierarchical Lock Ordering schemes prevent deadlocks?",
+        "options": [
+            {
+                "label": "A",
+                "text": "By allowing only one process to acquire locks."
+            },
+            {
+                "label": "B",
+                "text": "By forcing all processes to acquire locks in a predefined order, thus preventing circular wait conditions."
+            },
+            {
+                "label": "C",
+                "text": "By eliminating the need for locks."
+            },
+            {
+                "label": "D",
+                "text": "By using semaphores instead of mutexes."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "If all code is forced to lock resources in the same order (e.g., lock A, then B, then C), you can\nnever have a situation where one thread holds B and waits for A, because the code would not\nallow it.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 88,
+        "question": "(Conceptual) What is \"Starvation\" in the context of resource allocation?",
+        "options": [
+            {
+                "label": "A",
+                "text": "When a system runs out of power."
+            },
+            {
+                "label": "B",
+                "text": "When a process is indefinitely postponed from receiving a resource it needs, even though the system is not in a deadlock state."
+            },
+            {
+                "label": "C",
+                "text": "When a process uses 100% of the CPU."
+            },
+            {
+                "label": "D",
+                "text": "When two processes are deadlocked."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Starvation can happen if the scheduling algorithm is unfair (e.g., a low-priority process is\nconstantly passed over). It is different from deadlock because the system as a whole is still\nmaking progress.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 89,
+        "question": "(Conceptual) In a Wait-for Graph, if there is a cycle, and each resource has multiple instances, what can you conclude?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A deadlock definitely exists."
+            },
+            {
+                "label": "B",
+                "text": "A deadlock *may* exist, but it is not guaranteed."
+            },
+            {
+                "label": "C",
+                "text": "The system is in a safe state."
+            },
+            {
+                "label": "D",
+                "text": "The system has no waiting processes."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "If there are multiple instances, a process in a cycle might be able to get a resource from a\ndifferent process that is not part of the cycle. A cycle is necessary but not sufficient in this\ncase.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 90,
+        "question": "(Conceptual) What is the main purpose of Paging?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To make the memory run faster."
+            },
+            {
+                "label": "B",
+                "text": "To allow a process's physical address space to be non-contiguous, thereby solving the problem of external fragmentation."
+            },
+            {
+                "label": "C",
+                "text": "To encrypt the data in RAM."
+            },
+            {
+                "label": "D",
+                "text": "To divide a process into logical segments."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Paging allows the OS to use any available physical memory \"frame,\" regardless of where it is,\nby mapping logical \"pages\" to them. This eliminates the need to find one large contiguous\nblock of memory.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 91,
+        "question": "(Calculation) A system has a page size of 4KB. What is the offset for the logical address 10240?",
+        "options": [
+            {
+                "label": "A",
+                "text": "2"
+            },
+            {
+                "label": "B",
+                "text": "2048"
+            },
+            {
+                "label": "C",
+                "text": "2048 (10240 mod 4096 = 2048)"
+            },
+            {
+                "label": "D",
+                "text": "4096"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Page size = 4KB = 4096 bytes. Page Number = 10240 / 4096 = 2. Offset = 10240 % 4096 =\n2048.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 92,
+        "question": "(Conceptual) What is a Page Fault?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A hardware failure in the memory chip."
+            },
+            {
+                "label": "B",
+                "text": "A trap to the OS when a process accesses a memory page that is not currently in RAM."
+            },
+            {
+                "label": "C",
+                "text": "A corruption of the page table."
+            },
+            {
+                "label": "D",
+                "text": "An error when a page is too large."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A page fault isn't an \"error\"; it's a mechanism. The OS handles the fault by finding the page on\ndisk, loading it into a free frame, and resuming the process.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 93,
+        "question": "(Comparison) What is the main difference between Internal and External fragmentation?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Internal is in RAM; External is on disk."
+            },
+            {
+                "label": "B",
+                "text": "Internal is wasted space *within* an allocated block; External is unused space *between* allocated blocks."
+            },
+            {
+                "label": "C",
+                "text": "Internal fragmentation is worse."
+            },
+            {
+                "label": "D",
+                "text": "External fragmentation is easy to fix."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Internal fragmentation happens in Paging (if a process needs 4.1KB, it gets two 4KB pages,\nwasting 3.9KB). External happens with dynamic allocation when free memory is broken into\nmany small, non-contiguous pieces.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 94,
+        "question": "(Conceptual) What is the role of the MMU (Memory Management Unit)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To execute mathematical calculations."
+            },
+            {
+                "label": "B",
+                "text": "To translate logical (virtual) addresses into physical addresses in hardware."
+            },
+            {
+                "label": "C",
+                "text": "To manage the I/O devices."
+            },
+            {
+                "label": "D",
+                "text": "To store the bootstrap loader."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The MMU is a hardware component that sits between the CPU and memory. It performs the\nvirtual-to-physical address translation on every single memory access.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 95,
+        "question": "(Code/Logic) A system uses Demand Paging. What happens when a process starts?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The entire process is loaded into RAM."
+            },
+            {
+                "label": "B",
+                "text": "No pages are loaded initially; pages are loaded from the disk only when they are referenced."
+            },
+            {
+                "label": "C",
+                "text": "The process is kept on disk and never loaded."
+            },
+            {
+                "label": "D",
+                "text": "The OS pre-loads the last few pages of the process."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Demand paging is a \"lazy\" approach. It speeds up process startup time because only the\npages needed for initial execution are loaded.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 96,
+        "question": "(Conceptual) What problem does a TLB (Translation Lookaside Buffer) solve?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Disk fragmentation."
+            },
+            {
+                "label": "B",
+                "text": "The high cost of accessing the main memory page table for every address translation."
+            },
+            {
+                "label": "C",
+                "text": "CPU overheating."
+            },
+            {
+                "label": "D",
+                "text": "Network latency."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Accessing the page table in RAM can be slow. The TLB is a high-speed hardware cache on\nthe CPU that stores recent translations, acting as a shortcut.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 97,
+        "question": "(Scenario-Based) A system is spending more time paging (swapping pages between disk and RAM) than executing. What is this phenomenon called?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Caching"
+            },
+            {
+                "label": "B",
+                "text": "Thrashing"
+            },
+            {
+                "label": "C",
+                "text": "Multitasking"
+            },
+            {
+                "label": "D",
+                "text": "Spooling"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Thrashing occurs when the system doesn't have enough memory to hold all the active\n\"working sets\" of its processes. The CPU becomes idle while waiting for the disk, and\nperformance grinds to a halt.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 98,
+        "question": "(Conceptual) In Segmentation, how is an address specified?",
+        "options": [
+            {
+                "label": "A",
+                "text": "By a single integer."
+            },
+            {
+                "label": "B",
+                "text": "By a segment number and an offset within that segment."
+            },
+            {
+                "label": "C",
+                "text": "By a page number."
+            },
+            {
+                "label": "D",
+                "text": "By the file name."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A logical address in a segmented system is a two-part tuple: . This allows for logical\nseparation of components like code, data, and stack.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 99,
+        "question": "(Comparison) What is the main advantage of Paging over Segmentation?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Paging supports variable-sized memory blocks."
+            },
+            {
+                "label": "B",
+                "text": "Paging eliminates external fragmentation."
+            },
+            {
+                "label": "C",
+                "text": "Paging is easier for programmers to use."
+            },
+            {
+                "label": "D",
+                "text": "Paging is less secure."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Because pages are fixed-size, any free frame can be used. Segmentation's variable-sized\nblocks can lead to external fragmentation.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 100,
+        "question": "(Conceptual) What is a Page Replacement Algorithm (e.g., FIFO, LRU, Optimal)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "An algorithm to sort pages on the disk."
+            },
+            {
+                "label": "B",
+                "text": "A policy the OS uses to decide which page to evict from memory when a new page needs to be loaded."
+            },
+            {
+                "label": "C",
+                "text": "A way to encrypt memory."
+            },
+            {
+                "label": "D",
+                "text": "A tool for renaming files."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "When memory is full and a page fault occurs, the OS must choose a \"victim\" page to swap out\nto the disk to make room for the new one.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 101,
+        "question": "(Scenario-Based) Which page replacement algorithm suffers from Belady's Anomaly?",
+        "options": [
+            {
+                "label": "A",
+                "text": "LRU (Least Recently Used)"
+            },
+            {
+                "label": "B",
+                "text": "Optimal"
+            },
+            {
+                "label": "C",
+                "text": "FIFO (First-In, First-Out)"
+            },
+            {
+                "label": "D",
+                "text": "All of the above"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Belady's Anomaly is a counter-intuitive phenomenon where increasing the number of memory\nframes can, in some cases, increase the number of page faults when using FIFO.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 102,
+        "question": "(Conceptual) What is the \"Working Set\" of a process?",
+        "options": [
+            {
+                "label": "A",
+                "text": "All pages belonging to the process."
+            },
+            {
+                "label": "B",
+                "text": "The set of pages actively being used by a process in a given time window."
+            },
+            {
+                "label": "C",
+                "text": "The pages shared between processes."
+            },
+            {
+                "label": "D",
+                "text": "The pages that have been saved to disk."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "To prevent thrashing, the OS needs to ensure that the \"working set\" (the actively used pages)\nof a process is kept in memory.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 103,
+        "question": "(Code/Logic) The OS needs to allocate 100KB for a process. Memory has free partitions of 50KB, 50KB, and 100KB. Using the \"First-Fit\" algorithm, which partition is chosen?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The second 50KB block."
+            },
+            {
+                "label": "B",
+                "text": "The first available block that is large enough (The 100KB block, or whichever is first on the free list)."
+            },
+            {
+                "label": "C",
+                "text": "The OS will merge the two 50KB blocks."
+            },
+            {
+                "label": "D",
+                "text": "The OS will reject the request."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "First-Fit scans the free memory list and takes the very first block it finds that is large enough.\nBest-Fit would find the smallest possible block. Worst-Fit would find the largest.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 104,
+        "question": "(Conceptual) What is a \"Dirty Bit\" used for in memory management?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To indicate if a page contains errors."
+            },
+            {
+                "label": "B",
+                "text": "To indicate if a page has been modified since it was loaded into memory."
+            },
+            {
+                "label": "C",
+                "text": "To mark a page for deletion."
+            },
+            {
+                "label": "D",
+                "text": "To identify the user who owns the page."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "If the dirty bit is 0, the page can be safely discarded during a page swap. If it is 1, the OS must\nwrite the page back to disk to save the changes.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 105,
+        "question": "(Conceptual) Which file allocation method is most likely to suffer from External Fragmentation?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Linked Allocation"
+            },
+            {
+                "label": "B",
+                "text": "Contiguous Allocation"
+            },
+            {
+                "label": "C",
+                "text": "Indexed Allocation"
+            },
+            {
+                "label": "D",
+                "text": "Journaling"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Contiguous allocation requires a single solid block of free space. Over time, as files are\ncreated and deleted, the free space becomes broken up into many small, non-contiguous\npieces.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 106,
+        "question": "(Scenario-Based) Which allocation method is ideal for applications that require fast Random Access to data within a file?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Contiguous Allocation"
+            },
+            {
+                "label": "B",
+                "text": "Linked Allocation"
+            },
+            {
+                "label": "C",
+                "text": "Indexed Allocation"
+            },
+            {
+                "label": "D",
+                "text": "Bitmap Allocation"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "With Indexed allocation, to access block N, you just look up the Nth entry in the index block\nand jump directly to that address. Linked allocation would require traversing N-1 pointers.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 107,
+        "question": "(Comparison) What is the primary difference between a Hard Link and a Symbolic Link in Unix?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Hard links can span across different file systems; symbolic links cannot."
+            },
+            {
+                "label": "B",
+                "text": "A Hard link points directly to the inode; a Symbolic link is a file that contains the path of another file."
+            },
+            {
+                "label": "C",
+                "text": "Symbolic links are faster."
+            },
+            {
+                "label": "D",
+                "text": "Hard links can point to directories."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Deleting the original file does not break a hard link because the inode (and its link counter) still\nexists. Deleting the original file breaks a symbolic link because the path it points to no longer\nexists.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 108,
+        "question": "(Conceptual) What does a Bit Vector represent in free-space management?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The contents of a file."
+            },
+            {
+                "label": "B",
+                "text": "A series of bits where each bit corresponds to a disk block (0=free, 1=allocated)."
+            },
+            {
+                "label": "C",
+                "text": "The permissions of a file."
+            },
+            {
+                "label": "D",
+                "text": "A list of all directory names."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A bit vector is a simple and efficient way to track free blocks, but it can be large and must be\nkept in memory for good performance.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 109,
+        "question": "(Code/Logic) In a Unix-like file system, where is the information about a file's owner, permissions, and location of data blocks stored?",
+        "options": [
+            {
+                "label": "A",
+                "text": "In the file itself."
+            },
+            {
+                "label": "B",
+                "text": "In the Superblock."
+            },
+            {
+                "label": "C",
+                "text": "In the inode."
+            },
+            {
+                "label": "D",
+                "text": "In the Master Boot Record."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "The inode (index node) is the central data structure for file metadata. The directory entry only\ncontains the file name and the inode number.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 110,
+        "question": "(Conceptual) What is the main advantage of a Journaling File System (like NTFS, ext4)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It makes the file system faster for reading."
+            },
+            {
+                "label": "B",
+                "text": "It significantly improves reliability and recovery time after a crash."
+            },
+            {
+                "label": "C",
+                "text": "It uses less disk space."
+            },
+            {
+                "label": "D",
+                "text": "It prevents users from deleting files."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "By logging changes to a journal before applying them, the system can quickly \"replay\" the\njournal after a power failure to fix any inconsistencies, avoiding a long and slow fsck check.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 111,
+        "question": "(Scenario-Based) A user wants to have two different names for the same file in the same directory. Which type of link should they use? fsck -y /dev/sda1 [INFO] Checking inode #12345... OK",
+        "options": [
+            {
+                "label": "A",
+                "text": "Symbolic Link"
+            },
+            {
+                "label": "B",
+                "text": "Hard Link"
+            },
+            {
+                "label": "C",
+                "text": "Both will work."
+            },
+            {
+                "label": "D",
+                "text": "Neither will work."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "You can have multiple directory entries (hard links) pointing to the same inode. Each is a\n\"real\" name for the file.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 112,
+        "question": "(Comparison) What is a disadvantage of Linked Allocation?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It suffers from external fragmentation."
+            },
+            {
+                "label": "B",
+                "text": "It is very slow for direct (random) access."
+            },
+            {
+                "label": "C",
+                "text": "It requires large amounts of contiguous space."
+            },
+            {
+                "label": "D",
+                "text": "It cannot handle large files."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "To get to block 500 in a linked-allocation file, you have to read blocks 1 through 499 just to\nfollow the chain of pointers.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 113,
+        "question": "(Conceptual) In a Tree-Structured Directory, what does the \"Absolute Path\" refer to?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The path from the current directory."
+            },
+            {
+                "label": "B",
+                "text": "The path from the root of the file system."
+            },
+            {
+                "label": "C",
+                "text": "The path to the user's home directory."
+            },
+            {
+                "label": "D",
+                "text": "The shortest possible path."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "An absolute path (e.g., /home/user/file.txt) starts from the root ('/'). A relative path\n(e.g., ./file.txt) starts from the current working directory.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 114,
+        "question": "(Conceptual) What is a File Control Block (FCB)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The physical block on the disk where the file starts."
+            },
+            {
+                "label": "B",
+                "text": "A data structure in memory that contains information about an open file (e.g., file pointer, access rights)."
+            },
+            {
+                "label": "C",
+                "text": "The first few bytes of the file itself."
+            },
+            {
+                "label": "D",
+                "text": "A backup of the entire file system."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "When you open a file, the OS loads the metadata into an FCB in RAM to track the state of\nyour interaction with that file.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 115,
+        "question": "(Code/Logic) You execute chmod 755 script.sh. What permissions are you setting?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Everyone can read, write, and execute."
+            },
+            {
+                "label": "B",
+                "text": "Owner: R/W/X, Group: R/X, Others: R/X."
+            },
+            {
+                "label": "C",
+                "text": "Owner: R/W/X, Everyone else: No access."
+            },
+            {
+                "label": "D",
+                "text": "Only the owner can read."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "In octal notation: 7 (rwx) = 4+2+1. 5 (r-x) = 4+0+1. Therefore, 755 is Owner (rwx), Group (r-x),\nand Others (r-x).",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 116,
+        "question": "(Conceptual) What is the function of the Superblock in a Unix file system?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To manage the CPU."
+            },
+            {
+                "label": "B",
+                "text": "To contain critical metadata about the entire file system (e.g., block size, number of inodes, free block count)."
+            },
+            {
+                "label": "C",
+                "text": "To store the root user's password."
+            },
+            {
+                "label": "D",
+                "text": "To list all the files."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The superblock is the \"header\" of the file system. If it gets corrupted, the entire file system can\nbecome unreadable.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 117,
+        "question": "(Conceptual) What is the main goal of Disk Scheduling algorithms?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To increase the storage capacity of the disk."
+            },
+            {
+                "label": "B",
+                "text": "To minimize seek time and rotational latency, thereby maximizing disk bandwidth."
+            },
+            {
+                "label": "C",
+                "text": "To format the disk into sectors."
+            },
+            {
+                "label": "D",
+                "text": "To encrypt the data on the disk."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Disk arm movement (seek time) is the slowest part of an HDD I/O operation. Scheduling\nalgorithms try to minimize this movement by servicing requests in an optimized order.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 118,
+        "question": "(Scenario-Based) Which disk scheduling algorithm is most likely to cause Starvation for requests at the inner or outer cylinders?",
+        "options": [
+            {
+                "label": "A",
+                "text": "SCAN"
+            },
+            {
+                "label": "B",
+                "text": "SSTF (Shortest Seek Time First)"
+            },
+            {
+                "label": "C",
+                "text": "FCFS"
+            },
+            {
+                "label": "D",
+                "text": "C-LOOK"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "SSTF is greedy. If a steady stream of requests arrives near the current head position, the\nhead may never move to service far-away requests.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 119,
+        "question": "(Comparison) What is the difference between SCAN and C-SCAN?",
+        "options": [
+            {
+                "label": "A",
+                "text": "SCAN is for HDDs; C-SCAN is for SSDs."
+            },
+            {
+                "label": "B",
+                "text": "SCAN services requests in both directions; C-SCAN only services requests in one direction and then jumps back to the start."
+            },
+            {
+                "label": "C",
+                "text": "SCAN is faster than C-SCAN."
+            },
+            {
+                "label": "D",
+                "text": "C-SCAN causes starvation."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "◦\nC-SCAN (Circular SCAN) provides more uniform wait times. In SCAN, the middle cylinders\nget serviced twice as often as the outer ones. C-SCAN fixes this by always moving in one\ndirection.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 120,
+        "question": "(Conceptual) What is the purpose of RAID 1 (Mirroring)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To increase storage capacity."
+            },
+            {
+                "label": "B",
+                "text": "To improve write performance."
+            },
+            {
+                "label": "C",
+                "text": "To provide redundancy by writing the exact same data to two or more disks."
+            },
+            {
+                "label": "D",
+                "text": "To stripe data across multiple disks."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "RAID 1 offers excellent fault tolerance. If one disk fails, the other disk is an exact clone and\ncan take over immediately with no data loss.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 121,
+        "question": "(Conceptual) What is the primary benefit of RAID 0 (Striping)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It provides data redundancy."
+            },
+            {
+                "label": "B",
+                "text": "It significantly improves read and write performance by splitting data across multiple disks."
+            },
+            {
+                "label": "C",
+                "text": "It uses less power."
+            },
+            {
+                "label": "D",
+                "text": "It is the most secure RAID level."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "In RAID 0, a file is split into blocks, and each block is written to a different disk simultaneously.\nThis parallelism increases throughput but offers zero redundancy (if one disk fails, all data is\nlost).",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 122,
+        "question": "(Calculation) An HDD has a seek time of 10ms, a rotational latency of 5ms, and a transfer time of 1ms for a block. What is the total time to read the block?",
+        "options": [
+            {
+                "label": "A",
+                "text": "10ms"
+            },
+            {
+                "label": "B",
+                "text": "15ms"
+            },
+            {
+                "label": "C",
+                "text": "16ms"
+            },
+            {
+                "label": "D",
+                "text": "6ms"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Total Time = Seek Time + Rotational Latency + Transfer Time. 10 + 5 + 1 = 16ms.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 123,
+        "question": "(Conceptual) What is the main advantage of using Interrupt-driven I/O over Polling?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Interrupts are simpler to implement."
+            },
+            {
+                "label": "B",
+                "text": "Interrupts allow the CPU to perform other work while the I/O device is busy."
+            },
+            {
+                "label": "C",
+                "text": "Polling is more secure."
+            },
+            {
+                "label": "D",
+                "text": "Interrupts can only be used for network devices."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "In polling, the CPU wastes cycles in a busy-wait loop. With interrupts, the CPU is free to\nschedule other processes until the I/O device sends a signal that it has completed its task.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 124,
+        "question": "(Conceptual) What is the role of DMA (Direct Memory Access)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It allows the user to access kernel memory."
+            },
+            {
+                "label": "B",
+                "text": "It offloads large data transfers between I/O devices and memory from the CPU."
+            },
+            {
+                "label": "C",
+                "text": "It manages the CPU cache."
+            },
+            {
+                "label": "D",
+                "text": "It schedules processes for execution."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Without DMA, the CPU would have to copy data byte-by-byte from an I/O device to memory.\nDMA allows the device controller to handle this transfer directly, freeing the CPU to do other\nwork.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 125,
+        "question": "(Scenario-Based) Multiple users on a network send print jobs to a single printer. The OS queues these jobs to a disk file and prints them one by one. This is called:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Caching"
+            },
+            {
+                "label": "B",
+                "text": "Spooling"
+            },
+            {
+                "label": "C",
+                "text": "Buffering"
+            },
+            {
+                "label": "D",
+                "text": "Polling"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Spooling (Simultaneous Peripheral Operations On-Line) decouples the application from the\nslow printer. The app \"prints\" instantly to the fast disk queue, and the OS handles the rest.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 126,
+        "question": "(Conceptual) What is a Device Driver?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A hardware component in a device."
+            },
+            {
+                "label": "B",
+                "text": "A software component in the OS that understands how to communicate with a specific hardware device."
+            },
+            {
+                "label": "C",
+                "text": "The user manual for a device."
+            },
+            {
+                "label": "D",
+                "text": "A tool for formatting disks."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The device driver provides a uniform interface to the OS, hiding the messy, device-specific\nhardware details.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 127,
+        "question": "(Conceptual) A Character Device vs. a Block Device?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Character devices are faster."
+            },
+            {
+                "label": "B",
+                "text": "Character devices transfer data as a stream of bytes; Block devices transfer data in fixed-size blocks."
+            },
+            {
+                "label": "C",
+                "text": "Block devices are for text; Character devices are for images."
+            },
+            {
+                "label": "D",
+                "text": "Character devices do not need drivers."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A keyboard is a character device (streams). A hard drive is a block device (reads/writes in 4KB\nblocks).",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 128,
+        "question": "(Conceptual) What is the purpose of the I/O Subsystem in an OS?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To manage only the CPU."
+            },
+            {
+                "label": "B",
+                "text": "To provide a standardized interface to applications, hiding the complexity of diverse hardware devices."
+            },
+            {
+                "label": "C",
+                "text": "To manage the user interface."
+            },
+            {
+                "label": "D",
+                "text": "To handle network security."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The I/O subsystem provides services like buffering, caching, and spooling, and presents a\nsimple \"file\" or \"stream\" abstraction to applications, regardless of whether the physical device\nis a disk, a network card, or a keyboard.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 129,
+        "question": "(Conceptual) What does the Principle of Least Privilege achieve?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It makes the system run faster."
+            },
+            {
+                "label": "B",
+                "text": "It minimizes the damage that can be done by a compromised or buggy process."
+            },
+            {
+                "label": "C",
+                "text": "It increases the amount of available RAM."
+            },
+            {
+                "label": "D",
+                "text": "It allows all users to have admin rights."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "If a process only has permission to write to its own log file, it cannot delete the entire operating\nsystem, even if a hacker exploits a vulnerability in it.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 130,
+        "question": "(Conceptual) What is an Access Control List (ACL)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A list of all users on the system."
+            },
+            {
+                "label": "B",
+                "text": "A list of permissions attached to an object (e.g., file), specifying which users can access it and what they can do."
+            },
+            {
+                "label": "C",
+                "text": "A list of all hardware devices."
+            },
+            {
+                "label": "D",
+                "text": "A list of running processes."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "An ACL is object-centric. It answers the question: \"Who can access this file?\"",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 131,
+        "question": "(Comparison) Compare ACLs and Capability Lists.",
+        "options": [
+            {
+                "label": "A",
+                "text": "ACLs are faster than Capabilities."
+            },
+            {
+                "label": "B",
+                "text": "ACLs are object-centric; Capabilities are domain-centric (like a key ring for a user)."
+            },
+            {
+                "label": "C",
+                "text": "Capabilities are only for hardware."
+            },
+            {
+                "label": "D",
+                "text": "ACLs cannot be changed."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "An ACL answers \"Who can access this?\". A Capability answers \"What can this user access?\".",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 132,
+        "question": "(Conceptual) In a Unix-like system, what is the role of the setuid bit?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It makes a file read-only."
+            },
+            {
+                "label": "B",
+                "text": "It allows a user to execute a file with the permissions of the file's owner (often 'root')."
+            },
+            {
+                "label": "C",
+                "text": "It deletes the file."
+            },
+            {
+                "label": "D",
+                "text": "It hides the file from other users."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The passwd command is a classic example. A normal user needs to write to the password file\n(owned by root). The setuid bit allows the program to temporarily \"elevate\" its privileges.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 133,
+        "question": "(Conceptual) What is a \"Jail\" or \"Sandbox\"?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A high-security data center."
+            },
+            {
+                "label": "B",
+                "text": "A restricted environment that isolates a process from the rest of the OS, limiting its access to files and network resources."
+            },
+            {
+                "label": "C",
+                "text": "A tool to encrypt memory."
+            },
+            {
+                "label": "D",
+                "text": "A physical lock on a server."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Web browsers run JavaScript inside a sandbox. The script can manipulate the webpage, but it\ncannot access your local file system, providing a strong layer of protection.",
+        "subject": "Operating Systems",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    }
+]

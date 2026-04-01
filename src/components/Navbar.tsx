@@ -114,9 +114,9 @@ export function Navbar() {
     setSubmitting(true);
     let trialUserId: number | null = null;
     try {
-      const { count: attemptCount, error: countError } = await supabase
+      const { data: existingAttempts, error: countError } = await supabase
         .from("trailpeoples")
-        .select("id", { count: "exact", head: true })
+        .select("id, quiztype, location")
         .eq("email", sanitizedEmail);
 
       if (countError) {
@@ -125,7 +125,14 @@ export function Navbar() {
         return;
       }
 
-      if (attemptCount != null && attemptCount >= 3) {
+      const trialAttemptCount = (existingAttempts ?? []).filter((attempt) => {
+        if (attempt.quiztype === "trial") return true;
+        if (attempt.quiztype === "nsct") return false;
+        // Legacy rows before quiztype: treat NSCT intro attempts separately.
+        return attempt.location !== "NSCT Intro Page";
+      }).length;
+
+      if (trialAttemptCount >= 3) {
         setSubmitError("You have already attempted the trial quiz 3 times. No more attempts are allowed.");
         setSubmitting(false);
         return;
@@ -149,6 +156,7 @@ export function Navbar() {
           email: sanitizedEmail,
           location: sanitizedLocation,
           ipaddress: ipAddress,
+          quiztype: "trial",
         })
         .select("id")
         .single();
@@ -213,9 +221,7 @@ export function Navbar() {
     { name: "Features", href: "#features" },
     { name: "Courses", href: "#courses" },
     { name: "About", href: "#about" },
-    { name: "Testimonials", href: "#testimonials" },
     { name: "Contact", href: "#contact" },
-    { name: "Privacy Policy", href: "/privacypolicy" },
   ];
 
   return (
@@ -247,7 +253,10 @@ export function Navbar() {
           ))}
         </div>
 
-        <div className="hidden shrink-0 items-center lg:flex">
+        <div className="hidden shrink-0 items-center gap-2 lg:flex">
+          <Link href="/nsct" className="cta-secondary text-sm xl:text-base">
+            Attempt NSCT quiz
+          </Link>
           <button type="button" onClick={() => setTrialModalOpen(true)} className="cta-primary text-sm xl:text-base">
             Try a trial quiz
           </button>
@@ -303,6 +312,13 @@ export function Navbar() {
                 </div>
 
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: navLinks.length * 0.05 + 0.1 }}>
+                  <Link
+                    href="/nsct"
+                    onClick={() => setIsOpen(false)}
+                    className="cta-secondary mb-3 block w-full text-center"
+                  >
+                    Attempt NSCT quiz
+                  </Link>
                   <button
                     type="button"
                     onClick={() => {

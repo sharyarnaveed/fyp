@@ -152,7 +152,9 @@ export default function QuizPage() {
   const [answers, setAnswers] = useState<Record<number, number>>(() => loadQuizAnswers());
   const [loadingNextSection, setLoadingNextSection] = useState(false);
   const [pendingSection, setPendingSection] = useState<"chemistry" | "physics" | null>(null);
+  const [sectionLoadError, setSectionLoadError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [hasUserId, setHasUserId] = useState<boolean | null>(null);
   const chemistryPrefetchDone = useRef(false);
   const physicsPrefetchDone = useRef(false);
@@ -233,7 +235,9 @@ export default function QuizPage() {
   // Poll for next section
   useEffect(() => {
     if (!loadingNextSection || !pendingSection) return;
+    let attempts = 0;
     const id = setInterval(() => {
+      attempts += 1;
       const data = loadQuizData();
       const nextLoaded = data[pendingSection].length > 0;
       if (nextLoaded) {
@@ -245,13 +249,44 @@ export default function QuizPage() {
         }
         setPendingSection(null);
         setLoadingNextSection(false);
+        setSectionLoadError(null);
+        return;
+      }
+
+      if (attempts >= 30) {
+        setLoadingNextSection(false);
+        setSectionLoadError(
+          `Could not load ${pendingSection} questions right now. Please retry.`
+        );
       }
     }, 500);
     return () => clearInterval(id);
   }, [loadingNextSection, pendingSection]);
 
+  const retryPendingSectionLoad = () => {
+    if (!pendingSection) return;
+    setSectionLoadError(null);
+
+    const fresh = loadQuizData();
+    const nextLoaded = fresh[pendingSection].length > 0;
+    if (nextLoaded) {
+      setQuizData(fresh);
+      if (pendingSection === "chemistry") {
+        setCurrentIndex(fresh.biology.length);
+      } else {
+        setCurrentIndex(fresh.biology.length + fresh.chemistry.length);
+      }
+      setPendingSection(null);
+      setLoadingNextSection(false);
+      return;
+    }
+
+    setLoadingNextSection(true);
+  };
+
   const goNext = () => {
     if (isLast) return;
+    setSectionLoadError(null);
     if (atEndOfBiology && chemistryCount === 0) {
       const fresh = loadQuizData();
       if (fresh.chemistry.length > 0) {
@@ -283,6 +318,7 @@ export default function QuizPage() {
 
   const handleSubmitQuiz = async () => {
     if (submitting) return;
+    setSubmitError(null);
     setSubmitting(true);
     try {
       const userId = getTrialUserId();
@@ -323,16 +359,26 @@ export default function QuizPage() {
           correct,
         },
       };
-      await supabase.from("trailquiz").insert({
+      const { error: insertError } = await supabase.from("trailquiz").insert({
         userid: userId,
         responcemodel,
       });
+      if (insertError) {
+        throw new Error(insertError.message || "Could not save quiz responses.");
+      }
+
       if (userId != null) {
-        await supabase.from("trailpeoples").update({ score: scoreStr }).eq("id", userId);
+        const { error: updateError } = await supabase
+          .from("trailpeoples")
+          .update({ score: scoreStr })
+          .eq("id", userId);
+        if (updateError) {
+          throw new Error(updateError.message || "Could not update score.");
+        }
       }
       router.push("/quiz/thank-you");
-    } catch {
-      // non-blocking
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : "Could not submit quiz. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -564,6 +610,23 @@ export default function QuizPage() {
             )}
           </AnimatePresence>
 
+          {sectionLoadError && pendingSection && !loadingNextSection && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4 rounded-xl border border-amber-400/45 bg-amber-500/12 p-4 text-sm text-amber-900"
+            >
+              <p>{sectionLoadError}</p>
+              <button
+                type="button"
+                onClick={retryPendingSectionLoad}
+                className="mt-3 inline-flex items-center gap-2 rounded-lg border border-amber-500/40 bg-white/70 px-3 py-1.5 font-semibold text-amber-800 hover:bg-white"
+              >
+                Retry loading {pendingSection}
+              </button>
+            </motion.div>
+          )}
+
           {/* Question card */}
           <AnimatePresence mode="wait">
             {!loadingNextSection && question && (
@@ -778,6 +841,16 @@ export default function QuizPage() {
               </motion.button>
             )}
           </motion.div>
+
+          {submitError && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4 rounded-xl border border-amber-400/45 bg-amber-500/12 px-4 py-3 text-sm text-amber-900"
+            >
+              {submitError}
+            </motion.div>
+          )}
         </motion.div>
       </main>
     </div>

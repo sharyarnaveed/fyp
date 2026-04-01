@@ -55,7 +55,7 @@ export default function Home() {
       const obj = { v: 0 };
       animate(obj, {
         v: num,
-        duration: isMobile ? 1200 : 1800,
+        duration: isMobile ? 900 : 1400,
         ease: isMobile ? "outQuad" : "outExpo",
         onUpdate: () => {
           el.textContent = (num >= 100 ? Math.round(obj.v) : obj.v.toFixed(0)) + suffix;
@@ -68,10 +68,10 @@ export default function Home() {
     /* ---- Hero entrance timeline - simplified on mobile ---- */
     const tl = createTimeline({ defaults: { ease: isMobile ? "outQuad" : "outExpo" } });
     tl.add(".hero-reveal", {
-      translateY: [isMobile ? 24 : 40, 0],
+      translateY: [isMobile ? 16 : 28, 0],
       opacity: [0, 1],
-      duration: isMobile ? 700 : 1000,
-      delay: stagger(isMobile ? 100 : 140, { start: isMobile ? 150 : 200 }),
+      duration: isMobile ? 500 : 760,
+      delay: stagger(isMobile ? 70 : 100, { start: isMobile ? 120 : 160 }),
     });
 
     /* ---- Scroll-triggered section reveals ---- */
@@ -86,46 +86,46 @@ export default function Home() {
           if (target.classList.contains("feature-card")) {
             animate(target, {
               opacity: [0, 1],
-              translateY: [isMobile ? 30 : 50, 0],
-              scale: [0.95, 1],
-              ease: isMobile ? "outQuad" : "outElastic(1, .6)",
-              duration: isMobile ? 600 : 1200,
+              translateY: [isMobile ? 20 : 34, 0],
+              scale: [0.97, 1],
+              ease: isMobile ? "outQuad" : "outExpo",
+              duration: isMobile ? 480 : 860,
               delay: isMobile ? delay * 0.6 : delay,
             });
           } else if (target.classList.contains("stat-tile")) {
             animate(target, {
               opacity: [0, 1],
-              translateY: [isMobile ? 20 : 36, 0],
-              scale: [0.92, 1],
-              ease: isMobile ? "outQuad" : "outBack(1.4)",
-              duration: isMobile ? 500 : 900,
+              translateY: [isMobile ? 14 : 26, 0],
+              scale: [0.96, 1],
+              ease: isMobile ? "outQuad" : "outExpo",
+              duration: isMobile ? 420 : 700,
               delay: isMobile ? delay * 0.5 : delay,
             });
             animateStats();
           } else if (target.classList.contains("testimonial-card")) {
             animate(target, {
               opacity: [0, 1],
-              translateX: [target.classList.contains("tc-left") ? (isMobile ? -20 : -40) : (isMobile ? 20 : 40), 0],
-              rotate: isMobile ? [0, 0] : [target.classList.contains("tc-left") ? -2 : 2, 0],
+              translateX: [target.classList.contains("tc-left") ? (isMobile ? -12 : -24) : (isMobile ? 12 : 24), 0],
+              rotate: isMobile ? [0, 0] : [target.classList.contains("tc-left") ? -1.2 : 1.2, 0],
               ease: isMobile ? "outQuad" : "outExpo",
-              duration: isMobile ? 600 : 1000,
+              duration: isMobile ? 480 : 760,
               delay: isMobile ? delay * 0.6 : delay,
             });
           } else if (target.classList.contains("course-card")) {
             animate(target, {
               opacity: [0, 1],
-              translateY: [isMobile ? 30 : 60, 0],
-              scale: [0.95, 1],
-              ease: isMobile ? "outQuad" : "outElastic(1, .7)",
-              duration: isMobile ? 700 : 1400,
+              translateY: [isMobile ? 20 : 34, 0],
+              scale: [0.97, 1],
+              ease: isMobile ? "outQuad" : "outExpo",
+              duration: isMobile ? 560 : 980,
               delay: isMobile ? delay * 0.5 : delay,
             });
           } else {
             animate(target, {
               opacity: [0, 1],
-              translateY: [isMobile ? 20 : 32, 0],
+              translateY: [isMobile ? 14 : 22, 0],
               ease: isMobile ? "outQuad" : "outExpo",
-              duration: isMobile ? 500 : 900,
+              duration: isMobile ? 420 : 680,
               delay: isMobile ? delay * 0.6 : delay,
             });
           }
@@ -232,24 +232,24 @@ export default function Home() {
 
   const testimonials = [
     {
-      name: "Alex Johnson",
-      role: "Medical Student",
+      name: "Areeba Khan",
+      role: "NMDCAT Repeat Candidate",
       content:
-        "ExamMaster transformed my preparation. The mistake tracker is a game changer—I finally stopped making the same errors.",
+        "I used Prezpy for 7 weeks before NMDCAT. The timed quizzes and mistake review helped me stop repeating weak Chemistry concepts. My mock scores moved from 138 to 162.",
       rating: 5,
     },
     {
-      name: "Sarah Chen",
-      role: "Engineering Aspirant",
+      name: "Usman Ali",
+      role: "ETEA Engineering Applicant",
       content:
-        "The 3D visualizations and interactive quizzes make studying actually fun. I passed my entrance with top ranks!",
+        "What I liked in Prezpy was the topic-wise practice. I could do Physics MCQs on my phone during commute and see exactly where I was losing marks.",
       rating: 5,
     },
     {
-      name: "Michael Brown",
-      role: "Bar Exam Candidate",
+      name: "Sana Gul",
+      role: "Pre-Med Student, Peshawar",
       content:
-        "Incredible platform. The mock tests are harder than the real thing, which made the actual exam feel like a breeze.",
+        "The dashboard is simple and honest. Prezpy showed my weak chapters clearly, so my revision got focused. I finally built a routine I could follow daily.",
       rating: 5,
     },
   ];
@@ -288,6 +288,10 @@ export default function Home() {
                 <ChevronRight className="h-5 w-5 shrink-0" />
               </Button>
 
+              <Button size="lg" className="cta-secondary sm:hidden" asChild>
+                <a href="/nsct">Attempt Quiz for NSCT</a>
+              </Button>
+
               <Button
                 size="lg"
                 className="cta-primary animated-cta hidden sm:inline-flex"
@@ -301,6 +305,9 @@ export default function Home() {
               </Button>
               <Button size="lg" variant="outline" className="cta-secondary hidden sm:inline-flex" asChild>
                 <a href="#courses">View Courses</a>
+              </Button>
+              <Button size="lg" className="cta-secondary hidden sm:inline-flex" asChild>
+                <a href="/nsct">Attempt Quiz for NSCT</a>
               </Button>
             </div>
           </div>
@@ -388,6 +395,13 @@ export default function Home() {
             <p className="text-lg leading-relaxed text-[#284366]">
               Structured preparation for Pakistan&apos;s major entry tests. Choose your course and start studying smarter.
             </p>
+            <div className="mt-6">
+              <Button className="cta-primary" asChild>
+                <a href="/nsct">
+                  Attempt Quiz for NSCT <ChevronRight className="ml-1 inline h-4 w-4" />
+                </a>
+              </Button>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">

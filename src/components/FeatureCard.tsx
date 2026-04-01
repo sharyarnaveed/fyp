@@ -38,25 +38,25 @@ export function FeatureCard({
     
     if (iconRef.current) {
       animate(iconRef.current, {
-        scale: [1, 1.18, 1.08],
-        rotate: [0, -8, 0],
-        duration: 500,
-        ease: "outElastic(1, .5)",
+        scale: [1, 1.1, 1.04],
+        rotate: [0, -4, 0],
+        duration: 340,
+        ease: "outCubic",
       });
     }
     if (barRef.current) {
       animate(barRef.current, {
-        width: ["96px", "160px"],
+        width: ["96px", "136px"],
         opacity: [0.8, 1],
-        duration: 400,
-        ease: "outExpo",
+        duration: 300,
+        ease: "outCubic",
       });
     }
     if (cardRef.current) {
       animate(cardRef.current, {
-        translateY: -4,
-        duration: 300,
-        ease: "outExpo",
+        translateY: -2,
+        duration: 220,
+        ease: "outCubic",
       });
     }
   }, [isMobile]);
@@ -69,23 +69,23 @@ export function FeatureCard({
       animate(iconRef.current, {
         scale: 1,
         rotate: 0,
-        duration: 400,
-        ease: "outExpo",
+        duration: 260,
+        ease: "outCubic",
       });
     }
     if (barRef.current) {
       animate(barRef.current, {
         width: "96px",
         opacity: 0.8,
-        duration: 400,
-        ease: "outExpo",
+        duration: 260,
+        ease: "outCubic",
       });
     }
     if (cardRef.current) {
       animate(cardRef.current, {
         translateY: 0,
-        duration: 400,
-        ease: "outExpo",
+        duration: 240,
+        ease: "outCubic",
       });
     }
   }, [isMobile]);
