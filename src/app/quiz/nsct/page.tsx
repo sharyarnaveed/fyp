@@ -7,7 +7,6 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   ArrowLeft,
   Clock3,
-  CheckCircle2,
   ChevronLeft,
   ChevronRight,
   Loader2,
@@ -127,6 +126,7 @@ export default function NsctQuizPage() {
   const [bonusRequested, setBonusRequested] = useState(false);
   const [remainingSeconds, setRemainingSeconds] = useState(NSCT_DURATION_MINUTES * 60);
   const [locked, setLocked] = useState(false);
+  const [revealedCorrections, setRevealedCorrections] = useState<Record<number, true>>({});
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -207,7 +207,10 @@ export default function NsctQuizPage() {
   const shouldPrefetchBonus = !bonusLoaded && !loadingBonus && !bonusRequested && total === NSCT_BASE_QUESTIONS && index >= 49;
   const hasAnsweredCurrent = selected != null;
   const isCurrentCorrect = hasAnsweredCurrent ? selected === current?.correctIndex : false;
-  const showCorrection = hasAnsweredCurrent && !isCurrentCorrect;
+  const correctionRevealedForCurrent = revealedCorrections[index] === true;
+  const showCorrection = hasAnsweredCurrent && !isCurrentCorrect && correctionRevealedForCurrent;
+  const holdAdvanceToRevealCorrection = hasAnsweredCurrent && !isCurrentCorrect && !correctionRevealedForCurrent;
+  const optionsLocked = locked || hasAnsweredCurrent;
   const correctOptionText = current?.options?.[current.correctIndex] ?? "";
 
   const scorePreview = useMemo(() => {
@@ -229,12 +232,36 @@ export default function NsctQuizPage() {
   }, [answers, index]);
 
   const selectOption = (optionIndex: number) => {
-    if (locked) return;
+    if (optionsLocked) return;
     setAnswers((prev) => {
       const next = { ...prev, [index]: optionIndex };
       persistAnswers(next);
       return next;
     });
+  };
+
+  const revealCorrectionForCurrent = () => {
+    if (!hasAnsweredCurrent || isCurrentCorrect) return;
+    setRevealedCorrections((prev) => {
+      if (prev[index]) return prev;
+      return { ...prev, [index]: true };
+    });
+  };
+
+  const handleNext = () => {
+    if (holdAdvanceToRevealCorrection) {
+      revealCorrectionForCurrent();
+      return;
+    }
+    setIndex((v) => Math.min(total - 1, v + 1));
+  };
+
+  const handleLoadBonus = () => {
+    if (holdAdvanceToRevealCorrection) {
+      revealCorrectionForCurrent();
+      return;
+    }
+    void loadBonusQuestions(true);
   };
 
   const loadBonusQuestions = async (advanceAfterLoad: boolean) => {
@@ -444,8 +471,8 @@ export default function NsctQuizPage() {
                       <button
                         type="button"
                         onClick={() => selectOption(optionIndex)}
-                        disabled={locked}
-                        className={`w-full rounded-xl border px-4 py-3 text-left transition-colors duration-150 ${active ? "border-[#7BBBFF] bg-[#7BBBFF]/10 text-[#0A0F1E]" : "border-[#7BBBFF]/25 bg-white/80 text-[#284366] hover:border-[#7BBBFF]/50"} ${locked ? "cursor-not-allowed opacity-70" : ""}`}
+                          disabled={optionsLocked}
+                          className={`w-full rounded-xl border px-4 py-3 text-left transition-colors duration-150 ${active ? "border-[#7BBBFF] bg-[#7BBBFF]/10 text-[#0A0F1E]" : "border-[#7BBBFF]/25 bg-white/80 text-[#284366] hover:border-[#7BBBFF]/50"} ${optionsLocked ? "cursor-not-allowed opacity-70" : ""}`}
                       >
                         <span className="mr-2 font-semibold text-[#2b5f92]">{String.fromCharCode(65 + optionIndex)}.</span>
                         {option}
@@ -492,8 +519,8 @@ export default function NsctQuizPage() {
                         <button
                           type="button"
                           onClick={() => selectOption(optionIndex)}
-                          disabled={locked}
-                          className={`w-full rounded-xl border px-4 py-3 text-left transition-colors duration-200 ${active ? "border-[#7BBBFF] bg-[#7BBBFF]/10 text-[#0A0F1E]" : "border-[#7BBBFF]/25 bg-white/80 text-[#284366] hover:border-[#7BBBFF]/50"} ${locked ? "cursor-not-allowed opacity-70" : ""}`}
+                          disabled={optionsLocked}
+                          className={`w-full rounded-xl border px-4 py-3 text-left transition-colors duration-200 ${active ? "border-[#7BBBFF] bg-[#7BBBFF]/10 text-[#0A0F1E]" : "border-[#7BBBFF]/25 bg-white/80 text-[#284366] hover:border-[#7BBBFF]/50"} ${optionsLocked ? "cursor-not-allowed opacity-70" : ""}`}
                         >
                           <span className="mr-2 font-semibold text-[#2b5f92]">{String.fromCharCode(65 + optionIndex)}.</span>
                           {option}
@@ -544,7 +571,7 @@ export default function NsctQuizPage() {
               shouldLoadBonus ? (
                 <button
                   type="button"
-                  onClick={() => loadBonusQuestions(true)}
+                  onClick={handleLoadBonus}
                   disabled={loadingBonus || submitting}
                   className="cta-primary px-6 py-3 text-sm disabled:opacity-70"
                 >
@@ -583,7 +610,7 @@ export default function NsctQuizPage() {
             ) : (
               <button
                 type="button"
-                onClick={() => setIndex((v) => Math.min(total - 1, v + 1))}
+                onClick={handleNext}
                 className="cta-primary px-6 py-3 text-sm"
               >
                 Next
