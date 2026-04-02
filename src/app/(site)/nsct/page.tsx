@@ -63,10 +63,16 @@ async function resolveLocationFromBrowser(): Promise<string | null> {
   return `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
 }
 
+function promptEnableLocationInBrowser() {
+  if (typeof window === "undefined") return;
+  window.alert(
+    "Location access is required to start NSCT. Please enable location permission in your browser settings, then try again."
+  );
+}
+
 export default function NsctIntroPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
-  const [allowLocation, setAllowLocation] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -95,14 +101,31 @@ export default function NsctIntroPage() {
         // keep default value
       }
 
-      let locationValue = "location_not_shared";
-      if (allowLocation) {
-        try {
-          const detectedLocation = await resolveLocationFromBrowser();
-          locationValue = detectedLocation ? sanitizeLocation(detectedLocation) : "location_unavailable";
-        } catch {
-          locationValue = "location_permission_denied";
+      let locationValue = "";
+      try {
+        if (typeof navigator !== "undefined" && "permissions" in navigator) {
+          const permissionStatus = await navigator.permissions.query({ name: "geolocation" });
+          if (permissionStatus.state === "denied") {
+            promptEnableLocationInBrowser();
+            setError("Location is blocked. Please enable location permission in your browser settings.");
+            setSubmitting(false);
+            return;
+          }
         }
+
+        const detectedLocation = await resolveLocationFromBrowser();
+        if (!detectedLocation) {
+          promptEnableLocationInBrowser();
+          setError("Location access is required to start the NSCT quiz.");
+          setSubmitting(false);
+          return;
+        }
+        locationValue = sanitizeLocation(detectedLocation);
+      } catch {
+        promptEnableLocationInBrowser();
+        setError("Location access is required. Please allow location permission and try again.");
+        setSubmitting(false);
+        return;
       }
 
       const { data: insertData, error: insertError } = await supabase
@@ -214,24 +237,17 @@ export default function NsctIntroPage() {
             </div>
 
             <div className="rounded-xl border border-[#7BBBFF]/30 bg-white/65 px-4 py-3">
-              <label htmlFor="nsct-allow-location" className="flex cursor-pointer items-start gap-3">
-                <input
-                  id="nsct-allow-location"
-                  type="checkbox"
-                  checked={allowLocation}
-                  onChange={(e) => setAllowLocation(e.target.checked)}
-                  className="mt-1 h-4 w-4 rounded border-[#7BBBFF]/40 text-[#2f68a1]"
-                />
+              <div className="flex items-start gap-3">
+                <MapPin className="mt-0.5 h-4 w-4 text-[#7BBBFF]" />
                 <span>
-                  <span className="flex items-center gap-2 text-sm font-semibold text-[#0A0F1E]">
-                    <MapPin className="h-4 w-4 text-[#7BBBFF]" />
-                    Share my location
+                  <span className="text-sm font-semibold text-[#0A0F1E]">
+                    Location sharing is required
                   </span>
                   <p className="mt-1 text-xs text-[#4a78a7]">
-                    If allowed, we save your detected city/location
+                    Please allow browser location permission to start the quiz.
                   </p>
                 </span>
-              </label>
+              </div>
             </div>
 
             {error && (
