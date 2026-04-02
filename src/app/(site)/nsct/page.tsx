@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowLeft, Clock3, FileQuestion, ShieldCheck, Mail, Loader2, ChevronRight } from "lucide-react";
+import { ArrowLeft, Clock3, FileQuestion, ShieldCheck, Mail, Loader2, ChevronRight, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import supabase from "@/lib/SupabaseClient";
@@ -18,14 +18,55 @@ import {
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_EMAIL_LEN = 255;
+const MAX_LOCATION_LEN = 300;
 
 function sanitizeEmail(value: string): string {
   return value.trim().slice(0, MAX_EMAIL_LEN).toLowerCase();
 }
 
+function sanitizeLocation(value: string): string {
+  return value.trim().replace(/\s+/g, " ").slice(0, MAX_LOCATION_LEN);
+}
+
+async function resolveLocationFromBrowser(): Promise<string | null> {
+  if (typeof window === "undefined" || !navigator.geolocation) return null;
+
+  const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject, {
+      enableHighAccuracy: false,
+      timeout: 10000,
+      maximumAge: 60000,
+    });
+  });
+
+  const { latitude, longitude } = position.coords;
+
+  try {
+    const geoRes = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+      { headers: { "Accept-Language": "en" } }
+    );
+    const geoData = (await geoRes.json()) as {
+      address?: { city?: string; town?: string; village?: string; state?: string; country?: string };
+    };
+    const address = geoData?.address;
+    if (address) {
+      const composed = [address.city ?? address.town ?? address.village, address.state, address.country]
+        .filter(Boolean)
+        .join(", ");
+      if (composed) return sanitizeLocation(composed);
+    }
+  } catch {
+    // Fallback to coordinates below.
+  }
+
+  return `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+}
+
 export default function NsctIntroPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
+  const [allowLocation, setAllowLocation] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -54,12 +95,22 @@ export default function NsctIntroPage() {
         // keep default value
       }
 
+      let locationValue = "location_not_shared";
+      if (allowLocation) {
+        try {
+          const detectedLocation = await resolveLocationFromBrowser();
+          locationValue = detectedLocation ? sanitizeLocation(detectedLocation) : "location_unavailable";
+        } catch {
+          locationValue = "location_permission_denied";
+        }
+      }
+
       const { data: insertData, error: insertError } = await supabase
         .from("trailpeoples")
         .insert({
           name: "NSCT Candidate",
           email: cleanedEmail,
-          location: "NSCT Intro Page",
+          location: locationValue,
           ipaddress: ipAddress,
           quiztype: "nsct",
         })
@@ -160,6 +211,27 @@ export default function NsctIntroPage() {
               <p className="mt-2 text-xs text-[#4a78a7]">
                 We use this to record your attempt in the trial quiz system.
               </p>
+            </div>
+
+            <div className="rounded-xl border border-[#7BBBFF]/30 bg-white/65 px-4 py-3">
+              <label htmlFor="nsct-allow-location" className="flex cursor-pointer items-start gap-3">
+                <input
+                  id="nsct-allow-location"
+                  type="checkbox"
+                  checked={allowLocation}
+                  onChange={(e) => setAllowLocation(e.target.checked)}
+                  className="mt-1 h-4 w-4 rounded border-[#7BBBFF]/40 text-[#2f68a1]"
+                />
+                <span>
+                  <span className="flex items-center gap-2 text-sm font-semibold text-[#0A0F1E]">
+                    <MapPin className="h-4 w-4 text-[#7BBBFF]" />
+                    Share my location
+                  </span>
+                  <p className="mt-1 text-xs text-[#4a78a7]">
+                    If allowed, we save your detected city/location
+                  </p>
+                </span>
+              </label>
             </div>
 
             {error && (
