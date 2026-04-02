@@ -3169,19 +3169,19 @@
         "options": [
             {
                 "label": "A",
-                "text": "A"
+                "text": "Node A"
             },
             {
                 "label": "B",
-                "text": "B"
+                "text": "Node B"
             },
             {
                 "label": "C",
-                "text": "C"
+                "text": "Node C"
             },
             {
                 "label": "D",
-                "text": "Cannot be determined"
+                "text": "Cannot be determined from the given traversals"
             }
         ],
         "correct_answer": "A",

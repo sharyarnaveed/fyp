@@ -43,14 +43,40 @@ Rules:
 - Avoid duplicate questions.
 - Keep language concise and exam-ready.`;
 
-function resolveGroqConfig(): { apiKey?: string; model: string } {
+function resolveGroqConfig(): { primaryApiKey?: string; backupApiKey?: string; model: string } {
   const modelEnv = process.env.GROQ_AI_MODEL?.trim();
   const apiKeyFromModel = modelEnv?.startsWith("gsk_") ? modelEnv : undefined;
 
   return {
-    apiKey: process.env.GROQ_API_KEY?.trim() || apiKeyFromModel,
+    primaryApiKey: process.env.GROQ_API_KEY?.trim() || apiKeyFromModel,
+    backupApiKey: process.env.GROQ_BACKUP_KEY?.trim(),
     model: modelEnv && !modelEnv.startsWith("gsk_") ? modelEnv : DEFAULT_MODEL,
   };
+}
+
+async function generateWithGroq(apiKey: string, model: string): Promise<QuizQuestion[]> {
+  const groq = new Groq({ apiKey });
+  const completion = await groq.chat.completions.create({
+    model,
+    temperature: 1,
+    top_p: 1,
+    max_completion_tokens: 8192,
+    messages: [
+      {
+        role: "user",
+        content: BONUS_PROMPT,
+      },
+    ],
+  });
+
+  const content = completion.choices?.[0]?.message?.content ?? "";
+  const text = Array.isArray(content)
+    ? content
+        .map((part) => (typeof part === "string" ? part : part.type === "text" ? part.text : ""))
+        .join("")
+    : String(content);
+
+  return sanitizeQuestions(extractArrayFromText(text)).slice(0, NSCT_BONUS_QUESTIONS);
 }
 
 function extractArrayFromText(text: string): unknown[] {
@@ -167,48 +193,40 @@ export async function POST() {
   const fallbackQuestions = makeFallbackQuestions();
 
   try {
-    const { apiKey, model } = resolveGroqConfig();
-    if (!apiKey) {
+    const { primaryApiKey, backupApiKey, model } = resolveGroqConfig();
+    const candidateKeys = [primaryApiKey, backupApiKey].filter(
+      (value, index, array): value is string => Boolean(value) && array.indexOf(value) === index
+    );
+
+    if (candidateKeys.length === 0) {
       return NextResponse.json({
         questions: fallbackQuestions,
         fallback: true,
-        warning: "Missing GROQ_API_KEY. Served fallback bonus questions.",
+        warning: "Missing GROQ_API_KEY/GROQ_BACKUP_KEY. Served fallback bonus questions.",
       });
     }
 
-    const groq = new Groq({ apiKey });
-    const completion = await groq.chat.completions.create({
-      model,
-      temperature: 1,
-      top_p: 1,
-      max_completion_tokens: 8192,
-      messages: [
-        {
-          role: "user",
-          content: BONUS_PROMPT,
-        },
-      ],
+    const attemptErrors: string[] = [];
+
+    for (const [attemptIndex, key] of candidateKeys.entries()) {
+      try {
+        const questions = await generateWithGroq(key, model);
+        if (questions.length >= NSCT_BONUS_QUESTIONS) {
+          return NextResponse.json({ questions });
+        }
+
+        attemptErrors.push(`Attempt ${attemptIndex + 1}: insufficient valid questions returned.`);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown Groq error.";
+        attemptErrors.push(`Attempt ${attemptIndex + 1}: ${message}`);
+      }
+    }
+
+    return NextResponse.json({
+      questions: fallbackQuestions,
+      fallback: true,
+      warning: `Groq generation failed for all configured keys. ${attemptErrors.join(" ")}`,
     });
-
-    const content = completion.choices?.[0]?.message?.content ?? "";
-    const text = Array.isArray(content)
-      ? content
-          .map((part) => (typeof part === "string" ? part : part.type === "text" ? part.text : ""))
-          .join("")
-      : String(content);
-
-    const parsed = extractArrayFromText(text);
-    const questions = sanitizeQuestions(parsed).slice(0, NSCT_BONUS_QUESTIONS);
-
-    if (questions.length < NSCT_BONUS_QUESTIONS) {
-      return NextResponse.json({
-        questions: fallbackQuestions,
-        fallback: true,
-        warning: "AI returned insufficient valid bonus questions. Served fallback questions.",
-      });
-    }
-
-    return NextResponse.json({ questions });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed to generate bonus questions.";
     return NextResponse.json({
