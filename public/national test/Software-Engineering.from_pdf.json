@@ -3921,7 +3921,7 @@
     },
     {
         "id": 141,
-        "question": "(Code/Console Logic) Which testing tool or framework is commonly used for Unit Testing in the Java ecosystem, as indicated by the following metadata? pom.xml <dependency> <groupId>org.junit.jupiter</groupId> <artifactId>junit-jupiter-api</artifactId>",
+        "question": "(Code/Console Logic) Which testing tool or framework is commonly used for Unit Testing in the Java ecosystem, as indicated by the following metadata?",
         "options": [
             {
                 "label": "A",
