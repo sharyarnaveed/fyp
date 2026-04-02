@@ -4025,7 +4025,7 @@
             }
         ],
         "correct_answer": "A",
-        "explanation": "</dependency> Smoke testing is a broad \"shallow\" test to see if the build is stable enough to start testing.\nSanity testing is a narrower, deeper test on a specific change.",
+        "explanation": "Smoke testing is a broad \"shallow\" test to see if the build is stable enough to start testing.\nSanity testing is a narrower, deeper test on a specific change.",
         "subject": "Software Engineering",
         "difficulty": "medium",
         "marks": 1,
@@ -5340,7 +5340,7 @@
                 "text": "Risk A is higher impact."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "risk_analyzer.py\ndef calculate_priority(prob, impact):\nreturn prob * impact\n# Risk A: prob=0.1, impact=90\n# Risk B: prob=0.6, impact=10\nRisk Exposure (Priority) = 0.1 * 90 = 9 for A, and 0.6 * 10 = 6 for B. Actually, Risk A is 9 and B\nis 6. Wait, A is 9. A is higher! (Correction: Risk A has exposure 9, Risk B has 6). Prioritize A.",
         "subject": "Software Engineering",
         "difficulty": "medium",

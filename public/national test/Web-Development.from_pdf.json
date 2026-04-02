@@ -869,7 +869,7 @@
     },
     {
         "id": 32,
-        "question": "(Code-Tracing) In this HTML, why is the image not displaying, and what is the standard fix?",
+        "question": "(Code-Tracing) In this HTML, what is the key accessibility issue, and what is the standard fix?",
         "options": [
             {
                 "label": "A",
@@ -877,7 +877,7 @@
             },
             {
                 "label": "B",
-                "text": "The alt attribute is missing, which is a bad practice for accessibility."
+                "text": "The alt attribute is missing, which is a bad practice for accessibility and should be added."
             },
             {
                 "label": "C",
@@ -1437,7 +1437,7 @@
             },
             {
                 "label": "B",
-                "text": "To apply different styles based on the device's screen size or orientation (e.g., mobile vs."
+                "text": "To apply different styles based on the device's screen size or orientation (e.g., mobile vs. desktop)."
             },
             {
                 "label": "C",

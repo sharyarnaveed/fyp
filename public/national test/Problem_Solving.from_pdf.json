@@ -188,8 +188,8 @@
                 "text": "It involves writing code from the bottom up."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "Heuristics trade optimal accuracy for speed. They are used when finding the perfect mathematical solution is too slow or resource-heavy (e.g., estimating the fastest driving route during heavy traffic).",
+        "correct_answer": "C",
+        "explanation": "Heuristics are rules of thumb for good-enough solutions when exploring every possibility is too slow.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -300,8 +300,8 @@
                 "text": "Syntax Memorization Computational thinking is about logical problem solving ("
             }
         ],
-        "correct_answer": "A",
-        "explanation": "Decomposition, Pattern Recognition, Abstraction, Algorithm Design). Memorizing specific language syntax is not a conceptual thinking pillar.",
+        "correct_answer": "D",
+        "explanation": "Syntax memorization is NOT a core pillar of computational thinking; core pillars are decomposition, pattern recognition, abstraction, algorithm design.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -328,8 +328,8 @@
                 "text": "Exact algorithms Because time is limited and calculating all moves ("
             }
         ],
-        "correct_answer": "A",
-        "explanation": "brute force) is impossible, the program relies on an evaluation formula (a heuristic shortcut) to yield a strong, practical choice quickly.",
+        "correct_answer": "B",
+        "explanation": "The chess example uses heuristics, not brute force.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -356,8 +356,8 @@
                 "text": "An edge case This describes what the system must do (calculate payroll), which makes it a core functional requirement."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "",
+        "correct_answer": "C",
+        "explanation": "Describing a required capability (monthly payroll) is a functional requirement.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -440,8 +440,8 @@
                 "text": "Brute force debugging The \"5 Whys\" is an iterative interrogative technique used to explore the cause-and-effect relationships underlying a particular problem, leading to the root cause."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "",
+        "correct_answer": "C",
+        "explanation": "The described approach is the 5 Whys technique.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -468,8 +468,8 @@
                 "text": "Entity-Relationship Diagram The Fishbone diagram is a cause-and-effect diagram that helps managers and developers track down the reasons for imperfections, variations, or failures."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "",
+        "correct_answer": "C",
+        "explanation": "A Fishbone (Ishikawa) diagram maps potential causes of a problem.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -580,8 +580,8 @@
                 "text": "Constraint A constraint is a strict boundary or limitation placed on the solution."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "Memory limits, time limits, and budget caps are all constraints.",
+        "correct_answer": "D",
+        "explanation": "Memory limit is a constraint.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -636,8 +636,8 @@
                 "text": "Write a completely new algorithm An ill-defined problem (\"make it faster\") must be converted into a well-defined problem (\"load in < 2 seconds\") before any technical planning can begin."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "",
+        "correct_answer": "B",
+        "explanation": "You must define what \"faster\" means before technical fixes.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -692,8 +692,8 @@
                 "text": "Logic These are the data items provided to the system by the user, making them the inputs of the problem space."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "",
+        "correct_answer": "B",
+        "explanation": "Those are inputs, not constraints.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -804,8 +804,8 @@
                 "text": "Server maintenance Asking detailed questions about the nature of the data helps clarify the exact constraints and parameters, which determines the best algorithmic approach to take."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "",
+        "correct_answer": "C",
+        "explanation": "Clarifying constraints and input parameters is the key task.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -888,8 +888,8 @@
                 "text": "Error Step 1: (A OR B) is ("
             }
         ],
-        "correct_answer": "A",
-        "explanation": "True OR False) → True. Step 2: (NOT C) is (NOT True) → False. Step 3: True AND False → False.",
+        "correct_answer": "B",
+        "explanation": "The expression evaluates to False due to (A OR B)=True and (NOT C)=False; True AND False = False.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -944,8 +944,8 @@
                 "text": "(Age > 18) OR (Is_Citizen == True) De Morgan's Law: NOT (A AND B) becomes (NOT A) OR (NOT B)."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "The opposite of > 18 is <= 18. The opposite of == True is == False.",
+        "correct_answer": "C",
+        "explanation": "Applying De Morgan gives (Age <= 18) OR (Is_Citizen == False).",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -1028,8 +1028,8 @@
                 "text": "NOR XOR means \"one or the other, but not both\". If both are True, XOR is False. If both are False, XOR is False."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "",
+        "correct_answer": "C",
+        "explanation": "XOR is true when exactly one input is true.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -1168,8 +1168,8 @@
                 "text": "Infinite Loop isValid starts as"
             }
         ],
-        "correct_answer": "A",
-        "explanation": "False. NOT isValid is True, so the if block executes. Inside, isValid is assigned the value of NOT isValid (which is NOT False → True). It prints True.",
+        "correct_answer": "B",
+        "explanation": "The code sets isValid True and prints True.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -1196,8 +1196,8 @@
                 "text": "if (temperature > 30) AND if (humidity > 80) Nested if statements mean \"If this is true, check if the next thing is also true.\" This is the exact definition of the logical AND operator."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "",
+        "correct_answer": "C",
+        "explanation": "The nested IF is effectively AND.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -1280,8 +1280,8 @@
                 "text": "NOT Whitelist OR Blacklist OR Failed > 100 To be blocked, you must meet the bad criteria (Blacklist OR Failed > 100) AND simultaneously NOT be excused by the exception (AND NOT Whitelist)."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "",
+        "correct_answer": "C",
+        "explanation": "Blocked if (Blacklist OR Failed > 100) AND NOT Whitelist.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -1336,8 +1336,8 @@
                 "text": "0 First IF: True OR False is True (count = 1)."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "Second IF: True AND False is False (count stays 1). Third IF: NOT False is True (count = 2).",
+        "correct_answer": "B",
+        "explanation": "Final count after three checks is 2.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -1420,8 +1420,8 @@
                 "text": "Firewalls make servers secure."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "This is basic syllogism (If A implies B, and C is A, then C implies B). Since Node 4 is a server, and all servers have firewalls, Node 4 must have a firewall.",
+        "correct_answer": "C",
+        "explanation": "Given premises, Node 4 has a firewall.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -1476,8 +1476,8 @@
                 "text": "Syntax Error Step 1: ("
             }
         ],
-        "correct_answer": "A",
-        "explanation": "True AND False) is False. Step 2: (False OR True) is True. Step 3: Combine: (False OR True) is True. Step 4: Apply the outer NOT: NOT (True) evaluates to False.",
+        "correct_answer": "B",
+        "explanation": "Expression simplifies to False.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -1532,8 +1532,8 @@
                 "text": "Using != instead of ==. A contradiction is the opposite of a tautology. It is logically impossible. Example: A AND (NOT"
             }
         ],
-        "correct_answer": "A",
-        "explanation": "",
+        "correct_answer": "B",
+        "explanation": "Contradiction is always false.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -1588,8 +1588,8 @@
                 "text": "Diamond A diamond shape indicates a decision."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "It typically has one arrow entering it and two arrows exiting it (one for True/Yes, one for False/No).",
+        "correct_answer": "D",
+        "explanation": "Decision points are diamonds.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -1644,8 +1644,8 @@
                 "text": "Syntax error on the while loop."
             }
         ],
-        "correct_answer": "D",
-        "explanation": "This is an \"Off-By-One\" error. Because the condition is i < 5, the loop stops when i becomes 5. To print 5, the condition must be i <= 5.",
+        "correct_answer": "C",
+        "explanation": "Loop condition i < 5 prints 1 through 4, missing 5.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,

@@ -3025,10 +3025,27 @@
     },
     {
         "id": 109,
-        "question": "(Scenario-Based) An attacker exploits a vulnerability in a web application running on a Virtual Machine and is able to execute commands directly on the Host physical server, bypassing the VM boundaries. What is this attack called? Hypervisor Escape is a severe security failure. It allows an attacker to break the isolation of virtualization, potentially gaining access to all other VMs running on the same physical server.",
-        "options": [],
+        "question": "(Scenario-Based) An attacker exploits a vulnerability in a web application running on a Virtual Machine and is able to execute commands directly on the Host physical server, bypassing the VM boundaries. What is this attack called?",
+        "options": [
+            {
+                "label": "A",
+                "text": "Hypervisor Escape"
+            },
+            {
+                "label": "B",
+                "text": "Brute Force Attack"
+            },
+            {
+                "label": "C",
+                "text": "SQL Injection"
+            },
+            {
+                "label": "D",
+                "text": "Cross-Site Scripting"
+            }
+        ],
         "correct_answer": "A",
-        "explanation": "",
+        "explanation": "A Hypervisor Escape (also called VM Escape) occurs when code running inside a guest VM breaks out to execute on the host, violating VM isolation.",
         "subject": "Cyber Security",
         "difficulty": "medium",
         "marks": 1,

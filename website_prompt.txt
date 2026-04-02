@@ -1,0 +1,51 @@
+Create a detailed website overview for a platform named Prepzy, an AI-powered exam preparation website for students in Pakistan, especially those preparing for ETEA, NMDCAT, and NSCT.
+
+Include these points clearly:
+
+1. Website purpose
+- Prepzy helps students prepare smarter with AI instead of relying only on expensive coaching centers and scattered study material.
+- It focuses on personalized learning, quiz-based practice, performance tracking, and efficient revision.
+
+2. Key user journeys and features
+- Landing page introduces the brand with a motivational tone and exam-focused messaging.
+- Trial quiz flow where users submit basic details, attempt subject-based MCQs, and receive tracked performance.
+- Dedicated NSCT timed quiz flow with:
+  - Email-based start
+  - Countdown timer
+  - Base questions plus bonus AI questions
+  - Auto-lock behavior when time runs out
+- AI-focused feature set:
+  - AI study assistant
+  - AI quiz generation
+  - Smart document summarization
+  - Study planner
+  - Performance analytics dashboard
+  - Centralized study resources
+- Contact section for support.
+- Privacy policy page explaining data usage and protection.
+
+3. Brand voice and positioning
+- Tone should sound confident, encouraging, and results-driven.
+- Emphasize practical outcomes like stronger exam scores, better weak-area detection, and disciplined study habits.
+- Keep the message student-friendly and trustworthy.
+
+4. Visual style and color scheme
+Describe the UI as modern, clean, and glassmorphism-inspired with soft gradients and mesh/radial background effects.
+
+Use and mention this exact palette:
+- Primary blue: #7BBBFF
+- Accent lavender: #B8A9FF
+- Light background: #F8FCFF
+- Card background: #F2FDFF
+- Primary dark text: #0A0F1E
+- Supporting text tones: #284366, #4A78A7, #35557C
+
+Also mention subject accent behavior in quizzes:
+- Biology uses emerald tones
+- Chemistry uses purple tones
+- Physics uses blue tones
+
+5. Output style
+- Write in polished product-description format.
+- Keep it detailed but easy to read.
+- Make it sound like a professional website brief for stakeholders and designers.

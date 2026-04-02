@@ -3436,8 +3436,8 @@
                 "text": "Yes, if the tree is skewed."
             }
         ],
-        "correct_answer": "B",
-        "explanation": "Once we decide to go Right from 30 (meaning all subsequent nodes must be > 30) and\nthen Left from 45 (meaning all subsequent nodes must be < 45), the next node 35 is\nvalid. Wait, let's re-verify: 35 is > 30 and < 45. Actually, the sequence is valid.\n(Correction: I will change the option to test a truly invalid one like 10, 50, 20, 30,\n45, 25).",
+        "correct_answer": "A",
+        "explanation": "In a BST search for 40, the path 10 -> 50 (left) -> 20 (right) -> 30 (right) -> 45 (left) -> 35 is valid because 35 is in the correct range (>30 and <45).",
         "subject": "DSA",
         "difficulty": "medium",
         "marks": 1,
