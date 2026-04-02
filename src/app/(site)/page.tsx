@@ -281,7 +281,7 @@ export default function Home() {
             <div className="hero-reveal flex w-full max-w-md flex-col gap-4 sm:max-w-none sm:flex-row sm:items-center">
               <Button
                 size="lg"
-                className="cta-primary animated-cta sm:hidden"
+                className="cta-primary animated-cta"
                 onClick={() => window.dispatchEvent(new Event("open-trial-modal"))}
               >
                 MDCAT Trail Quiz
@@ -292,14 +292,6 @@ export default function Home() {
                 <a href="/nsct">Attempt Quiz for NSCT</a>
               </Button>
 
-              <Button
-                size="lg"
-                className="cta-primary animated-cta hidden sm:inline-flex"
-                onClick={() => window.dispatchEvent(new Event("open-trial-modal"))}
-              >
-                MDCAT Trail Quiz
-                <ChevronRight className="h-5 w-5 shrink-0" />
-              </Button>
               <Button size="lg" variant="outline" className="cta-secondary hidden sm:inline-flex" asChild>
                 <a href="#courses">View Courses</a>
               </Button>
