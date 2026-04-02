@@ -257,9 +257,6 @@ export function Navbar() {
           <Link href="/nsct" className="cta-secondary text-sm xl:text-base">
             Attempt NSCT quiz
           </Link>
-          <button type="button" onClick={() => setTrialModalOpen(true)} className="cta-primary text-sm xl:text-base">
-            Try a trial quiz
-          </button>
         </div>
 
         <div className="flex items-center lg:hidden">
@@ -319,16 +316,6 @@ export function Navbar() {
                   >
                     Attempt NSCT quiz
                   </Link>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsOpen(false);
-                      setTrialModalOpen(true);
-                    }}
-                    className="cta-primary block w-full text-center"
-                  >
-                    Try a trial quiz
-                  </button>
                 </motion.div>
               </div>
             </div>
@@ -363,7 +350,7 @@ export function Navbar() {
               <div className="p-6 sm:p-8">
                 <div className="mb-2 flex items-start justify-between gap-4">
                   <div>
-                    <h3 className="text-xl font-display font-bold tracking-tight text-[#0A0F1E] sm:text-2xl">Try a trial quiz</h3>
+                    <h3 className="text-xl font-display font-bold tracking-tight text-[#0A0F1E] sm:text-2xl">MDCAT Trail Quiz</h3>
                     <p className="mt-1.5 text-sm text-[#284366]">
                       Enter your details to start a short chemistry quiz. We use a fixed passage.
                     </p>

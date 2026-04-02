@@ -284,7 +284,7 @@ export default function Home() {
                 className="cta-primary animated-cta sm:hidden"
                 onClick={() => window.dispatchEvent(new Event("open-trial-modal"))}
               >
-                Start the Trial Quiz
+                MDCAT Trail Quiz
                 <ChevronRight className="h-5 w-5 shrink-0" />
               </Button>
 
@@ -295,12 +295,9 @@ export default function Home() {
               <Button
                 size="lg"
                 className="cta-primary animated-cta hidden sm:inline-flex"
-                onClick={() => {
-                  setShowToast(true);
-                  setTimeout(() => setShowToast(false), 3000);
-                }}
+                onClick={() => window.dispatchEvent(new Event("open-trial-modal"))}
               >
-                Start Learning
+                MDCAT Trail Quiz
                 <ChevronRight className="h-5 w-5 shrink-0" />
               </Button>
               <Button size="lg" variant="outline" className="cta-secondary hidden sm:inline-flex" asChild>
