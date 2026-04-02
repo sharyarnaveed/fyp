@@ -67,30 +67,14 @@ export default function NsctIntroPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [enablingLocation, setEnablingLocation] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
+  const [locationModalMessage, setLocationModalMessage] = useState("Please enable location in your browser to continue.");
   const [error, setError] = useState<string | null>(null);
 
   const openLocationModal = (message: string) => {
+    setLocationModalMessage(message);
     setError(message);
     setShowLocationModal(true);
-  };
-
-  const handleEnableLocation = async () => {
-    setEnablingLocation(true);
-    try {
-      const detectedLocation = await resolveLocationFromBrowser();
-      if (!detectedLocation) {
-        setError("Location is still unavailable. Please enable location and try again.");
-        return;
-      }
-      setError(null);
-      setShowLocationModal(false);
-    } catch {
-      setError("Location is still disabled. Please enable it in your browser settings.");
-    } finally {
-      setEnablingLocation(false);
-    }
   };
 
   const handleStart = async (e: React.FormEvent) => {
@@ -120,24 +104,15 @@ export default function NsctIntroPage() {
 
       let locationValue = "";
       try {
-        if (typeof navigator !== "undefined" && "permissions" in navigator) {
-          const permissionStatus = await navigator.permissions.query({ name: "geolocation" });
-          if (permissionStatus.state === "denied") {
-            openLocationModal("Location is blocked. Please enable location permission in your browser settings.");
-            setSubmitting(false);
-            return;
-          }
-        }
-
         const detectedLocation = await resolveLocationFromBrowser();
         if (!detectedLocation) {
-          openLocationModal("Location access is required to start the NSCT quiz.");
+          openLocationModal("Location access is required to start the NSCT quiz. Please enable location in your browser settings.");
           setSubmitting(false);
           return;
         }
         locationValue = sanitizeLocation(detectedLocation);
       } catch {
-        openLocationModal("Location access is required. Please allow location permission and try again.");
+        openLocationModal("Location access is required. Please enable location in your browser settings and try again.");
         setSubmitting(false);
         return;
       }
@@ -288,40 +263,18 @@ export default function NsctIntroPage() {
       </div>
 
       {showLocationModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0A0F1E]/50 px-4">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#0A0F1E]/50 px-4"
+          onClick={() => setShowLocationModal(false)}
+        >
           <div className="w-full max-w-md rounded-2xl border border-[#7BBBFF]/30 bg-white p-6 shadow-2xl">
             <div className="mb-4 flex items-center gap-2 text-[#0A0F1E]">
               <MapPin className="h-5 w-5 text-[#2f68a1]" />
               <h3 className="text-lg font-semibold">Enable location</h3>
             </div>
-            <p className="mb-6 text-sm leading-relaxed text-[#284366]">
-              NSCT requires your location to continue. Click Enable Location to allow browser access.
+            <p className="text-sm leading-relaxed text-[#284366]">
+              {locationModalMessage}
             </p>
-            <div className="flex gap-3">
-              <Button
-                type="button"
-                onClick={handleEnableLocation}
-                disabled={enablingLocation}
-                className="cta-primary flex-1"
-              >
-                {enablingLocation ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Enabling...
-                  </>
-                ) : (
-                  "Enable Location"
-                )}
-              </Button>
-              <Button
-                type="button"
-                onClick={() => setShowLocationModal(false)}
-                disabled={enablingLocation}
-                className="flex-1 border border-[#7BBBFF]/35 bg-white text-[#0A0F1E] hover:bg-[#eef6ff]"
-              >
-                Cancel
-              </Button>
-            </div>
           </div>
         </div>
       )}
