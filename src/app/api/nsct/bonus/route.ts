@@ -11,7 +11,20 @@ interface RawBonusQuestion {
   difficulty?: unknown;
 }
 
-const DEFAULT_MODEL = "openai/gpt-oss-120b";
+const DEFAULT_MODEL = "llama-3.3-70b-versatile";
+
+const FALLBACK_TOPICS = [
+  "Data Structures",
+  "Algorithms",
+  "Operating Systems",
+  "Databases",
+  "Computer Networks",
+  "Programming",
+  "Web Development",
+  "Cyber Security",
+  "AI/ML",
+  "Software Engineering",
+] as const;
 
 const BONUS_PROMPT = `Generate exactly ${NSCT_BONUS_QUESTIONS} NSCT-style MCQs.
 Return ONLY valid JSON as an array (no markdown, no extra text).
@@ -89,14 +102,78 @@ function sanitizeQuestions(raw: unknown[]): QuizQuestion[] {
   return out;
 }
 
+function shuffle<T>(items: T[]): T[] {
+  const clone = [...items];
+  for (let i = clone.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [clone[i], clone[j]] = [clone[j], clone[i]];
+  }
+  return clone;
+}
+
+function makeFallbackQuestions(): QuizQuestion[] {
+  const pool: QuizQuestion[] = [];
+
+  for (const topic of FALLBACK_TOPICS) {
+    pool.push(
+      {
+        id: 0,
+        question: `Which statement best describes the primary goal of ${topic}?`,
+        options: [
+          "Reducing system reliability",
+          "Improving efficiency, correctness, and maintainability",
+          "Avoiding testing and validation",
+          "Replacing all documentation with code comments",
+        ],
+        correctIndex: 1,
+        explanation: `${topic} focuses on building robust and efficient systems.`,
+        difficulty: "easy",
+      },
+      {
+        id: 0,
+        question: `In ${topic}, which practice most directly reduces production defects?`,
+        options: [
+          "Skipping code reviews",
+          "Ignoring edge cases",
+          "Systematic testing and validation",
+          "Frequent undocumented hotfixes",
+        ],
+        correctIndex: 2,
+        explanation: "Structured testing catches defects before release.",
+        difficulty: "medium",
+      },
+      {
+        id: 0,
+        question: `Which metric is generally most useful when evaluating ${topic} solutions?`,
+        options: [
+          "Randomness of implementation style",
+          "Time/space cost and correctness under constraints",
+          "Number of libraries imported",
+          "Length of variable names",
+        ],
+        correctIndex: 1,
+        explanation: "Correctness and resource efficiency are core evaluation metrics.",
+        difficulty: "medium",
+      }
+    );
+  }
+
+  return shuffle(pool)
+    .slice(0, NSCT_BONUS_QUESTIONS)
+    .map((question, index) => ({ ...question, id: index + 1 }));
+}
+
 export async function POST() {
+  const fallbackQuestions = makeFallbackQuestions();
+
   try {
     const { apiKey, model } = resolveGroqConfig();
     if (!apiKey) {
-      return NextResponse.json(
-        { error: "Missing GROQ_API_KEY (or GROQ_AI_MODEL with gsk_ key)." },
-        { status: 500 }
-      );
+      return NextResponse.json({
+        questions: fallbackQuestions,
+        fallback: true,
+        warning: "Missing GROQ_API_KEY. Served fallback bonus questions.",
+      });
     }
 
     const groq = new Groq({ apiKey });
@@ -124,15 +201,20 @@ export async function POST() {
     const questions = sanitizeQuestions(parsed).slice(0, NSCT_BONUS_QUESTIONS);
 
     if (questions.length < NSCT_BONUS_QUESTIONS) {
-      return NextResponse.json(
-        { error: "AI returned insufficient valid bonus questions." },
-        { status: 502 }
-      );
+      return NextResponse.json({
+        questions: fallbackQuestions,
+        fallback: true,
+        warning: "AI returned insufficient valid bonus questions. Served fallback questions.",
+      });
     }
 
     return NextResponse.json({ questions });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed to generate bonus questions.";
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({
+      questions: fallbackQuestions,
+      fallback: true,
+      warning: message,
+    });
   }
 }
