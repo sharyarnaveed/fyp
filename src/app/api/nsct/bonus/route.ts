@@ -34,12 +34,13 @@ Each array item must follow this schema:
   "options": ["A option", "B option", "C option", "D option"],
   "correctIndex": 0,
   "explanation": "short explanation",
-  "difficulty": "easy|medium|hard"
+  "difficulty": "medium|hard"
 }
 Rules:
 - Provide exactly 4 options for every question.
 - correctIndex must be an integer 0-3.
 - Questions should be from computer science topics (DSA, OS, DB, Networks, Programming, Web, Cyber Security, AI/ML, Software Engineering, Problem Solving).
+- Difficulty must be only intermediate (medium) or hard. Do not generate easy questions.
 - Avoid duplicate questions.
 - Keep language concise and exam-ready.`;
 
@@ -153,7 +154,7 @@ function makeFallbackQuestions(): QuizQuestion[] {
         ],
         correctIndex: 1,
         explanation: `${topic} focuses on building robust and efficient systems.`,
-        difficulty: "easy",
+        difficulty: "medium",
       },
       {
         id: 0,
@@ -179,7 +180,7 @@ function makeFallbackQuestions(): QuizQuestion[] {
         ],
         correctIndex: 1,
         explanation: "Correctness and resource efficiency are core evaluation metrics.",
-        difficulty: "medium",
+        difficulty: "hard",
       }
     );
   }

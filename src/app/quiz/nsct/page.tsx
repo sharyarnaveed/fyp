@@ -21,6 +21,7 @@ import {
   NSCT_DURATION_MINUTES,
   NSCT_BASE_QUESTIONS,
   NSCT_BONUS_QUESTIONS,
+  NSCT_AI_START_AT_QUESTION,
   NSCT_QUESTIONS_KEY,
   NSCT_ANSWERS_KEY,
   NSCT_END_AT_KEY,
@@ -213,7 +214,13 @@ export default function NsctQuizPage() {
   const isFirst = index === 0;
   const isLast = index === total - 1;
   const shouldLoadBonus = !bonusLoaded && !bonusUnavailable && total === NSCT_BASE_QUESTIONS && isLast;
-  const shouldPrefetchBonus = !bonusLoaded && !bonusUnavailable && !loadingBonus && !bonusRequested && total === NSCT_BASE_QUESTIONS && index >= 49;
+  const shouldPrefetchBonus =
+    !bonusLoaded &&
+    !bonusUnavailable &&
+    !loadingBonus &&
+    !bonusRequested &&
+    total === NSCT_BASE_QUESTIONS &&
+    index >= NSCT_AI_START_AT_QUESTION - 1;
   const hasAnsweredCurrent = selected != null;
   const isCurrentCorrect = hasAnsweredCurrent ? selected === current?.correctIndex : false;
   const correctionRevealedForCurrent = revealedCorrections[index] === true;

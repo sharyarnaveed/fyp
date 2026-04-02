@@ -1,8 +1,9 @@
 import type { QuizQuestion } from "@/lib/quiz";
 
-export const NSCT_BASE_QUESTIONS = 80;
-export const NSCT_BONUS_QUESTIONS = 20;
+export const NSCT_BASE_QUESTIONS = 70;
+export const NSCT_BONUS_QUESTIONS = 30;
 export const NSCT_TOTAL_QUESTIONS = NSCT_BASE_QUESTIONS + NSCT_BONUS_QUESTIONS;
+export const NSCT_AI_START_AT_QUESTION = 40;
 export const NSCT_PER_FILE = 8;
 export const NSCT_DURATION_MINUTES = 60;
 export const NSCT_QUESTIONS_KEY = "prepzy_nsct_questions";
