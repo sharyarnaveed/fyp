@@ -111,6 +111,14 @@ function setNsctScore(correct: number, total: number): void {
   }
 }
 
+function countAnsweredInRange(answers: Record<number, number>, totalQuestions: number): number {
+  let answered = 0;
+  for (let i = 0; i < totalQuestions; i++) {
+    if (answers[i] != null) answered++;
+  }
+  return answered;
+}
+
 export default function NsctQuizPage() {
   const router = useRouter();
   const prefersReducedMotion = useReducedMotion();
@@ -124,6 +132,7 @@ export default function NsctQuizPage() {
   const [loadingBonus, setLoadingBonus] = useState(false);
   const [bonusLoaded, setBonusLoaded] = useState(false);
   const [bonusRequested, setBonusRequested] = useState(false);
+  const [bonusUnavailable, setBonusUnavailable] = useState(false);
   const [remainingSeconds, setRemainingSeconds] = useState(NSCT_DURATION_MINUTES * 60);
   const [locked, setLocked] = useState(false);
   const [revealedCorrections, setRevealedCorrections] = useState<Record<number, true>>({});
@@ -203,8 +212,8 @@ export default function NsctQuizPage() {
   const selected = answers[index];
   const isFirst = index === 0;
   const isLast = index === total - 1;
-  const shouldLoadBonus = !bonusLoaded && total === NSCT_BASE_QUESTIONS && isLast;
-  const shouldPrefetchBonus = !bonusLoaded && !loadingBonus && !bonusRequested && total === NSCT_BASE_QUESTIONS && index >= 49;
+  const shouldLoadBonus = !bonusLoaded && !bonusUnavailable && total === NSCT_BASE_QUESTIONS && isLast;
+  const shouldPrefetchBonus = !bonusLoaded && !bonusUnavailable && !loadingBonus && !bonusRequested && total === NSCT_BASE_QUESTIONS && index >= 49;
   const hasAnsweredCurrent = selected != null;
   const isCurrentCorrect = hasAnsweredCurrent ? selected === current?.correctIndex : false;
   const correctionRevealedForCurrent = revealedCorrections[index] === true;
@@ -268,6 +277,7 @@ export default function NsctQuizPage() {
     if (loadingBonus || bonusLoaded) return;
 
     setBonusRequested(true);
+    setBonusUnavailable(false);
     setLoadingBonus(true);
     if (advanceAfterLoad) setError(null);
     try {
@@ -302,11 +312,13 @@ export default function NsctQuizPage() {
       });
 
       setBonusLoaded(true);
+      setBonusUnavailable(false);
       if (advanceAfterLoad) {
         setIndex((prev) => prev + 1);
       }
     } catch {
       setBonusRequested(false);
+      setBonusUnavailable(true);
       if (advanceAfterLoad) {
         setError("Could not load bonus AI-generated questions. You can submit now.");
       }
@@ -326,10 +338,25 @@ export default function NsctQuizPage() {
     setError(null);
     try {
       const userId = getTrialUserId();
+      if (userId == null) {
+        throw new Error("Session expired. Please restart NSCT from the instructions page.");
+      }
+
       let correct = 0;
+      const correctResponses: Array<{
+        questionNumber: number;
+        questionId: number;
+        selectedIndex: number;
+      }> = [];
+
       for (let i = 0; i < questions.length; i++) {
         if (answers[i] != null && answers[i] === questions[i].correctIndex) {
           correct++;
+          correctResponses.push({
+            questionNumber: i + 1,
+            questionId: questions[i].id,
+            selectedIndex: answers[i],
+          });
         }
       }
       const totalQuestions = questions.length;
@@ -341,11 +368,10 @@ export default function NsctQuizPage() {
         timedOut: locked,
         durationMinutes: NSCT_DURATION_MINUTES,
         totalQuestions,
-        questions,
-        answers,
+        correctResponses,
         summary: {
           correct,
-          answered: Object.keys(answers).length,
+          answered: countAnsweredInRange(answers, totalQuestions),
         },
       };
 
@@ -357,19 +383,18 @@ export default function NsctQuizPage() {
         throw new Error(insertError.message || "Could not save NSCT responses.");
       }
 
-      if (userId != null) {
-        const { error: updateError } = await supabase
-          .from("trailpeoples")
-          .update({ score: `${correct}/${totalQuestions}` })
-          .eq("id", userId);
-        if (updateError) {
-          throw new Error(updateError.message || "Could not update NSCT score.");
-        }
+      const { error: updateError } = await supabase
+        .from("trailpeoples")
+        .update({ score: `${correct}/${totalQuestions}` })
+        .eq("id", userId);
+      if (updateError) {
+        console.error("NSCT score update warning:", updateError.message);
       }
 
       router.push("/quiz/nsct/thank-you");
-    } catch {
-      setError("Could not submit your quiz. Please try again.");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Could not submit your quiz. Please try again.";
+      setError(message);
     } finally {
       setSubmitting(false);
     }
@@ -445,7 +470,7 @@ export default function NsctQuizPage() {
               )}
             </div>
             <p className="mt-2 text-xs text-[#4a78a7]">
-              {Object.keys(answers).length} answered out of {total}
+              {countAnsweredInRange(answers, total)} answered out of {total}
             </p>
             {shouldLoadBonus && (
               <p className="mt-1 text-xs font-medium text-[#2b5f92]">
