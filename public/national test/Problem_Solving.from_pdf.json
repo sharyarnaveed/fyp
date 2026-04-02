@@ -384,7 +384,7 @@
                 "text": "Implicit assumption"
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "Non-functional requirements specify how well or how fast a system operates (performance, security, scalability), rather than what specific tasks it performs.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -412,7 +412,7 @@
                 "text": "Age = 60 An edge case (or boundary condition) is an extreme, unexpected, or invalid input."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "C",
         "explanation": "A negative age is physically impossible and could break calculations if not handled properly.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -608,7 +608,7 @@
                 "text": "Attempt to isolate the problem in a testing environment Making unverified assumptions is dangerous."
             }
         ],
-        "correct_answer": "C",
+        "correct_answer": "B",
         "explanation": "It leads developers to spend hours fixing the wrong piece of code. Always verify the root cause with data (logs, tests) first.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -777,7 +777,7 @@
             }
         ],
         "correct_answer": "A",
-        "explanation": "",
+        "explanation": "Black Box focuses only on inputs/outputs without internal details and logic of the system.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -860,7 +860,7 @@
                 "text": "NOT The AND operator (often written as &&) strictly requires all joined operands to be true."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "B",
         "explanation": "If even one is false, the entire expression evaluates to false.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -1140,7 +1140,7 @@
                 "text": "Premium Member, Cart = $49 The condition is strictly > 50, not >= 50."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "C",
         "explanation": "Therefore, the cart must be at least $51 (or $50.01) alongside the Premium membership. Option C is the only one that satisfies both AND conditions.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -1448,7 +1448,7 @@
                 "text": "Error (A < B) is"
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "True. (B == 20) is True. The XOR operator strictly requires ONE to be true and the other false. Since BOTH are True, True XOR True evaluates to False.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -1616,7 +1616,7 @@
                 "text": "0 Iteration 1: sum = 0 + 1 = 1."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "Iteration 2: sum = 1 + 2 = 3. Iteration 3: sum = 3 + 3 = 6. The loop ends, and 6 is printed.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -1700,7 +1700,7 @@
                 "text": "10 Start: x = 10."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "Loop 1: 10 > 5 (True) → x = 8. Loop 2: 8 > 5 (True) → x = 6. Loop 3: 6 > 5 (True) → x = 4. Loop 4: 4 > 5 (False) → Loop ends. Prints 4.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -1812,7 +1812,7 @@
                 "text": "3, 4 When i is 1, it prints 1."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "C",
         "explanation": "When i is 2, the continue triggers, skipping the print statement and jumping to i=3. Then it prints 3 and 4.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -1840,7 +1840,7 @@
                 "text": "Because print prevents the loop from stopping."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "The variable count starts at 10 and goes up (11, 12, 13...). It will always be greater than 0, so the condition (count > 0) will never become False. It should have been count = count - 1.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -1896,7 +1896,7 @@
                 "text": "A = 0, B = 15 Step 1: A = 5 + 10 = 15."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "B",
         "explanation": "Step 2: B = 15 - 10 = 5. Step 3: A = 15 - 5 = 10. Result: A is 10, B is 5. The values have been successfully swapped!",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -1952,7 +1952,7 @@
                 "text": "2, 1, 0 Call 1: n=2."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "B",
         "explanation": "Prints 2. Calls blastoff(1). Call 2: n=1. Prints 1. Calls blastoff(0). Call 3: n=0. Prints \"Ignition\". Function ends.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -1980,8 +1980,8 @@
                 "text": "Error Because there is no break statement after case \"Red\", the code experiences \"fall-through\" and continues to execute the next case, printing both \"Stop\" and \"Go\"."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "",
+        "correct_answer": "C",
+        "explanation": "languages like C/Java/JS without break, both cases execute.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -2008,7 +2008,7 @@
                 "text": "Infinite The loop increments i by 2 each time."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "The values of i will be: 0, 2, 4, 6, 8. When i becomes 10, the condition 10 < 10 is False. It executes exactly 5 times.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -2092,7 +2092,7 @@
                 "text": "The network bandwidth used by the application."
             }
         ],
-        "correct_answer": "C",
+        "correct_answer": "B",
         "explanation": "Control flow dictates the path a program takes as it runs. Without control flow (IFs, loops), a program would just execute strictly top-to-bottom and then stop.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -2120,7 +2120,7 @@
                 "text": "Strings cannot be checked in IF statements."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "A single = assigns the value \"Admin\" to userRole and often returns True automatically. This means the code inside the IF block will always run, granting Admin access to everyone! It must be ==.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -2176,7 +2176,7 @@
                 "text": "IF-ELSE chain A"
             }
         ],
-        "correct_answer": "B",
+        "correct_answer": "C",
         "explanation": "DO-WHILE loop is perfect here because you must display the menu to the user at least once before you can check if they selected the \"Exit\" condition.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -2288,7 +2288,7 @@
                 "text": "Compilation Error Due to the IEEE 754 standard for floating-point arithmetic, 0.1 + 0.2 actually results in something like 0.30000000000000004."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "Therefore, direct equality (==) returns False.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -2316,7 +2316,7 @@
                 "text": "Base64"
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "ASCII only supports 128 standard English characters. UTF-8 (Unicode) is a variable-length encoding system that supports over a million characters, covering virtually all human languages and emojis.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -2960,8 +2960,8 @@
                 "text": "N = Previous squared This is the Fibonacci sequence. The generalized pattern is F(n) = F(n-1) + F(n-2)."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "",
+        "correct_answer": "B",
+        "explanation": "Fibonacci: sum of previous two numbers",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -2988,7 +2988,7 @@
                 "text": "Short-Circuit Evaluation Generic programming (Templates/Generics) is the ultimate form of generalization in software."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "You write the logic once using a placeholder type T, and the computer applies that pattern to any data type.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -3100,7 +3100,7 @@
                 "text": "Escaping failure By default, the * operator is \"greedy\"—it tries to match the longest possible string."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "B",
         "explanation": "To fix this pattern recognition error, a \"lazy\" quantifier like *? should be used to stop at the first closing parenthesis.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -3128,7 +3128,7 @@
                 "text": "Deductive Logic Data mining and machine learning algorithms look for associations (patterns) in user behavior to generalize predictions about future behavior."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -3268,7 +3268,7 @@
                 "text": "next = i % (N + 1) The modulo operator (%) is the standard way to implement circular logic."
             }
         ],
-        "correct_answer": "B",
+        "correct_answer": "C",
         "explanation": "If i = 9 and N = 10, (9+1) % 10 results in 0, successfully wrapping the index.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -3296,7 +3296,7 @@
                 "text": "51 Hexadecimal is Base 16."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "2 is in the 16s place, and F (which is 15) is in the 1s place. Calculation: (2 * 16) + (15 * 1) = 32 + 15 = 47.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -3380,8 +3380,8 @@
                 "text": "40 For each of the 4 slots, there are 10 possibilities (0 through 9). Calculation: 10 * 10 * 10 * 10 = 10^4 = 10,000."
             }
         ],
-        "correct_answer": "A",
-        "explanation": "",
+        "correct_answer": "C",
+        "explanation": "10,000",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -3436,7 +3436,7 @@
                 "text": "0.01% To find the probability of two independent events both happening, you multiply their individual probabilities."
             }
         ],
-        "correct_answer": "B",
+        "correct_answer": "C",
         "explanation": "Calculation: 0.01 * 0.01 = 0.0001, which is 0.01%.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -3576,7 +3576,7 @@
                 "text": "if (n % 1 == 0) Even numbers have no remainder when divided by 2."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "Therefore, n % 2 == 0 is the standard mathematical check for parity.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -3688,7 +3688,7 @@
                 "text": "1000 1011 (11 in decimal) + 0011 (3 in decimal) ------- 1110 (14 in decimal)."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -3744,7 +3744,7 @@
                 "text": "1x1 When multiplying an (m x n) matrix by an (n x p) matrix, the resulting matrix has dimensions (m x p)."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "C",
         "explanation": "Here, (1 x 3) * (3 x 3) results in a (1 x 3) matrix.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -3800,7 +3800,7 @@
                 "text": "1 hour Downtime = 0.1% of a year. Calculation: 365 days * 24 hours * 0.001 = 8.76 hours."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -3828,7 +3828,7 @@
                 "text": "NOT A In OR logic, if any input is True (1), the output is always True (1), regardless of the other input."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "This is known as the Null Law (or Identity Law for OR).",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -3856,7 +3856,7 @@
                 "text": "(col * Rows) + row This is the \"Row-Major\" order formula."
             }
         ],
-        "correct_answer": "B",
+        "correct_answer": "C",
         "explanation": "You skip all the rows above you (row * Cols) and then add your current column offset.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -3912,7 +3912,7 @@
                 "text": "100 This is the Fundamental Counting Principle. Total = (Options for slot 1) * (Options for slot 2) = 26 * 10 = 260."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -4024,7 +4024,7 @@
                 "text": "38 Array size is 10. Indices are 0 to 9. low = 0, high = 9. mid = floor((0 + 9) / 2) = 4. The element at index 4 is 16."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -4164,7 +4164,7 @@
                 "text": "8 solve(5) = 5 + solve(3) solve(3) = 3 + solve(1) solve(1) = 1 (Base case) Result: 5 + 3 + 1 = 9."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -4444,7 +4444,7 @@
                 "text": "10 and 13 Selection Sort looks for the smallest element in the entire list (10) and swaps it with the element at the first position (29)."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -4556,7 +4556,7 @@
                 "text": "BCAD Pointers: left=0 ('A'), right=3 ('D'). After swapping indices 0 and 3, the string becomes \"DBCA\"."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "D",
         "explanation": "",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -4864,7 +4864,7 @@
                 "text": "Buy a faster server for the email system."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "B",
         "explanation": "Critical thinking requires moving from observation to experimentation. You must prove that the email traffic is *specifically* hitting a shared resource (like the database) to confirm causation.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -4920,7 +4920,7 @@
                 "text": "Poor time management Professional decision-making involves accounting for \"Unknown Unknowns.\" Adding a buffer is a critical risk management strategy to ensure deadlines are met even if small issues arise."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -4976,7 +4976,7 @@
                 "text": "Ask the developers to do both in half the time."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "Based on the data, the performance issue is a \"blocker\" for 50% of the audience. Attracting new users with a feature is useless if they leave immediately due to speed. Retention usually takes priority over new features in critical analysis.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -5144,7 +5144,7 @@
                 "text": "Always use a \"Razor\" tool to cut unused code."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "C",
         "explanation": "In engineering, \"Simplicity\" is a major virtue. More complex code has more bugs, more security holes, and is harder to maintain. Occam's Razor helps you choose the \"Leaner\" path.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -5172,7 +5172,7 @@
                 "text": "Logical Error Logical errors are \"silent.\" The code is grammatically correct and the computer executes it, but the logic is flawed (e.g., using + instead of *)."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "D",
         "explanation": "Because there is no crash or error message, these require deep analysis.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -5200,7 +5200,7 @@
                 "text": "Integer overflow."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "In 0-based indexing, an array of size N has indices from 0 to N-1. Starting the loop at 1 and going to N will skip the first element and crash (Error) when trying to access the non-existent arr[N].",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -5256,7 +5256,7 @@
                 "text": "A, C Division by zero triggers an exception."
             }
         ],
-        "correct_answer": "B",
+        "correct_answer": "c",
         "explanation": "Execution jumps immediately from the try block to the catch block (printing \"B\"). The finally block always runs regardless of whether an error occurred, so it prints \"C\".",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -5284,7 +5284,7 @@
                 "text": "A bug that is impossible to fix."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "C",
         "explanation": "Regression occurs when a \"fix\" or a \"new feature\" breaks something that used to work. This is why \"Regression Testing\" (running all old tests after a change) is vital.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -5340,7 +5340,7 @@
                 "text": "Rubber Ducking By halving the search space repeatedly, you can find the origin of a bug in O(log N) time."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "B",
         "explanation": "This is much faster than checking line-by-line.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -5368,7 +5368,7 @@
                 "text": "Static Analysis requires a human; Dynamic is automated."
             }
         ],
-        "correct_answer": "B",
+        "correct_answer": "A",
         "explanation": "Linters and Compilers perform Static Analysis (checking for unused variables, type mismatches). Profilers and Debuggers perform Dynamic Analysis (checking for memory leaks, runtime crashes).",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -5424,7 +5424,7 @@
                 "text": "A library function that is 100% safe."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "B",
         "explanation": "A stack trace is \"Last-In-First-Out.\" The function currently running when the crash happened is at the top. You read downwards to see which functions called that one.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -5984,7 +5984,7 @@
                 "text": "They are all equally efficient."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "At N=100, N log N is roughly 664 operations, N² is 10,000 operations, and 2^N is a astronomical number (trillions of trillions). O(N log N) is the clear winner.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -6012,7 +6012,7 @@
                 "text": "O(N log N) Because the list is unsorted, you cannot use Binary Search ("
             }
         ],
-        "correct_answer": "B",
+        "correct_answer": "C",
         "explanation": "O(log N)). You must check every item one by one (Linear Search), resulting in O(N) complexity.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -6040,7 +6040,7 @@
                 "text": "O(N²) The loop variable i doubles each time (1, 2, 4, 8, 16...)."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "B",
         "explanation": "The number of times you can double a number before reaching N is log2(N). This is Logarithmic complexity.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -6068,7 +6068,7 @@
                 "text": "O(N³) This involves a nested structure: for each N, do N work. This is the definition of Quadratic complexity, O(N²)."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -6180,7 +6180,7 @@
                 "text": "A memory leak."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "B",
         "explanation": "Using a Set (which is typically a Hash Table) allows an O(1) check instead of searching an O(N) list. You traded RAM for speed.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -6264,7 +6264,7 @@
                 "text": "Selection Sort uses too much extra memory."
             }
         ],
-        "correct_answer": "B",
+        "correct_answer": "C",
         "explanation": "1,000,000² is 1 trillion operations. Even a fast CPU would take hours to finish. An O(N log N) sort (like Merge Sort) would finish in seconds.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -6292,7 +6292,7 @@
                 "text": "O(log N) Space complexity follows the same growth rules as time."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "A grid of N rows and N columns occupies N * N memory slots.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -6488,7 +6488,7 @@
                 "text": "It prevents the use of conditional statements."
             }
         ],
-        "correct_answer": "B",
+        "correct_answer": "C",
         "explanation": "Modularization allows developers to focus on one small \"module\" at a time. If there is a bug in the \"Payment\" logic, you only need to look at the Payment module, not the entire million-line codebase.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -6600,7 +6600,7 @@
                 "text": "0 The loop runs from 1 to 5. The if condition only triggers for even numbers: 2 and 4. total = 2 + 4 = 6."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -6796,7 +6796,7 @@
                 "text": "0 Iteration 1: val = 1 * 1 = 1. Iteration 2: val = 1 * 2 = 2. Iteration 3: val = 2 * 3 = 6."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -6824,7 +6824,7 @@
                 "text": "Compiling code for a different operating system."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "Refactoring is like \"cleaning the kitchen while you cook.\" You make the code cleaner, more modular, and easier to read, but the app still does exactly the same thing for the user.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -6880,7 +6880,7 @@
                 "text": "Brute force Using a dictionary makes the code much cleaner and easier to maintain."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "C",
         "explanation": "To add a new country, you just add a new entry to the data (the dictionary) rather than adding more code (if- else).",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -6908,7 +6908,7 @@
                 "text": "Null When you say y = x, you aren't copying the list; you are making y point to the exact same memory location as x."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "B",
         "explanation": "Changing y[0] also changes x[0]. This is a common source of bugs in programming.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -7160,7 +7160,7 @@
                 "text": "It allows the same variable to be used for different purposes."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "Separation of concerns means you don't mix your \"Database code\" with your \"UI code.\" This makes it much easier to change your UI later without breaking the database logic.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -7552,7 +7552,7 @@
                 "text": "Ask the users to stop uploading images."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "Context is key in data-driven decisions. An optimization that doesn't benefit your \"most frequent case\" is not a real optimization for your specific problem.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -7580,7 +7580,7 @@
                 "text": "Deleting data to see if the system still works."
             }
         ],
-        "correct_answer": "C",
+        "correct_answer": "B",
         "explanation": "EDA is the \"investigation\" phase. You look at distributions, plot graphs, and check for patterns to understand what the data is telling you before you start building models or making decisions.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -7608,7 +7608,7 @@
                 "text": "Log the user in automatically to stop the attempts."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "Data-driven problem solving allows for automation. Recognizing a \"pattern of abuse\" (high- frequency failures) triggers a security rule (blocking).",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -7748,7 +7748,7 @@
                 "text": "Data Abstraction The developer reframed the problem from a technical one (\"Speed up the sync\") to a psychological one (\"Reduce the user's perceived wait time\")."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -7832,7 +7832,7 @@
                 "text": "There is no difference; they are marketing terms."
             }
         ],
-        "correct_answer": "C",
+        "correct_answer": "B",
         "explanation": "Incremental: Making a gas engine 5% more efficient. Radical: Replacing the gas engine with an electric motor. In IT, moving from a Monolith to Microservices is a Radical innovation.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -7916,7 +7916,7 @@
                 "text": "Brute Force Design Analogical thinking involves taking a solution from a completely different field (biology) and applying its pattern to your current field (IT)."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -7972,7 +7972,7 @@
                 "text": "To convert the creative idea into binary code."
             }
         ],
-        "correct_answer": "C",
+        "correct_answer": "B",
         "explanation": "Divergent thinking creates the \"menu\" of options; convergent thinking acts as the \"judge\" that picks the best dish based on constraints like cost, time, and technology.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -8056,7 +8056,7 @@
                 "text": "Blue-Green Deployment Atomicity ensures that a series of operations either all succeed or all fail."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "C",
         "explanation": "In real-world finance, this is a non-negotiable requirement for data integrity.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -8084,7 +8084,7 @@
                 "text": "They are always slower for every type of application."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "While microservices scale well, they are much harder to manage. You now have 50 small \"apps\" to monitor and secure instead of one big one. For small teams, this complexity can be a project-killer.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -8196,7 +8196,7 @@
                 "text": "Ask users to refresh the page less often."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "In a crisis, you don't rewrite code. Caching is the \"silver bullet\" for traffic spikes because it prevents the heavy database from having to do work for every single user.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -8252,7 +8252,7 @@
                 "text": "Old code is naturally faster than new code."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "B",
         "explanation": "Old code is often \"ugly\" because it has been patched to handle weird real-world bugs. Starting from scratch usually means you have to rediscover and fix all those same bugs again over the next few years.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -8308,7 +8308,7 @@
                 "text": "To celebrate that the system is back up."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "C",
         "explanation": "A professional post-mortem focuses on *systemic* failures, not individuals. \"The developer made a typo\" is a bad post-mortem. \"We didn't have a test to catch that typo\" is a good post- mortem.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -8476,7 +8476,7 @@
                 "text": "Rewrite the site in a faster language."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "C",
         "explanation": "The problem is Latency caused by physical distance (speed of light). No matter how fast your CPU is, the data must travel across the world. A CDN stores a copy of your site near the user, drastically reducing the travel time.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -8532,7 +8532,7 @@
                 "text": "Unit Testing Canary releases allow you to test a new feature on a small \"safe\" group of real users in production."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "C",
         "explanation": "If the 5% don't crash, you slowly roll it out to 100%.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -8560,7 +8560,7 @@
                 "text": "Deleting all documentation files to save disk space."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "Code is read much more often than it is written. if (user.isAccountActive()) is self- documenting. if (u.status == 1) is not, as it requires a comment to explain what '1' and 'u' mean.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -8588,7 +8588,7 @@
                 "text": "\"asdfghjkl\" A professional commit message should be concise but descriptive."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "C",
         "explanation": "It should state what was changed and where, allowing other team members to understand the history of the project without opening the code.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -8616,7 +8616,7 @@
                 "text": "To convert the API from Python to Java."
             }
         ],
-        "correct_answer": "B",
+        "correct_answer": "C",
         "explanation": "Swagger/OpenAPI is the industry standard for API documentation. It allows frontend developers to know exactly how to interact with the backend without having to read the backend source code.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -8644,7 +8644,7 @@
                 "text": "\"It's too technical for you to understand.\" Effective communication involves translating technical problems into business impact (time, cost, and future stability)."
             }
         ],
-        "correct_answer": "B",
+        "correct_answer": "C",
         "explanation": "Explaining that the work prevents \"future slowness/cost\" is something a manager can support.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -8700,7 +8700,7 @@
                 "text": "* and /code/ Markdown uses # for H1, ## for H2, etc."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "B",
         "explanation": "Triple backticks ( ``` ) are used to create code blocks with optional syntax highlighting.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -8812,7 +8812,7 @@
                 "text": "A tool that automatically changes code into a different language."
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "A Change Log is essential for users and other developers to know what is new in a specific version (e.g., v1.2.0) without having to read through thousands of individual Git commits.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -8840,7 +8840,7 @@
                 "text": "Oval In standard flowcharting (ISO), a"
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "Parallelogram represents Input or Output. A Rectangle represents a Process, and a Diamond represents a Decision.",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -8868,7 +8868,7 @@
                 "text": "It is the language used to communicate with the database."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "B",
         "explanation": "UML (using Class Diagrams, Sequence Diagrams, etc.) allows developers to communicate complex architectural ideas visually, which is often much more efficient than writing long paragraphs of text.",
         "subject": "Problem Solving",
         "difficulty": "medium",
