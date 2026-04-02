@@ -137,6 +137,7 @@ export default function NsctQuizPage() {
   const [remainingSeconds, setRemainingSeconds] = useState(NSCT_DURATION_MINUTES * 60);
   const [locked, setLocked] = useState(false);
   const [revealedCorrections, setRevealedCorrections] = useState<Record<number, true>>({});
+  const [visited, setVisited] = useState<Record<number, true>>({ 0: true });
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -213,21 +214,73 @@ export default function NsctQuizPage() {
   const selected = answers[index];
   const isFirst = index === 0;
   const isLast = index === total - 1;
-  const shouldLoadBonus = !bonusLoaded && !bonusUnavailable && total === NSCT_BASE_QUESTIONS && isLast;
+  const contiguousVisitedCount = useMemo(() => {
+    let count = 0;
+    while (count < total && visited[count]) count++;
+    return count;
+  }, [total, visited]);
+  const hasUnlockedBonusGeneration = contiguousVisitedCount >= NSCT_AI_START_AT_QUESTION;
+  const shouldLoadBonus =
+    !bonusLoaded &&
+    !bonusUnavailable &&
+    total === NSCT_BASE_QUESTIONS &&
+    isLast &&
+    hasUnlockedBonusGeneration;
+  const shouldShowBonusUnlockHint =
+    !bonusLoaded &&
+    !bonusUnavailable &&
+    total === NSCT_BASE_QUESTIONS &&
+    isLast &&
+    !hasUnlockedBonusGeneration;
   const shouldPrefetchBonus =
     !bonusLoaded &&
     !bonusUnavailable &&
     !loadingBonus &&
     !bonusRequested &&
     total === NSCT_BASE_QUESTIONS &&
-    index >= NSCT_AI_START_AT_QUESTION - 1;
+    hasUnlockedBonusGeneration;
   const hasAnsweredCurrent = selected != null;
   const isCurrentCorrect = hasAnsweredCurrent ? selected === current?.correctIndex : false;
   const correctionRevealedForCurrent = revealedCorrections[index] === true;
   const showCorrection = hasAnsweredCurrent && !isCurrentCorrect && correctionRevealedForCurrent;
   const holdAdvanceToRevealCorrection = hasAnsweredCurrent && !isCurrentCorrect && !correctionRevealedForCurrent;
-  const optionsLocked = locked || hasAnsweredCurrent;
+  const optionsLocked = locked;
   const correctOptionText = current?.options?.[current.correctIndex] ?? "";
+  const skippedNumbers = useMemo(() => {
+    const skipped: number[] = [];
+    for (let i = 0; i < total; i++) {
+      if (visited[i] && answers[i] == null) {
+        skipped.push(i + 1);
+      }
+    }
+    return skipped;
+  }, [answers, total, visited]);
+
+  const wrongNumbers = useMemo(() => {
+    const wrong: number[] = [];
+    for (let i = 0; i < total; i++) {
+      if (
+        answers[i] != null &&
+        questions[i] &&
+        answers[i] !== questions[i].correctIndex &&
+        revealedCorrections[i]
+      ) {
+        wrong.push(i + 1);
+      }
+    }
+    return wrong;
+  }, [answers, questions, total, revealedCorrections]);
+
+  const skippedSet = useMemo(() => new Set(skippedNumbers), [skippedNumbers]);
+  const wrongSet = useMemo(() => new Set(wrongNumbers), [wrongNumbers]);
+
+  useEffect(() => {
+    if (total === 0) return;
+    setVisited((prev) => {
+      if (prev[index]) return prev;
+      return { ...prev, [index]: true };
+    });
+  }, [index, total]);
 
   const scorePreview = useMemo(() => {
     let correct = 0;
@@ -278,6 +331,11 @@ export default function NsctQuizPage() {
       return;
     }
     void loadBonusQuestions(true);
+  };
+
+  const handleSkip = () => {
+    if (isLast) return;
+    setIndex((v) => Math.min(total - 1, v + 1));
   };
 
   const loadBonusQuestions = async (advanceAfterLoad: boolean) => {
@@ -443,216 +501,297 @@ export default function NsctQuizPage() {
       <div className="hero-blob hero-blob-b" />
 
       <main className="relative z-10 px-4 pb-14 pt-6 sm:px-6 sm:pt-10">
-        <div className="mx-auto w-full max-w-4xl">
+        <div className="mx-auto w-full max-w-6xl">
           <Link href="/nsct" className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-[#35557c] hover:text-[#0A0F1E]">
             <ArrowLeft className="h-4 w-4" />
             Back to NSCT instructions
           </Link>
 
-          <section className="glass-tile mb-5 p-4 sm:p-5">
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#4a78a7]">NSCT Attempt</p>
-                <h1 className="text-xl font-display font-bold text-[#0A0F1E] sm:text-2xl">Question {index + 1} of {total}</h1>
-              </div>
-              <div className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold ${locked ? "border-amber-400 bg-amber-50 text-amber-700" : "border-[#7BBBFF]/40 bg-[#F2FDFF] text-[#0A0F1E]"}`}>
-                {locked ? <Lock className="h-4 w-4" /> : <Clock3 className="h-4 w-4" />}
-                {locked ? "Time over" : formatNsctTimer(remainingSeconds)}
-              </div>
-            </div>
-
-            <div className="h-2 overflow-hidden rounded-full bg-white/80 border border-[#7BBBFF]/20">
-              {shouldReduceMotion ? (
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-[#7BBBFF] to-[#B8A9FF]"
-                  style={{ width: `${progress}%` }}
-                />
-              ) : (
-                <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-[#7BBBFF] to-[#B8A9FF]"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${progress}%` }}
-                  transition={{ duration: 0.22, ease: "easeOut" }}
-                />
-              )}
-            </div>
-            <p className="mt-2 text-xs text-[#4a78a7]">
-              {countAnsweredInRange(answers, total)} answered out of {total}
-            </p>
-            {shouldLoadBonus && (
-              <p className="mt-1 text-xs font-medium text-[#2b5f92]">
-                You have completed {NSCT_BASE_QUESTIONS} questions. Next step will load {NSCT_BONUS_QUESTIONS} bonus AI-generated questions.
-              </p>
-            )}
-            {!bonusLoaded && bonusRequested && total === NSCT_BASE_QUESTIONS && index >= 49 && (
-              <p className="mt-1 text-xs font-medium text-[#2b5f92]">
-                Preparing bonus AI-generated questions in background...
-              </p>
-            )}
-          </section>
-
-          {shouldReduceMotion ? (
-            <section className="glass-tile p-6 sm:p-8">
-              <p className="mb-6 text-lg leading-relaxed text-[#0A0F1E]">{current.question}</p>
-
-              <ul className="space-y-3">
-                {current.options.map((option, optionIndex) => {
-                  const active = selected === optionIndex;
-                  return (
-                    <li key={`${index}-${optionIndex}`}>
-                      <button
-                        type="button"
-                        onClick={() => selectOption(optionIndex)}
-                          disabled={optionsLocked}
-                          className={`w-full rounded-xl border px-4 py-3 text-left transition-colors duration-150 ${active ? "border-[#7BBBFF] bg-[#7BBBFF]/10 text-[#0A0F1E]" : "border-[#7BBBFF]/25 bg-white/80 text-[#284366] hover:border-[#7BBBFF]/50"} ${optionsLocked ? "cursor-not-allowed opacity-70" : ""}`}
-                      >
-                        <span className="mr-2 font-semibold text-[#2b5f92]">{String.fromCharCode(65 + optionIndex)}.</span>
-                        {option}
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-
-              {locked && (
-                <div className="mt-5 rounded-xl border border-amber-400/45 bg-amber-500/12 px-4 py-3 text-sm text-amber-900">
-                  Time has ended. Answers are now locked. You can still submit your attempt.
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-start">
+            <div>
+              <section className="glass-tile mb-5 p-4 sm:p-5">
+                <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#4a78a7]">NSCT Attempt</p>
+                    <h1 className="text-xl font-display font-bold text-[#0A0F1E] sm:text-2xl">Question {index + 1} of {total}</h1>
+                  </div>
+                  <div className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold ${locked ? "border-amber-400 bg-amber-50 text-amber-700" : "border-[#7BBBFF]/40 bg-[#F2FDFF] text-[#0A0F1E]"}`}>
+                    {locked ? <Lock className="h-4 w-4" /> : <Clock3 className="h-4 w-4" />}
+                    {locked ? "Time over" : formatNsctTimer(remainingSeconds)}
+                  </div>
                 </div>
-              )}
 
-              {showCorrection && (
-                <div className="mt-5 rounded-xl border border-emerald-400/45 bg-emerald-500/12 px-4 py-3 text-sm text-emerald-900">
-                  <p className="font-semibold">
-                    Correct answer: {String.fromCharCode(65 + current.correctIndex)}. {correctOptionText}
-                  </p>
-                  {current.explanation && (
-                    <p className="mt-1">Explanation: {current.explanation}</p>
+                <div className="h-2 overflow-hidden rounded-full bg-white/80 border border-[#7BBBFF]/20">
+                  {shouldReduceMotion ? (
+                    <div className="h-full rounded-full bg-gradient-to-r from-[#7BBBFF] to-[#B8A9FF]" style={{ width: `${progress}%` }} />
+                  ) : (
+                    <motion.div
+                      className="h-full rounded-full bg-gradient-to-r from-[#7BBBFF] to-[#B8A9FF]"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${progress}%` }}
+                      transition={{ duration: 0.22, ease: "easeOut" }}
+                    />
                   )}
                 </div>
-              )}
-            </section>
-          ) : (
-            <AnimatePresence mode="wait">
-              <motion.section
-                key={index}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.18, ease: "easeOut" }}
-                className="glass-tile p-6 sm:p-8"
-              >
-                <p className="mb-6 text-lg leading-relaxed text-[#0A0F1E]">{current.question}</p>
-
-                <ul className="space-y-3">
-                  {current.options.map((option, optionIndex) => {
-                    const active = selected === optionIndex;
-                    return (
-                      <li key={`${index}-${optionIndex}`}>
-                        <button
-                          type="button"
-                          onClick={() => selectOption(optionIndex)}
-                          disabled={optionsLocked}
-                          className={`w-full rounded-xl border px-4 py-3 text-left transition-colors duration-200 ${active ? "border-[#7BBBFF] bg-[#7BBBFF]/10 text-[#0A0F1E]" : "border-[#7BBBFF]/25 bg-white/80 text-[#284366] hover:border-[#7BBBFF]/50"} ${optionsLocked ? "cursor-not-allowed opacity-70" : ""}`}
-                        >
-                          <span className="mr-2 font-semibold text-[#2b5f92]">{String.fromCharCode(65 + optionIndex)}.</span>
-                          {option}
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-
-                {locked && (
-                  <div className="mt-5 rounded-xl border border-amber-400/45 bg-amber-500/12 px-4 py-3 text-sm text-amber-900">
-                    Time has ended. Answers are now locked. You can still submit your attempt.
-                  </div>
+                <p className="mt-2 text-xs text-[#4a78a7]">{countAnsweredInRange(answers, total)} answered out of {total}</p>
+                {shouldLoadBonus && (
+                  <p className="mt-1 text-xs font-medium text-[#2b5f92]">
+                    You have completed {NSCT_BASE_QUESTIONS} questions. Next step will load {NSCT_BONUS_QUESTIONS} bonus AI-generated questions.
+                  </p>
                 )}
+                {shouldShowBonusUnlockHint && (
+                  <p className="mt-1 text-xs font-medium text-[#2b5f92]">
+                    Bonus unlocks after you progress sequentially to question {NSCT_AI_START_AT_QUESTION}. You can still jump freely.
+                  </p>
+                )}
+                {!bonusLoaded && bonusRequested && total === NSCT_BASE_QUESTIONS && index >= 49 && (
+                  <p className="mt-1 text-xs font-medium text-[#2b5f92]">Preparing bonus AI-generated questions in background...</p>
+                )}
+              </section>
 
-                {showCorrection && (
-                  <div className="mt-5 rounded-xl border border-emerald-400/45 bg-emerald-500/12 px-4 py-3 text-sm text-emerald-900">
-                    <p className="font-semibold">
-                      Correct answer: {String.fromCharCode(65 + current.correctIndex)}. {correctOptionText}
-                    </p>
-                    {current.explanation && (
-                      <p className="mt-1">Explanation: {current.explanation}</p>
+              {shouldReduceMotion ? (
+                <section className="glass-tile p-6 sm:p-8">
+                  <p className="mb-6 text-lg leading-relaxed text-[#0A0F1E]">{current.question}</p>
+
+                  <ul className="space-y-3">
+                    {current.options.map((option, optionIndex) => {
+                      const active = selected === optionIndex;
+                      return (
+                        <li key={`${index}-${optionIndex}`}>
+                          <button
+                            type="button"
+                            onClick={() => selectOption(optionIndex)}
+                            disabled={optionsLocked}
+                            className={`w-full rounded-xl border px-4 py-3 text-left transition-colors duration-150 ${active ? "border-[#7BBBFF] bg-[#7BBBFF]/10 text-[#0A0F1E]" : "border-[#7BBBFF]/25 bg-white/80 text-[#284366] hover:border-[#7BBBFF]/50"} ${optionsLocked ? "cursor-not-allowed opacity-70" : ""}`}
+                          >
+                            <span className="mr-2 font-semibold text-[#2b5f92]">{String.fromCharCode(65 + optionIndex)}.</span>
+                            {option}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+
+                  {locked && (
+                    <div className="mt-5 rounded-xl border border-amber-400/45 bg-amber-500/12 px-4 py-3 text-sm text-amber-900">
+                      Time has ended. Answers are now locked. You can still submit your attempt.
+                    </div>
+                  )}
+
+                  {showCorrection && (
+                    <div className="mt-5 rounded-xl border border-emerald-400/45 bg-emerald-500/12 px-4 py-3 text-sm text-emerald-900">
+                      <p className="font-semibold">Correct answer: {String.fromCharCode(65 + current.correctIndex)}. {correctOptionText}</p>
+                      {current.explanation && <p className="mt-1">Explanation: {current.explanation}</p>}
+                    </div>
+                  )}
+                </section>
+              ) : (
+                <AnimatePresence mode="wait">
+                  <motion.section
+                    key={index}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.18, ease: "easeOut" }}
+                    className="glass-tile p-6 sm:p-8"
+                  >
+                    <p className="mb-6 text-lg leading-relaxed text-[#0A0F1E]">{current.question}</p>
+
+                    <ul className="space-y-3">
+                      {current.options.map((option, optionIndex) => {
+                        const active = selected === optionIndex;
+                        return (
+                          <li key={`${index}-${optionIndex}`}>
+                            <button
+                              type="button"
+                              onClick={() => selectOption(optionIndex)}
+                              disabled={optionsLocked}
+                              className={`w-full rounded-xl border px-4 py-3 text-left transition-colors duration-200 ${active ? "border-[#7BBBFF] bg-[#7BBBFF]/10 text-[#0A0F1E]" : "border-[#7BBBFF]/25 bg-white/80 text-[#284366] hover:border-[#7BBBFF]/50"} ${optionsLocked ? "cursor-not-allowed opacity-70" : ""}`}
+                            >
+                              <span className="mr-2 font-semibold text-[#2b5f92]">{String.fromCharCode(65 + optionIndex)}.</span>
+                              {option}
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+
+                    {locked && (
+                      <div className="mt-5 rounded-xl border border-amber-400/45 bg-amber-500/12 px-4 py-3 text-sm text-amber-900">
+                        Time has ended. Answers are now locked. You can still submit your attempt.
+                      </div>
                     )}
-                  </div>
-                )}
-              </motion.section>
-            </AnimatePresence>
-          )}
 
-          {error && (
-            <div className="mt-4 rounded-xl border border-amber-400/45 bg-amber-500/12 px-4 py-3 text-sm text-amber-900">
-              {error}
-            </div>
-          )}
+                    {showCorrection && (
+                      <div className="mt-5 rounded-xl border border-emerald-400/45 bg-emerald-500/12 px-4 py-3 text-sm text-emerald-900">
+                        <p className="font-semibold">Correct answer: {String.fromCharCode(65 + current.correctIndex)}. {correctOptionText}</p>
+                        {current.explanation && <p className="mt-1">Explanation: {current.explanation}</p>}
+                      </div>
+                    )}
+                  </motion.section>
+                </AnimatePresence>
+              )}
 
-          <div className="mt-6 flex items-center justify-between gap-3">
-            <button
-              type="button"
-              onClick={() => setIndex((v) => Math.max(0, v - 1))}
-              disabled={isFirst}
-              className="inline-flex items-center gap-2 rounded-xl border border-[#7BBBFF]/35 bg-white/70 px-4 py-3 text-sm font-semibold text-[#0A0F1E] disabled:opacity-40"
-            >
-              <ChevronLeft className="h-5 w-5" />
-              Previous
-            </button>
+              {error && (
+                <div className="mt-4 rounded-xl border border-amber-400/45 bg-amber-500/12 px-4 py-3 text-sm text-amber-900">
+                  {error}
+                </div>
+              )}
 
-            {isLast ? (
-              shouldLoadBonus ? (
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
                 <button
                   type="button"
-                  onClick={handleLoadBonus}
-                  disabled={loadingBonus || submitting}
-                  className="cta-primary px-6 py-3 text-sm disabled:opacity-70"
+                  onClick={() => setIndex((v) => Math.max(0, v - 1))}
+                  disabled={isFirst}
+                  className="inline-flex items-center gap-2 rounded-xl border border-[#7BBBFF]/35 bg-white/70 px-4 py-3 text-sm font-semibold text-[#0A0F1E] disabled:opacity-40"
                 >
-                  {loadingBonus ? (
-                    <>
-                      <Loader2 className="h-5 w-5 animate-spin" />
-                      Loading bonus AI-generated questions...
-                    </>
-                  ) : (
-                    <>
-                      Load Bonus AI Questions
-                      <ChevronRight className="h-5 w-5" />
-                    </>
-                  )}
+                  <ChevronLeft className="h-5 w-5" />
+                  Previous
                 </button>
-              ) : (
-              <button
-                type="button"
-                onClick={submitQuiz}
-                disabled={submitting}
-                className="cta-primary px-6 py-3 text-sm disabled:opacity-70"
-              >
-                {submitting ? (
-                  <>
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                    Submitting...
-                  </>
-                ) : (
-                  <>
-                    Submit Attempt
-                    <Send className="h-4 w-4" />
-                  </>
-                )}
-              </button>
-              )
-            ) : (
-              <button
-                type="button"
-                onClick={handleNext}
-                className="cta-primary px-6 py-3 text-sm"
-              >
-                Next
-                <ChevronRight className="h-5 w-5" />
-              </button>
-            )}
-          </div>
 
-          <div className="mt-5 text-center text-xs text-[#4a78a7]">
-            Score preview: {scorePreview} correct from {answeredPreview} answered.
+                {!isLast && (
+                  <button
+                    type="button"
+                    onClick={handleSkip}
+                    className="inline-flex items-center gap-2 rounded-xl border border-[#7BBBFF]/35 bg-white/70 px-4 py-3 text-sm font-semibold text-[#0A0F1E]"
+                  >
+                    Skip
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                )}
+
+                {isLast ? (
+                  shouldLoadBonus ? (
+                    <button
+                      type="button"
+                      onClick={handleLoadBonus}
+                      disabled={loadingBonus || submitting}
+                      className="cta-primary px-6 py-3 text-sm disabled:opacity-70"
+                    >
+                      {loadingBonus ? (
+                        <>
+                          <Loader2 className="h-5 w-5 animate-spin" />
+                          Loading bonus AI-generated questions...
+                        </>
+                      ) : (
+                        <>
+                          Load Bonus AI Questions
+                          <ChevronRight className="h-5 w-5" />
+                        </>
+                      )}
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={submitQuiz}
+                      disabled={submitting}
+                      className="cta-primary px-6 py-3 text-sm disabled:opacity-70"
+                    >
+                      {submitting ? (
+                        <>
+                          <Loader2 className="h-5 w-5 animate-spin" />
+                          Submitting...
+                        </>
+                      ) : (
+                        <>
+                          Submit Attempt
+                          <Send className="h-4 w-4" />
+                        </>
+                      )}
+                    </button>
+                  )
+                ) : (
+                  <button type="button" onClick={handleNext} className="cta-primary px-6 py-3 text-sm">
+                    Next
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
+                )}
+              </div>
+
+              <div className="mt-5 text-center text-xs text-[#4a78a7]">Score preview: {scorePreview} correct from {answeredPreview} answered.</div>
+            </div>
+
+            <aside className="glass-tile p-4 sm:p-5 lg:sticky lg:top-6">
+              <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-[#4a78a7]">Question Navigator</h2>
+              <p className="mt-1 text-xs text-[#35557c]">Tap any number to jump to that question.</p>
+
+              <div className="mt-4 max-h-[280px] overflow-y-auto pr-1">
+                <div className="grid grid-cols-5 gap-2">
+                  {Array.from({ length: total }, (_, qIndex) => {
+                    const qNumber = qIndex + 1;
+                    const isActive = qIndex === index;
+                    const isWrong = wrongSet.has(qNumber);
+                    const isSkipped = skippedSet.has(qNumber);
+                    const isAnswered = answers[qIndex] != null;
+
+                    let tone = "border-[#7BBBFF]/30 bg-white/80 text-[#284366] hover:border-[#7BBBFF]/55";
+                    if (isActive) {
+                      tone = "border-[#0A0F1E] bg-[#0A0F1E] text-white";
+                    } else if (isWrong) {
+                      tone = "border-[#B8A9FF]/55 bg-[#B8A9FF]/18 text-[#4f43a6]";
+                    } else if (isSkipped) {
+                      tone = "border-[#7BBBFF]/55 bg-[#7BBBFF]/14 text-[#2f68a1]";
+                    } else if (isAnswered) {
+                      tone = "border-[#7BBBFF]/50 bg-[#7BBBFF]/10 text-[#2b5f92]";
+                    }
+
+                    return (
+                      <button
+                        key={qNumber}
+                        type="button"
+                        onClick={() => setIndex(qIndex)}
+                        className={`rounded-lg border px-0 py-2 text-xs font-semibold transition-colors ${tone}`}
+                        aria-label={`Go to question ${qNumber}`}
+                      >
+                        {qNumber}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="mt-5 space-y-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#2f68a1]">Skipped</p>
+                  {skippedNumbers.length === 0 ? (
+                    <p className="mt-1 text-xs text-[#4a78a7]">None</p>
+                  ) : (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {skippedNumbers.map((qNumber) => (
+                        <button
+                          key={`skip-${qNumber}`}
+                          type="button"
+                          onClick={() => setIndex(qNumber - 1)}
+                          className="rounded-md border border-[#7BBBFF]/50 bg-[#7BBBFF]/15 px-2 py-1 text-xs font-semibold text-[#2f68a1]"
+                        >
+                          {qNumber}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#4f43a6]">Wrong Answers</p>
+                  {wrongNumbers.length === 0 ? (
+                    <p className="mt-1 text-xs text-[#4a78a7]">None</p>
+                  ) : (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {wrongNumbers.map((qNumber) => (
+                        <button
+                          key={`wrong-${qNumber}`}
+                          type="button"
+                          onClick={() => setIndex(qNumber - 1)}
+                          className="rounded-md border border-[#B8A9FF]/55 bg-[#B8A9FF]/18 px-2 py-1 text-xs font-semibold text-[#4f43a6]"
+                        >
+                          {qNumber}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </aside>
           </div>
         </div>
       </main>

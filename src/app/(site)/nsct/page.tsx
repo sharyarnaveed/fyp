@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
@@ -86,18 +86,44 @@ async function resolveLocationFromBrowser(): Promise<string | null> {
 export default function NsctIntroPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
+  const [manualLocation, setManualLocation] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [showLocationModal, setShowLocationModal] = useState(false);
-  const [locationModalMessage, setLocationModalMessage] = useState(
-    "Please enable location in your browser to continue.",
-  );
+  const [locationDisabled, setLocationDisabled] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const openLocationModal = (message: string) => {
-    setLocationModalMessage(message);
-    setError(message);
-    setShowLocationModal(true);
-  };
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    if (!navigator.geolocation) {
+      setLocationDisabled(true);
+      return;
+    }
+
+    if (!navigator.permissions?.query) {
+      setLocationDisabled(false);
+      return;
+    }
+
+    let cancelled = false;
+
+    navigator.permissions
+      .query({ name: "geolocation" })
+      .then((status) => {
+        if (cancelled) return;
+
+        setLocationDisabled(status.state === "denied");
+        status.onchange = () => {
+          setLocationDisabled(status.state === "denied");
+        };
+      })
+      .catch(() => {
+        if (!cancelled) setLocationDisabled(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleStart = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,6 +141,8 @@ export default function NsctIntroPage() {
 
     setSubmitting(true);
     try {
+      const cleanedManualLocation = sanitizeLocation(manualLocation);
+
       let ipAddress = "unknown";
       try {
         const ipRes = await fetch("https://api.ipify.org?format=json");
@@ -125,22 +153,41 @@ export default function NsctIntroPage() {
       }
 
       let locationValue = "";
-      try {
-        const detectedLocation = await resolveLocationFromBrowser();
-        if (!detectedLocation) {
-          openLocationModal(
-            "Location access is required to start the NSCT quiz. Please enable location in your browser settings.",
-          );
+      if (locationDisabled) {
+        if (!cleanedManualLocation) {
+          setError("Please enter your location to continue.");
           setSubmitting(false);
           return;
         }
-        locationValue = sanitizeLocation(detectedLocation);
-      } catch {
-        openLocationModal(
-          "Location access is required. Please enable location in your browser settings and try again.",
-        );
-        setSubmitting(false);
-        return;
+
+        locationValue = cleanedManualLocation;
+      } else {
+        try {
+          const detectedLocation = await resolveLocationFromBrowser();
+          if (detectedLocation) {
+            locationValue = sanitizeLocation(detectedLocation);
+          } else if (cleanedManualLocation) {
+            locationValue = cleanedManualLocation;
+          } else {
+            setLocationDisabled(true);
+            setError(
+              "Location is disabled in your browser. Please enter your location to continue.",
+            );
+            setSubmitting(false);
+            return;
+          }
+        } catch {
+          if (cleanedManualLocation) {
+            locationValue = cleanedManualLocation;
+          } else {
+            setLocationDisabled(true);
+            setError(
+              "Location is disabled in your browser. Please enter your location to continue.",
+            );
+            setSubmitting(false);
+            return;
+          }
+        }
       }
 
       const { data: insertData, error: insertError } = await supabase
@@ -267,19 +314,30 @@ export default function NsctIntroPage() {
               </p>
             </div>
 
-            <div className="rounded-xl border border-[#7BBBFF]/30 bg-white/65 px-4 py-3">
-              <div className="flex items-start gap-3">
-                <MapPin className="mt-0.5 h-4 w-4 text-[#7BBBFF]" />
-                <span>
-                  <span className="text-sm font-semibold text-[#0A0F1E]">
-                    Location sharing is required
-                  </span>
-                  <p className="mt-1 text-xs text-[#4a78a7]">
-                    Please allow browser location permission to start the quiz.
-                  </p>
-                </span>
+            {locationDisabled && (
+              <div>
+                <label
+                  htmlFor="nsct-location"
+                  className="mb-2 flex items-center gap-2 text-sm font-semibold text-[#0A0F1E]"
+                >
+                  <MapPin className="h-4 w-4 text-[#7BBBFF]" />
+                  Your location
+                </label>
+                <Input
+                  id="nsct-location"
+                  type="text"
+                  required
+                  maxLength={MAX_LOCATION_LEN}
+                  value={manualLocation}
+                  onChange={(e) => setManualLocation(e.target.value)}
+                  placeholder="City, State, Country"
+                  className="h-12 border-[#7BBBFF]/35 bg-white/80 text-[#0A0F1E]"
+                />
+                <p className="mt-2 text-xs text-[#4a78a7]">
+                  Location permission is off. Enter your location manually.
+                </p>
               </div>
-            </div>
+            )}
 
             {error && (
               <div className="rounded-xl border border-amber-400/45 bg-amber-500/12 px-4 py-3 text-sm text-amber-900">
@@ -307,23 +365,6 @@ export default function NsctIntroPage() {
           </form>
         </section>
       </div>
-
-      {showLocationModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[#0A0F1E]/50 px-4"
-          onClick={() => setShowLocationModal(false)}
-        >
-          <div className="w-full max-w-md rounded-2xl border border-[#7BBBFF]/30 bg-white p-6 shadow-2xl">
-            <div className="mb-4 flex items-center gap-2 text-[#0A0F1E]">
-              <MapPin className="h-5 w-5 text-[#2f68a1]" />
-              <h3 className="text-lg font-semibold">Enable location</h3>
-            </div>
-            <p className="text-sm leading-relaxed text-[#284366]">
-              {locationModalMessage}
-            </p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
