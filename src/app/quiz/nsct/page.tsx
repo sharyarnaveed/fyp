@@ -214,12 +214,15 @@ export default function NsctQuizPage() {
   const selected = answers[index];
   const isFirst = index === 0;
   const isLast = index === total - 1;
-  const contiguousVisitedCount = useMemo(() => {
-    let count = 0;
-    while (count < total && visited[count]) count++;
-    return count;
-  }, [total, visited]);
-  const hasUnlockedBonusGeneration = contiguousVisitedCount >= NSCT_AI_START_AT_QUESTION;
+  const attemptedBaseCount = useMemo(() => {
+    const upperBound = Math.min(total, NSCT_BASE_QUESTIONS);
+    let attempted = 0;
+    for (let i = 0; i < upperBound; i++) {
+      if (answers[i] != null) attempted++;
+    }
+    return attempted;
+  }, [answers, total]);
+  const hasUnlockedBonusGeneration = attemptedBaseCount >= NSCT_AI_START_AT_QUESTION;
   const shouldLoadBonus =
     !bonusLoaded &&
     !bonusUnavailable &&
@@ -541,7 +544,7 @@ export default function NsctQuizPage() {
                 )}
                 {shouldShowBonusUnlockHint && (
                   <p className="mt-1 text-xs font-medium text-[#2b5f92]">
-                    Bonus unlocks after you progress sequentially to question {NSCT_AI_START_AT_QUESTION}. You can still jump freely.
+                    Bonus unlocks after you attempt {NSCT_AI_START_AT_QUESTION} questions. You can jump freely.
                   </p>
                 )}
                 {!bonusLoaded && bonusRequested && total === NSCT_BASE_QUESTIONS && index >= 49 && (
