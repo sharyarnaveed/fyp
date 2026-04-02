@@ -190,8 +190,6 @@ function makeFallbackQuestions(): QuizQuestion[] {
 }
 
 export async function POST() {
-  const fallbackQuestions = makeFallbackQuestions();
-
   try {
     const { primaryApiKey, backupApiKey, model } = resolveGroqConfig();
     const candidateKeys = [primaryApiKey, backupApiKey].filter(
@@ -200,7 +198,7 @@ export async function POST() {
 
     if (candidateKeys.length === 0) {
       return NextResponse.json({
-        questions: fallbackQuestions,
+        questions: makeFallbackQuestions(),
         fallback: true,
         warning: "Missing GROQ_API_KEY/GROQ_BACKUP_KEY. Served fallback bonus questions.",
       });
@@ -223,14 +221,14 @@ export async function POST() {
     }
 
     return NextResponse.json({
-      questions: fallbackQuestions,
+      questions: makeFallbackQuestions(),
       fallback: true,
       warning: `Groq generation failed for all configured keys. ${attemptErrors.join(" ")}`,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed to generate bonus questions.";
     return NextResponse.json({
-      questions: fallbackQuestions,
+      questions: makeFallbackQuestions(),
       fallback: true,
       warning: message,
     });
