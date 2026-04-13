@@ -1644,7 +1644,7 @@
                 "text": "0"
             }
         ],
-        "correct_answer": "A",
+        "correct_answer": "C",
         "explanation": "The condition is checked 5 times where it is True (x=0,1,2,3,4). It is checked 1 final time\nwhere it is False (x=5) to terminate the loop. Total = 6 checks.",
         "subject": "Programming",
         "difficulty": "medium",

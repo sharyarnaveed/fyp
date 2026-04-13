@@ -197,7 +197,7 @@
     },
     {
         "id": 8,
-        "question": "In the classic problem-solving cycle (Understand → Plan → Execute → Verify), where does writing pseudocode typically belong?",
+        "question": "In the classic problem-solving cycle (Understand \u2192 Plan \u2192 Execute \u2192 Verify), where does writing pseudocode typically belong?",
         "options": [
             {
                 "label": "A",
@@ -421,7 +421,7 @@
     },
     {
         "id": 16,
-        "question": "A team experiences a software bug and asks, \"Why did the app crash?\" → \"Because the database timed out.\" → \"Why did it time out?\" → \"Because an index was missing.\" This investigative technique is known as:",
+        "question": "A team experiences a software bug and asks, \"Why did the app crash?\" \u2192 \"Because the database timed out.\" \u2192 \"Why did it time out?\" \u2192 \"Because an index was missing.\" This investigative technique is known as:",
         "options": [
             {
                 "label": "A",
@@ -524,8 +524,8 @@
                 "text": "A failed hard drive in the database server The error page is just the visible symptom of the problem."
             }
         ],
-        "correct_answer": "D",
-        "explanation": "The root cause is the underlying technical failure (like the failed hard drive or bad code) that triggered the symptom.",
+        "correct_answer": "C",
+        "explanation": "The question asks for a symptom (visible surface effect). A '500 error page' is the symptom. A failed hard drive IS a root cause. The stated answer key says D but the explanation correctly says 'the error page is just the visible symptom' \u2014 the answer should be C.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -664,7 +664,7 @@
                 "text": "A = -10, B = -5 Division by zero is mathematically undefined and will cause a runtime error in most programming languages."
             }
         ],
-        "correct_answer": "D",
+        "correct_answer": "C",
         "explanation": "It is a critical boundary case that must be handled (e.g., by returning an error message).",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -1701,7 +1701,7 @@
             }
         ],
         "correct_answer": "C",
-        "explanation": "Loop 1: 10 > 5 (True) → x = 8. Loop 2: 8 > 5 (True) → x = 6. Loop 3: 6 > 5 (True) → x = 4. Loop 4: 4 > 5 (False) → Loop ends. Prints 4.",
+        "explanation": "Loop 1: 10 > 5 (True) \u2192 x = 8. Loop 2: 8 > 5 (True) \u2192 x = 6. Loop 3: 6 > 5 (True) \u2192 x = 4. Loop 4: 4 > 5 (False) \u2192 Loop ends. Prints 4.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -1757,7 +1757,7 @@
             }
         ],
         "correct_answer": "B",
-        "explanation": "For every 1 time the outer loop runs, the inner loop runs 3 times. Therefore, 4 × 3 = 12 total executions.",
+        "explanation": "For every 1 time the outer loop runs, the inner loop runs 3 times. Therefore, 4 \u00d7 3 = 12 total executions.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -2017,7 +2017,7 @@
     },
     {
         "id": 73,
-        "question": "(Scenario-Based) A school grading system assigns 'A' for ≥ 90, 'B' for ≥ 80, and 'C' for ≥ 70. What is the most efficient control flow structure to determine a single student's grade?",
+        "question": "(Scenario-Based) A school grading system assigns 'A' for \u2265 90, 'B' for \u2265 80, and 'C' for \u2265 70. What is the most efficient control flow structure to determine a single student's grade?",
         "options": [
             {
                 "label": "A",
@@ -2341,11 +2341,11 @@
             },
             {
                 "label": "D",
-                "text": "00000101 Step 1: Write positive 5 in 8-bit binary → 00000101."
+                "text": "00000101 Step 1: Write positive 5 in 8-bit binary \u2192 00000101."
             }
         ],
         "correct_answer": "B",
-        "explanation": "Step 2: Invert all bits (One's complement) → 11111010. Step 3: Add 1 (Two's complement) → 11111011.",
+        "explanation": "Step 2: Invert all bits (One's complement) \u2192 11111010. Step 3: Add 1 (Two's complement) \u2192 11111011.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -2401,7 +2401,7 @@
             }
         ],
         "correct_answer": "B",
-        "explanation": "A \"Stack\" is an ADT—it specifies LIFO (Last-In-First-Out) behavior. You can implement that Stack using different physical Data Structures, such as an Array or a Linked List.",
+        "explanation": "A \"Stack\" is an ADT\u2014it specifies LIFO (Last-In-First-Out) behavior. You can implement that Stack using different physical Data Structures, such as an Array or a Linked List.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -2625,7 +2625,7 @@
             }
         ],
         "correct_answer": "A",
-        "explanation": "",
+        "explanation": "This is encapsulation/abstraction in OOP: related data and behavior are bundled into one class so the model is easier to use and maintain.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -2653,7 +2653,7 @@
             }
         ],
         "correct_answer": "A",
-        "explanation": "",
+        "explanation": "Binary 1011 equals 1*8 + 0*4 + 1*2 + 1*1 = 11 in decimal.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -2793,7 +2793,7 @@
             }
         ],
         "correct_answer": "A",
-        "explanation": "",
+        "explanation": "This is generalization through pattern recognition: repeated validation logic is abstracted into one reusable function with parameters.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -3017,7 +3017,7 @@
             }
         ],
         "correct_answer": "A",
-        "explanation": "UX design relies on \"Mental Models\"—patterns that users have learned from using other software. Recognizing these patterns allows designers to make intuitive interfaces.",
+        "explanation": "UX design relies on \"Mental Models\"\u2014patterns that users have learned from using other software. Recognizing these patterns allows designers to make intuitive interfaces.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -3073,7 +3073,7 @@
             }
         ],
         "correct_answer": "B",
-        "explanation": "Generalizing a bad solution into a \"pattern\" (like the \"God Object\" or \"Spaghetti Code\") creates an anti-pattern—a recognized way of doing things that actually causes more problems than it solves.",
+        "explanation": "Generalizing a bad solution into a \"pattern\" (like the \"God Object\" or \"Spaghetti Code\") creates an anti-pattern\u2014a recognized way of doing things that actually causes more problems than it solves.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -3097,7 +3097,7 @@
             },
             {
                 "label": "D",
-                "text": "Escaping failure By default, the * operator is \"greedy\"—it tries to match the longest possible string."
+                "text": "Escaping failure By default, the * operator is \"greedy\"\u2014it tries to match the longest possible string."
             }
         ],
         "correct_answer": "B",
@@ -3129,7 +3129,7 @@
             }
         ],
         "correct_answer": "C",
-        "explanation": "",
+        "explanation": "This is pattern recognition/association-rule style recommendation: the system finds items that frequently occur together and suggests the related item.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -3213,7 +3213,7 @@
             }
         ],
         "correct_answer": "A",
-        "explanation": "",
+        "explanation": "This uses pattern recognition in logs: repeated IP range and time-window behavior is generalized into a firewall rule.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -3349,7 +3349,7 @@
             },
             {
                 "label": "D",
-                "text": "Standard Deviation The Mean is highly sensitive to outliers—a few 60-second hits will pull the average up significantly."
+                "text": "Standard Deviation The Mean is highly sensitive to outliers\u2014a few 60-second hits will pull the average up significantly."
             }
         ],
         "correct_answer": "B",
@@ -3521,7 +3521,7 @@
             }
         ],
         "correct_answer": "A",
-        "explanation": "",
+        "explanation": "Binary 11010 equals 1*16 + 1*8 + 0*4 + 1*2 + 0*1 = 26.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -3549,7 +3549,7 @@
             }
         ],
         "correct_answer": "B",
-        "explanation": "Formula: a + (n-1)d → 10 + (100-1)10 = 10 + 990 = 1,000 ms.",
+        "explanation": "Formula: a + (n-1)d \u2192 10 + (100-1)10 = 10 + 990 = 1,000 ms.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -3605,7 +3605,7 @@
             }
         ],
         "correct_answer": "A",
-        "explanation": "Formula: n! / [r!(n-r)!] → 5! / (2! * 3!) → 120 / (2 * 6) = 120 / 12 = 10.",
+        "explanation": "Formula: n! / [r!(n-r)!] \u2192 5! / (2! * 3!) \u2192 120 / (2 * 6) = 120 / 12 = 10.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -3633,7 +3633,7 @@
             }
         ],
         "correct_answer": "A",
-        "explanation": "",
+        "explanation": "Exponential functions grow fastest asymptotically, much faster than polynomial, linear, or logarithmic terms as n becomes large.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -3661,7 +3661,7 @@
             }
         ],
         "correct_answer": "A",
-        "explanation": "",
+        "explanation": "Total weight is 3 + 1 = 4, so Server A should receive 3/4 of traffic. 3/4 of 12 requests is 9.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -3689,7 +3689,7 @@
             }
         ],
         "correct_answer": "C",
-        "explanation": "",
+        "explanation": "1011 (11) + 0011 (3) = 1110 (14) in binary addition.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -3801,7 +3801,7 @@
             }
         ],
         "correct_answer": "B",
-        "explanation": "",
+        "explanation": "99.9% uptime allows 0.1% downtime. 0.001 * 365 days = 0.365 days, which is about 8.76 hours per year.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -3885,7 +3885,7 @@
             }
         ],
         "correct_answer": "A",
-        "explanation": "",
+        "explanation": "The mode is the most frequent value. Here, 20 appears three times, more than any other value.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -3913,7 +3913,7 @@
             }
         ],
         "correct_answer": "B",
-        "explanation": "",
+        "explanation": "By the multiplication rule: 26 choices for the letter and 10 for the digit, so 26*10 = 260 passwords.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -4025,7 +4025,7 @@
             }
         ],
         "correct_answer": "B",
-        "explanation": "",
+        "explanation": "With indices 0..9, mid = floor((0+9)/2) = 4, so the first mid element is arr[4] = 16.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -4129,7 +4129,7 @@
             },
             {
                 "label": "C",
-                "text": "Dijkstra’s Algorithm"
+                "text": "Dijkstra\u2019s Algorithm"
             },
             {
                 "label": "D",
@@ -4137,7 +4137,7 @@
             }
         ],
         "correct_answer": "A",
-        "explanation": "",
+        "explanation": "For shortest path on graphs with non-negative edge weights, Dijkstra's algorithm is the standard efficient choice.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -4165,7 +4165,7 @@
             }
         ],
         "correct_answer": "B",
-        "explanation": "",
+        "explanation": "solve(5) = 5 + solve(3), solve(3) = 3 + solve(1), solve(1)=1, so result = 5 + 3 + 1 = 9.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -4301,11 +4301,11 @@
             },
             {
                 "label": "D",
-                "text": "[5, 4, 2, 1] Pass 1: (5,1) → (1,5) (5,4) → (4,5) (5,2) → (2,5) Final: [1, 4, 2, 5]. Notice 5 \"bubbled\" to the end."
+                "text": "[5, 4, 2, 1] Pass 1: (5,1) \u2192 (1,5) (5,4) \u2192 (4,5) (5,2) \u2192 (2,5) Final: [1, 4, 2, 5]. Notice 5 \"bubbled\" to the end."
             }
         ],
         "correct_answer": "A",
-        "explanation": "",
+        "explanation": "Bubble pass on [5,1,4,2]: swap 5/1 -> [1,5,4,2], swap 5/4 -> [1,4,5,2], swap 5/2 -> [1,4,2,5].",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -4445,7 +4445,7 @@
             }
         ],
         "correct_answer": "B",
-        "explanation": "",
+        "explanation": "Selection sort first finds the minimum in the full array (10) and swaps it with the first element (29).",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -4557,7 +4557,7 @@
             }
         ],
         "correct_answer": "D",
-        "explanation": "",
+        "explanation": "Two-pointer reverse swaps first and last characters first: 'ABCD' becomes 'DBCA' after the initial swap.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -4921,7 +4921,7 @@
             }
         ],
         "correct_answer": "C",
-        "explanation": "",
+        "explanation": "This is adding contingency/buffer time (risk padding) to an estimate to handle uncertainty.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -5256,7 +5256,7 @@
                 "text": "A, C Division by zero triggers an exception."
             }
         ],
-        "correct_answer": "c",
+        "correct_answer": "C",
         "explanation": "Execution jumps immediately from the try block to the catch block (printing \"B\"). The finally block always runs regardless of whether an error occurred, so it prints \"C\".",
         "subject": "Problem Solving",
         "difficulty": "medium",
@@ -5885,7 +5885,7 @@
         "options": [
             {
                 "label": "A",
-                "text": "O(N²)"
+                "text": "O(N\u00b2)"
             },
             {
                 "label": "B",
@@ -5921,7 +5921,7 @@
             },
             {
                 "label": "C",
-                "text": "O(N²)"
+                "text": "O(N\u00b2)"
             },
             {
                 "label": "D",
@@ -5929,7 +5929,7 @@
             }
         ],
         "correct_answer": "A",
-        "explanation": "This results in N * N = N² total operations, which is Quadratic complexity.",
+        "explanation": "This results in N * N = N\u00b2 total operations, which is Quadratic complexity.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -5965,7 +5965,7 @@
     },
     {
         "id": 214,
-        "question": "(Calculation) You have three algorithms for the same task. Algorithm A is O(N²), Algorithm B is O(N log N), and Algorithm C is O(2^N). For an input size of N = 100, which is the most efficient?",
+        "question": "(Calculation) You have three algorithms for the same task. Algorithm A is O(N\u00b2), Algorithm B is O(N log N), and Algorithm C is O(2^N). For an input size of N = 100, which is the most efficient?",
         "options": [
             {
                 "label": "A",
@@ -5985,7 +5985,7 @@
             }
         ],
         "correct_answer": "B",
-        "explanation": "At N=100, N log N is roughly 664 operations, N² is 10,000 operations, and 2^N is a astronomical number (trillions of trillions). O(N log N) is the clear winner.",
+        "explanation": "At N=100, N log N is roughly 664 operations, N\u00b2 is 10,000 operations, and 2^N is a astronomical number (trillions of trillions). O(N log N) is the clear winner.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -6037,7 +6037,7 @@
             },
             {
                 "label": "D",
-                "text": "O(N²) The loop variable i doubles each time (1, 2, 4, 8, 16...)."
+                "text": "O(N\u00b2) The loop variable i doubles each time (1, 2, 4, 8, 16...)."
             }
         ],
         "correct_answer": "B",
@@ -6061,15 +6061,15 @@
             },
             {
                 "label": "C",
-                "text": "O(N²)"
+                "text": "O(N\u00b2)"
             },
             {
                 "label": "D",
-                "text": "O(N³) This involves a nested structure: for each N, do N work. This is the definition of Quadratic complexity, O(N²)."
+                "text": "O(N\u00b3) This involves a nested structure: for each N, do N work. This is the definition of Quadratic complexity, O(N\u00b2)."
             }
         ],
         "correct_answer": "C",
-        "explanation": "",
+        "explanation": "For each of N friends, checking up to N friends-of-friends gives N*N operations, so time complexity is O(N^2).",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -6109,7 +6109,7 @@
         "options": [
             {
                 "label": "A",
-                "text": "O(N²)"
+                "text": "O(N\u00b2)"
             },
             {
                 "label": "B",
@@ -6217,7 +6217,7 @@
     },
     {
         "id": 223,
-        "question": "(Conceptual) In Big-O notation, which term is dominant and kept for f(n) = 5n³ + 2n² + 100 log n + 500?",
+        "question": "(Conceptual) In Big-O notation, which term is dominant and kept for f(n) = 5n\u00b3 + 2n\u00b2 + 100 log n + 500?",
         "options": [
             {
                 "label": "A",
@@ -6229,15 +6229,15 @@
             },
             {
                 "label": "C",
-                "text": "n³"
+                "text": "n\u00b3"
             },
             {
                 "label": "D",
-                "text": "n² Big-O only cares about the fastest-growing term."
+                "text": "n\u00b2 Big-O only cares about the fastest-growing term."
             }
         ],
         "correct_answer": "C",
-        "explanation": "As n approaches infinity, n³ will dwarf all other terms. Coefficients (5) are also dropped.",
+        "explanation": "As n approaches infinity, n\u00b3 will dwarf all other terms. Coefficients (5) are also dropped.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -6257,7 +6257,7 @@
             },
             {
                 "label": "C",
-                "text": "Selection Sort is O(N²), which is unfeasibly slow for 1 million items."
+                "text": "Selection Sort is O(N\u00b2), which is unfeasibly slow for 1 million items."
             },
             {
                 "label": "D",
@@ -6265,7 +6265,7 @@
             }
         ],
         "correct_answer": "C",
-        "explanation": "1,000,000² is 1 trillion operations. Even a fast CPU would take hours to finish. An O(N log N) sort (like Merge Sort) would finish in seconds.",
+        "explanation": "1,000,000\u00b2 is 1 trillion operations. Even a fast CPU would take hours to finish. An O(N log N) sort (like Merge Sort) would finish in seconds.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -6281,7 +6281,7 @@
             },
             {
                 "label": "B",
-                "text": "O(N²)"
+                "text": "O(N\u00b2)"
             },
             {
                 "label": "C",
@@ -6305,11 +6305,11 @@
         "options": [
             {
                 "label": "A",
-                "text": "N²"
+                "text": "N\u00b2"
             },
             {
                 "label": "B",
-                "text": "Approximately N² / 2"
+                "text": "Approximately N\u00b2 / 2"
             },
             {
                 "label": "C",
@@ -6321,7 +6321,7 @@
             }
         ],
         "correct_answer": "A",
-        "explanation": "The first time it runs N, then N-1, then N-2... until 1. The sum is N(N+1)/2. In Big-O terms, this is still O(N²), but the actual operation count is half of N².",
+        "explanation": "The first time it runs N, then N-1, then N-2... until 1. The sum is N(N+1)/2. In Big-O terms, this is still O(N\u00b2), but the actual operation count is half of N\u00b2.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -6329,7 +6329,7 @@
     },
     {
         "id": 227,
-        "question": "(Conceptual) What does \"Big-Omega (Ω)\" notation represent?",
+        "question": "(Conceptual) What does \"Big-Omega (\u03a9)\" notation represent?",
         "options": [
             {
                 "label": "A",
@@ -6349,7 +6349,7 @@
             }
         ],
         "correct_answer": "C",
-        "explanation": "While Big-O (O) is the upper bound (maximum time), Big-Omega (Ω) is the lower bound (minimum time). Big-Theta (Θ) is used when the upper and lower bounds are the same.",
+        "explanation": "While Big-O (O) is the upper bound (maximum time), Big-Omega (\u03a9) is the lower bound (minimum time). Big-Theta (\u0398) is used when the upper and lower bounds are the same.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -6401,7 +6401,7 @@
             },
             {
                 "label": "D",
-                "text": "O(N²) Every recursive call adds a new \"frame\" to the call stack in memory."
+                "text": "O(N\u00b2) Every recursive call adds a new \"frame\" to the call stack in memory."
             }
         ],
         "correct_answer": "B",
@@ -6601,7 +6601,7 @@
             }
         ],
         "correct_answer": "B",
-        "explanation": "",
+        "explanation": "Even numbers from 1 to 5 are 2 and 4, so total becomes 2 + 4 = 6.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -6797,7 +6797,7 @@
             }
         ],
         "correct_answer": "B",
-        "explanation": "",
+        "explanation": "val starts at 1 and multiplies by 1,2,3 -> 1*1*2*3 = 6.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -7045,11 +7045,11 @@
             },
             {
                 "label": "D",
-                "text": "1 mystery(3) → 3 + mystery(2) mystery(2) → 2 + mystery(1) mystery(1) → 1 Total: 3 + 2 + 1 = 6."
+                "text": "1 mystery(3) \u2192 3 + mystery(2) mystery(2) \u2192 2 + mystery(1) mystery(1) \u2192 1 Total: 3 + 2 + 1 = 6."
             }
         ],
         "correct_answer": "A",
-        "explanation": "",
+        "explanation": "mystery(3)=3+mystery(2), mystery(2)=2+mystery(1), mystery(1)=1, so total is 3+2+1=6.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -7077,7 +7077,7 @@
             }
         ],
         "correct_answer": "B",
-        "explanation": "Imperative: \"Open the fridge, get the milk, pour it.\" Declarative: \"I want a glass of milk.\" SQL is the most common declarative language—you say what data you want, and the DB engine figures out how to get it.",
+        "explanation": "Imperative: \"Open the fridge, get the milk, pour it.\" Declarative: \"I want a glass of milk.\" SQL is the most common declarative language\u2014you say what data you want, and the DB engine figures out how to get it.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -7397,15 +7397,15 @@
         "options": [
             {
                 "label": "A",
-                "text": "Write code → Test → Deploy."
+                "text": "Write code \u2192 Test \u2192 Deploy."
             },
             {
                 "label": "B",
-                "text": "Input → Output → Delete."
+                "text": "Input \u2192 Output \u2192 Delete."
             },
             {
                 "label": "C",
-                "text": "Collect → Clean → Analyze → Interpret → Act."
+                "text": "Collect \u2192 Clean \u2192 Analyze \u2192 Interpret \u2192 Act."
             },
             {
                 "label": "D",
@@ -7749,7 +7749,7 @@
             }
         ],
         "correct_answer": "B",
-        "explanation": "",
+        "explanation": "This uses perceived performance UX: while real processing time is unchanged, useful/engaging feedback reduces perceived waiting frustration.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -7917,7 +7917,7 @@
             }
         ],
         "correct_answer": "C",
-        "explanation": "",
+        "explanation": "This is analogical reasoning (biomimicry-inspired design): a solution is derived by mapping patterns from another domain (ants) to computing.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -8141,7 +8141,7 @@
             }
         ],
         "correct_answer": "C",
-        "explanation": "Blue-Green deployment eliminates downtime during updates and provides an \"instant rollback\" if the new code (Green) has a bug—you just flip the traffic back to the old environment (Blue).",
+        "explanation": "Blue-Green deployment eliminates downtime during updates and provides an \"instant rollback\" if the new code (Green) has a bug\u2014you just flip the traffic back to the old environment (Blue).",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -8729,7 +8729,7 @@
             }
         ],
         "correct_answer": "C",
-        "explanation": "A \"Bus Factor of 1\" is very dangerous—it means only one person understands a critical part of the code. Documentation is the best way to increase the Bus Factor and reduce project risk.",
+        "explanation": "A \"Bus Factor of 1\" is very dangerous\u2014it means only one person understands a critical part of the code. Documentation is the best way to increase the Bus Factor and reduce project risk.",
         "subject": "Problem Solving",
         "difficulty": "medium",
         "marks": 1,
@@ -8749,7 +8749,7 @@
             },
             {
                 "label": "C",
-                "text": "The \"Why\"—the reason for using this unusual hack and a link to the reference/ logic used."
+                "text": "The \"Why\"\u2014the reason for using this unusual hack and a link to the reference/ logic used."
             },
             {
                 "label": "D",
