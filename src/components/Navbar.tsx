@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   generateQuiz,
-  getRandomPassageFromJsonl,
+  getRandomPassageFromMcqData,
   saveQuestionsForSubject,
   setTrialUserId,
   QUESTIONS_PER_SUBJECT,
@@ -174,17 +174,17 @@ export function Navbar() {
       trialUserId = insertData?.id != null ? Number(insertData.id) : null;
       if (trialUserId != null) setTrialUserId(trialUserId);
 
-      const biologyPassage = await getRandomPassageFromJsonl("/mcqsjson/biology.jsonl");
-      if (!biologyPassage) {
+      const mdcatPassage = await getRandomPassageFromMcqData();
+      if (!mdcatPassage) {
         if (trialUserId != null) {
           await supabase.from("trailpeoples").delete().eq("id", trialUserId);
         }
-        setSubmitError("Could not load quiz content. Please try again.");
+        setSubmitError("Could not load MDCAT passage content. Please try again.");
         setSubmitting(false);
         return;
       }
       const questions = await generateQuiz({
-        passage: biologyPassage,
+        passage: mdcatPassage,
         num_questions: QUESTIONS_PER_SUBJECT,
       });
       if (questions.length === 0) {
@@ -254,9 +254,13 @@ export function Navbar() {
         </div>
 
         <div className="hidden shrink-0 items-center gap-2 lg:flex">
-          <Link href="/nsct" className="cta-secondary text-sm xl:text-base">
-            Attempt NSCT quiz
-          </Link>
+          <button
+            type="button"
+            onClick={() => setTrialModalOpen(true)}
+            className="cta-secondary text-sm xl:text-base"
+          >
+            Attempt Trial MDCAT Quiz
+          </button>
         </div>
 
         <div className="flex items-center lg:hidden">
@@ -309,13 +313,16 @@ export function Navbar() {
                 </div>
 
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: navLinks.length * 0.05 + 0.1 }}>
-                  <Link
-                    href="/nsct"
-                    onClick={() => setIsOpen(false)}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsOpen(false);
+                      setTrialModalOpen(true);
+                    }}
                     className="cta-secondary mb-3 block w-full text-center"
                   >
-                    Attempt NSCT quiz
-                  </Link>
+                    Attempt Trial MDCAT Quiz
+                  </button>
                 </motion.div>
               </div>
             </div>
@@ -350,9 +357,9 @@ export function Navbar() {
               <div className="p-6 sm:p-8">
                 <div className="mb-2 flex items-start justify-between gap-4">
                   <div>
-                    <h3 className="text-xl font-display font-bold tracking-tight text-[#0A0F1E] sm:text-2xl">MDCAT Trail Quiz</h3>
+                    <h3 className="text-xl font-display font-bold tracking-tight text-[#0A0F1E] sm:text-2xl">MDCAT Trial Quiz</h3>
                     <p className="mt-1.5 text-sm text-[#284366]">
-                      Enter your details to start a short chemistry quiz. We use a fixed passage.
+                      Enter your details to start a short MDCAT quiz generated from our passage bank.
                     </p>
                   </div>
                   <button

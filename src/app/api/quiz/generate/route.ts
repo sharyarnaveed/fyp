@@ -8,7 +8,12 @@ interface GenerateRequestBody {
   num_questions?: unknown;
 }
 
-function resolveGroqConfig(): { primaryApiKey?: string; backupApiKey?: string; model: string } {
+function resolveConfig(): {
+  primaryApiKey?: string;
+  backupApiKey?: string;
+  model: string;
+  generateUrl?: string;
+} {
   const modelEnv = process.env.GROQ_AI_MODEL?.trim();
   const apiKeyFromModel = modelEnv?.startsWith("gsk_") ? modelEnv : undefined;
 
@@ -16,6 +21,7 @@ function resolveGroqConfig(): { primaryApiKey?: string; backupApiKey?: string; m
     primaryApiKey: process.env.GROQ_API_KEY?.trim() || apiKeyFromModel,
     backupApiKey: process.env.GROQ_BACKUP_KEY?.trim(),
     model: modelEnv && !modelEnv.startsWith("gsk_") ? modelEnv : DEFAULT_MODEL,
+    generateUrl: process.env.GENERATE_MCQS_URL?.replace(/^"|"$/g, "").trim(),
   };
 }
 
@@ -74,6 +80,46 @@ async function generateWithGroq(apiKey: string, model: string, prompt: string): 
   return extractTextContent(completion.choices?.[0]?.message?.content).trim();
 }
 
+async function generateWithExternalApi(generateUrl: string, passage: string, questionCount: number): Promise<string> {
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  };
+
+  const response = await fetch(generateUrl, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      passage: passage.trim(),
+      num_questions: questionCount,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`External API error: ${response.status} ${response.statusText}`);
+  }
+
+  const bodyText = await response.text();
+  if (!bodyText.trim()) throw new Error("External API returned empty response.");
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(bodyText);
+  } catch {
+    return bodyText;
+  }
+
+  if (typeof parsed === "string") return parsed;
+  if (Array.isArray(parsed)) return JSON.stringify(parsed);
+  if (parsed && typeof parsed === "object") {
+    const maybeRaw = (parsed as { raw?: unknown }).raw;
+    if (typeof maybeRaw === "string") return maybeRaw;
+    return JSON.stringify(parsed);
+  }
+
+  return bodyText;
+}
+
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as GenerateRequestBody;
@@ -85,20 +131,38 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing passage" }, { status: 400 });
     }
 
-    const { primaryApiKey, backupApiKey, model } = resolveGroqConfig();
+    const { primaryApiKey, backupApiKey, model, generateUrl } = resolveConfig();
+    const attemptErrors: string[] = [];
+
+    if (generateUrl) {
+      try {
+        const raw = await generateWithExternalApi(generateUrl, passage, questionCount);
+        if (raw) {
+          return NextResponse.json({ raw });
+        }
+        attemptErrors.push("External API: empty response.");
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Unknown external API error.";
+        attemptErrors.push(`External API: ${message}`);
+      }
+    } else {
+      attemptErrors.push("External API: GENERATE_MCQS_URL is not configured.");
+    }
+
     const candidateKeys = [primaryApiKey, backupApiKey].filter(
       (value, index, array): value is string => Boolean(value) && array.indexOf(value) === index
     );
 
     if (candidateKeys.length === 0) {
       return NextResponse.json(
-        { error: "Missing GROQ_API_KEY/GROQ_BACKUP_KEY" },
+        {
+          error: `MCQ generation failed. ${attemptErrors.join(" ")} Missing GROQ_API_KEY/GROQ_BACKUP_KEY for fallback.`,
+        },
         { status: 500 }
       );
     }
 
     const prompt = buildPrompt(passage, questionCount);
-    const attemptErrors: string[] = [];
 
     for (const [attemptIndex, key] of candidateKeys.entries()) {
       try {
@@ -106,15 +170,15 @@ export async function POST(req: Request) {
         if (raw) {
           return NextResponse.json({ raw });
         }
-        attemptErrors.push(`Attempt ${attemptIndex + 1}: empty response.`);
+        attemptErrors.push(`Groq attempt ${attemptIndex + 1}: empty response.`);
       } catch (error) {
         const message = error instanceof Error ? error.message : "Unknown Groq error.";
-        attemptErrors.push(`Attempt ${attemptIndex + 1}: ${message}`);
+        attemptErrors.push(`Groq attempt ${attemptIndex + 1}: ${message}`);
       }
     }
 
     return NextResponse.json(
-      { error: `Groq failed for all configured keys. ${attemptErrors.join(" ")}` },
+      { error: `MCQ generation failed for external API and Groq fallback. ${attemptErrors.join(" ")}` },
       { status: 502 }
     );
   } catch (error) {

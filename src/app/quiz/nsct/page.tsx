@@ -29,6 +29,10 @@ import {
 } from "@/lib/nsct";
 import type { QuizQuestion } from "@/lib/quiz";
 
+function isMissingScoreColumnError(message: string): boolean {
+  return /could not find the 'score' column/i.test(message) || /column\s+['\"]?score['\"]?\s+does not exist/i.test(message);
+}
+
 function readStoredQuestions(): QuizQuestion[] {
   if (typeof window === "undefined") return [];
   try {
@@ -456,7 +460,11 @@ export default function NsctQuizPage() {
         .update({ score: `${correct}/${totalQuestions}` })
         .eq("id", userId);
       if (updateError) {
-        console.error("NSCT score update warning:", updateError.message);
+        if (!isMissingScoreColumnError(updateError.message)) {
+          console.error("NSCT score update warning:", updateError.message);
+        } else {
+          console.warn("Skipping trailpeoples.score update because the score column is not available in schema cache.");
+        }
       }
 
       router.push("/quiz/nsct/thank-you");

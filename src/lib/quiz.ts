@@ -1,5 +1,7 @@
 const GENERATE_API = "/api/quiz/generate";
 
+import supabase from "@/lib/SupabaseClient";
+
 /** Default passage used for the trial quiz (decided by us). */
 export const TRIAL_QUIZ_PASSAGE = `Chemical kinetics is the branch of chemistry that deals with the study of the rates of chemical reactions, the factors affecting these rates, and the mechanisms by which reactions occur. Chemical reactions are dynamic processes in which matter and energy are continuously transformed. Some reactions are extremely fast, such as acid–base neutralization, which may occur in microseconds. Others are very slow, like fermentation, which can take weeks to produce noticeable amounts of product. Many biological reactions, including muscle contraction and nerve impulse transmission, occur at moderate speeds. In industry, understanding reaction rates is essential to determine the most economical and efficient conditions for large-scale production. The rate of a reaction is defined as the change in concentration of reactants or products per unit time. Mathematically, it is expressed as: Rate = Change in concentration / Time taken Since concentration is measured in mole dm⁻³ and time in seconds, the unit of rate is mole dm⁻³ s⁻¹. As a reaction proceeds, the concentration of reactants decreases while that of products increases. Therefore, the rate can be expressed either as the decrease in concentration of reactants or the increase in concentration of products. For a general reaction A → B, the rate is written as: Rate = −d[A]/dt = +d[B]/dt The negative sign indicates the decrease in reactant concentration, while the positive sign represents the increase in product concentration. The rate measured over a time interval is called the average rate, while the rate at a specific instant is known as the instantaneous rate. The instantaneous rate is determined from the slope of the tangent drawn to the concentration–time graph at that point. When the time interval becomes very small, the average rate approaches the instantaneous rate. To determine how concentration affects reaction rate, chemists often measure the initial rate, which is the instantaneous rate at the moment reactants are mixed (t = 0). At this stage, complications such as reverse reactions are minimal. The slope of the tangent at zero time gives the initial rate. Experimental observations show that the rate of a reaction depends on the concentration of reactants raised to certain powers. This relationship is called the rate law. For a simple reaction A → Products: Rate = k[A]ˣ Here, k is the rate constant, and x is the order of reaction with respect to A.`;
 
@@ -29,49 +31,156 @@ export interface QuizQuestion {
 
 const OPTION_ORDER = ["A", "B", "C", "D"];
 
-/**
- * Attempt to extract a JSON array from a raw string that may be:
- * - A plain JSON array
- * - Wrapped in markdown code fences (```json ... ```)
- * - Double-encoded (a JSON string of a JSON string)
- * - An object with a key containing the array (e.g. { questions: [...] })
- */
-function extractJsonArray(raw: string): ApiQuestion[] {
-  let cleaned = raw.trim();
+function stripReasoningBlocks(raw: string): string {
+  return raw.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
+}
 
-  // Strip markdown code fences if present
-  cleaned = cleaned.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "");
-  cleaned = cleaned.trim();
+function extractObjectsFromPossiblyTruncatedArray(raw: string): unknown[] {
+  const start = raw.indexOf("[");
+  if (start === -1) return [];
 
-  // Attempt parse
-  let result: unknown;
+  const slice = raw.slice(start);
+  const parsedItems: unknown[] = [];
+  let inString = false;
+  let escaped = false;
+  let arrayDepth = 0;
+  let objectDepth = 0;
+  let objectStart = -1;
+
+  for (let index = 0; index < slice.length; index += 1) {
+    const char = slice[index];
+
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+        continue;
+      }
+      if (char === "\\") {
+        escaped = true;
+        continue;
+      }
+      if (char === '"') {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (char === '"') {
+      inString = true;
+      continue;
+    }
+
+    if (char === "[") {
+      arrayDepth += 1;
+      continue;
+    }
+
+    if (char === "]") {
+      if (arrayDepth > 0) arrayDepth -= 1;
+      continue;
+    }
+
+    if (arrayDepth === 0) continue;
+
+    if (char === "{") {
+      if (objectDepth === 0) objectStart = index;
+      objectDepth += 1;
+      continue;
+    }
+
+    if (char === "}" && objectDepth > 0) {
+      objectDepth -= 1;
+      if (objectDepth === 0 && objectStart !== -1) {
+        const maybeObject = slice.slice(objectStart, index + 1);
+        try {
+          parsedItems.push(JSON.parse(maybeObject));
+        } catch {
+          // Skip malformed object and continue.
+        }
+        objectStart = -1;
+      }
+    }
+  }
+
+  return parsedItems;
+}
+
+function extractJsonArrayFromText(raw: string): unknown[] {
+  const trimmed = stripReasoningBlocks(raw).trim();
+  if (!trimmed) return [];
+
   try {
-    result = JSON.parse(cleaned);
+    const direct = JSON.parse(trimmed);
+    return extractMcqsFromPayload(direct);
   } catch {
+    // Try fenced and sliced parsing below.
+  }
+
+  const fenced = trimmed.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+  const maybeJson = fenced?.[1] ?? trimmed;
+  const start = maybeJson.indexOf("[");
+  const end = maybeJson.lastIndexOf("]");
+
+  if (start === -1 || end === -1 || end <= start) return [];
+
+  const slice = maybeJson.slice(start, end + 1);
+  try {
+    const parsed = JSON.parse(slice);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return extractObjectsFromPossiblyTruncatedArray(maybeJson);
+  }
+}
+
+function extractMcqsFromPayload(payload: unknown): unknown[] {
+  if (typeof payload === "string") {
+    return extractJsonArrayFromText(payload);
+  }
+
+  if (Array.isArray(payload)) {
+    return payload;
+  }
+
+  if (!payload || typeof payload !== "object") {
     return [];
   }
 
-  // If we got a string back, it was double-encoded — parse again
-  if (typeof result === "string") {
-    try {
-      result = JSON.parse(result);
-    } catch {
-      return [];
+  const record = payload as Record<string, unknown>;
+  const directCandidates = [
+    record.mcqs,
+    record.questions,
+    record.data,
+    record.result,
+    record.items,
+    record.output,
+    record.response,
+    record.results,
+    record.raw,
+  ];
+
+  for (const candidate of directCandidates) {
+    if (Array.isArray(candidate)) return candidate;
+
+    if (typeof candidate === "string") {
+      const parsedFromString = extractJsonArrayFromText(candidate);
+      if (parsedFromString.length > 0) return parsedFromString;
+    }
+
+    if (candidate && typeof candidate === "object") {
+      const nested = extractMcqsFromPayload(candidate);
+      if (nested.length > 0) return nested;
     }
   }
 
-  // If result is an array, use it directly
-  if (Array.isArray(result)) return result as ApiQuestion[];
-
-  // If result is an object, look for a key that holds an array (e.g. "questions", "data", "raw")
-  if (result && typeof result === "object") {
-    for (const key of ["questions", "data", "raw", "mcqs", "results"]) {
-      const val = (result as Record<string, unknown>)[key];
-      if (Array.isArray(val)) return val as ApiQuestion[];
+  for (const value of Object.values(record)) {
+    if (Array.isArray(value)) return value;
+    if (typeof value === "string") {
+      const parsedFromString = extractJsonArrayFromText(value);
+      if (parsedFromString.length > 0) return parsedFromString;
     }
-    // Try the first array-valued key
-    for (const val of Object.values(result as Record<string, unknown>)) {
-      if (Array.isArray(val) && val.length > 0) return val as ApiQuestion[];
+    if (value && typeof value === "object") {
+      const nested = extractMcqsFromPayload(value);
+      if (nested.length > 0) return nested;
     }
   }
 
@@ -134,7 +243,7 @@ function resolveCorrectIndex(correctAnswer: string | number | undefined, options
 
 /** Parse API raw string and convert to QuizQuestion[] */
 export function parseGenerateRaw(raw: string): QuizQuestion[] {
-  const parsed = extractJsonArray(raw);
+  const parsed = extractMcqsFromPayload(raw) as ApiQuestion[];
   if (parsed.length === 0) return [];
 
   return parsed
@@ -162,6 +271,34 @@ export function parseGenerateRaw(raw: string): QuizQuestion[] {
     });
 }
 
+export function parseGeneratePayload(payload: unknown): QuizQuestion[] {
+  const parsed = extractMcqsFromPayload(payload) as ApiQuestion[];
+  if (parsed.length === 0) return [];
+
+  return parsed
+    .filter((q) => q && typeof q === "object" && q.question)
+    .map((q, index) => {
+      const optionsArray = resolveOptions(q.options);
+      const correctIndex = resolveCorrectIndex((q as ApiQuestion).correct_answer, optionsArray);
+      const correctLabel = OPTION_ORDER[correctIndex] ?? "A";
+      const correctText = optionsArray[correctIndex] ?? "";
+
+      let explanation = (q as ApiQuestion).explanation;
+      if (!explanation || !explanation.trim()) {
+        explanation = `The correct answer is ${correctLabel}` + (correctText ? `: ${correctText}` : "");
+      }
+
+      return {
+        id: index + 1,
+        question: (q as ApiQuestion).question ?? "",
+        options: optionsArray.length >= 2 ? optionsArray : ["Option A", "Option B", "Option C", "Option D"],
+        correctIndex: correctIndex < optionsArray.length ? correctIndex : 0,
+        explanation,
+        difficulty: (q as ApiQuestion).difficulty,
+      };
+    });
+}
+
 export interface GenerateQuizInput {
   passage: string;
   num_questions: number;
@@ -182,8 +319,14 @@ export async function generateQuiz(input: GenerateQuizInput): Promise<QuizQuesti
     throw new Error(`API error: ${res.status} ${res.statusText}`);
   }
 
-  const data = (await res.json()) as GenerateResponse;
-  const raw = data?.raw ?? "";
+  const data = (await res.json()) as GenerateResponse | Record<string, unknown> | unknown[];
+  const fromPayload = parseGeneratePayload(data);
+  if (fromPayload.length > 0) return fromPayload;
+
+  const raw =
+    data && typeof data === "object" && !Array.isArray(data)
+      ? String((data as GenerateResponse).raw ?? "")
+      : "";
   return parseGenerateRaw(raw);
 }
 
@@ -234,6 +377,71 @@ export async function getRandomPassageFromJsonl(jsonlPath: string): Promise<stri
   }
 }
 
+interface McqDataRow {
+  content: string | null;
+}
+
+async function fetchMcqRows(options: {
+  subject?: string;
+  storefrontOnly?: boolean;
+  limit?: number;
+}): Promise<McqDataRow[] | null> {
+  try {
+    let query = supabase
+      .from("mcqdata")
+      .select("content")
+      .not("content", "is", null)
+      .limit(options.limit ?? 60);
+
+    if (options.subject) {
+      query = query.ilike("subject", options.subject);
+    }
+    if (options.storefrontOnly) {
+      query = query.eq("storefront_enabled", true);
+    }
+
+    const { data, error } = await query;
+    if (error) return null;
+    return (data ?? []) as McqDataRow[];
+  } catch {
+    return null;
+  }
+}
+
+function pickRandomPassage(rows: McqDataRow[]): string | null {
+  const passages = rows
+    .map((row) => (typeof row.content === "string" ? row.content.trim() : ""))
+    .filter((content) => content.length > 40);
+
+  if (passages.length === 0) return null;
+  const pickedIndex = Math.floor(Math.random() * passages.length);
+  return passages[pickedIndex] ?? null;
+}
+
+/** Fetch random passage from Supabase mcqdata table for MDCAT trial quiz (biology first subject). */
+export async function getRandomPassageFromMcqData(): Promise<string | null> {
+  return getRandomPassageForSubjectFromMcqData("biology");
+}
+
+/** Fetch random passage for a specific subject from Supabase mcqdata with graceful fallbacks. */
+export async function getRandomPassageForSubjectFromMcqData(subject: QuizSubject): Promise<string | null> {
+  const attempts: Array<{ subject?: string; storefrontOnly: boolean }> = [
+    { subject, storefrontOnly: true },
+    { subject, storefrontOnly: false },
+    { storefrontOnly: true },
+    { storefrontOnly: false },
+  ];
+
+  for (const attempt of attempts) {
+    const rows = await fetchMcqRows(attempt);
+    if (!rows || rows.length === 0) continue;
+    const picked = pickRandomPassage(rows);
+    if (picked) return picked;
+  }
+
+  return null;
+}
+
 export interface QuizData {
   biology: QuizQuestion[];
   chemistry: QuizQuestion[];
@@ -277,15 +485,16 @@ export function loadQuizData(): QuizData {
   return readQuizData();
 }
 
-export const QUESTIONS_PER_SUBJECT = 10;
+export const QUESTIONS_PER_SUBJECT = 12;
 
 /** Generate quiz for a subject: fetch passage + call API, with retries. Returns true on success. */
 export async function generateQuizForSubject(subject: QuizSubject): Promise<boolean> {
   try {
     const questions = await withRetry(async () => {
-      const passage = await getRandomPassageFromJsonl(JSONL_PATHS[subject]);
-      if (!passage) throw new Error(`No passage for ${subject}`);
-      const qs = await generateQuiz({ passage, num_questions: QUESTIONS_PER_SUBJECT });
+      const passage = await getRandomPassageForSubjectFromMcqData(subject);
+      const fallbackPassage = passage ?? (await getRandomPassageFromJsonl(JSONL_PATHS[subject]));
+      if (!fallbackPassage) throw new Error(`No passage for ${subject}`);
+      const qs = await generateQuiz({ passage: fallbackPassage, num_questions: QUESTIONS_PER_SUBJECT });
       if (qs.length === 0) throw new Error(`Empty quiz for ${subject}`);
       return qs;
     }, 3, 1500);

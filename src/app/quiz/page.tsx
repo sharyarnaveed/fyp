@@ -24,14 +24,17 @@ import {
   loadQuizAnswers,
   saveQuizAnswers,
   getTrialUserId,
-  prefetchChemistry,
-  prefetchPhysics,
+  generateQuizForSubject,
   saveQuizScore,
   type QuizQuestion,
 } from "@/lib/quiz";
 import supabase from "@/lib/SupabaseClient";
 
 const OPTION_LABELS = ["A", "B", "C", "D"];
+
+function isMissingScoreColumnError(message: string): boolean {
+  return /could not find the 'score' column/i.test(message) || /column\s+['\"]?score['\"]?\s+does not exist/i.test(message);
+}
 
 type SubjectKey = "biology" | "chemistry" | "physics";
 
@@ -150,14 +153,16 @@ export default function QuizPage() {
   const [quizData, setQuizData] = useState(() => loadQuizData());
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>(() => loadQuizAnswers());
+  const [reviewMode, setReviewMode] = useState(false);
+  const [wrongQuestionIndexes, setWrongQuestionIndexes] = useState<number[]>([]);
   const [loadingNextSection, setLoadingNextSection] = useState(false);
   const [pendingSection, setPendingSection] = useState<"chemistry" | "physics" | null>(null);
   const [sectionLoadError, setSectionLoadError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [hasUserId, setHasUserId] = useState<boolean | null>(null);
-  const chemistryPrefetchDone = useRef(false);
-  const physicsPrefetchDone = useRef(false);
+  const chemistryGenerationInFlight = useRef(false);
+  const physicsGenerationInFlight = useRef(false);
   const router = useRouter();
 
   // Redirect to home if user has no trial user ID
@@ -180,14 +185,16 @@ export default function QuizPage() {
   const question = questions[currentIndex];
   const selectedOption = answers[currentIndex] ?? null;
   const progress = total > 0 ? ((currentIndex + 1) / total) * 100 : 0;
+  const answeredCount = Object.keys(answers).length;
+  const allQuestionsAttempted = total > 0 && answeredCount >= total;
   const atEndOfBiology = biologyCount > 0 && currentIndex === biologyCount - 1;
   const atEndOfChemistry = chemistryCount > 0 && currentIndex === biologyCount + chemistryCount - 1;
   const showNextToSection = atEndOfBiology || atEndOfChemistry;
   const isLast = total > 0 && currentIndex === total - 1 && !showNextToSection;
   const isFirst = currentIndex === 0;
   const hasAnswered = selectedOption !== null;
-  const isCorrect = Boolean(question && hasAnswered && selectedOption === question.correctIndex);
-  const showExplanation = Boolean(question && hasAnswered && !isCorrect);
+  const isCorrect = Boolean(reviewMode && question && hasAnswered && selectedOption === question.correctIndex);
+  const showExplanation = Boolean(reviewMode && question && hasAnswered && !isCorrect);
 
   const setSelectedOption = (optionIndex: number) => {
     setAnswers((prev) => {
@@ -210,66 +217,54 @@ export default function QuizPage() {
   const currentSubject = total > 0 ? getSubjectAt(currentIndex, biologyCount, chemistryCount) : "biology";
   const sectionProgress = total > 0 ? getSectionProgress(currentIndex, biologyCount, chemistryCount, physicsCount) : null;
 
-  // Prefetch chemistry
+  const ensureSectionLoaded = async (subject: "chemistry" | "physics"): Promise<boolean> => {
+    const freshBefore = loadQuizData();
+    if (freshBefore[subject].length > 0) {
+      setQuizData(freshBefore);
+      return true;
+    }
+
+    const inFlightRef = subject === "chemistry" ? chemistryGenerationInFlight : physicsGenerationInFlight;
+    if (inFlightRef.current) return false;
+
+    inFlightRef.current = true;
+    try {
+      const ok = await generateQuizForSubject(subject);
+      const freshAfter = loadQuizData();
+      if (ok && freshAfter[subject].length > 0) {
+        setQuizData(freshAfter);
+        return true;
+      }
+      return false;
+    } finally {
+      inFlightRef.current = false;
+    }
+  };
+
+  // Start Chemistry generation once user attempts at least 6 Biology questions.
   useEffect(() => {
     if (biologyCount === 0) return;
-    if (chemistryPrefetchDone.current) return;
     if (chemistryCount > 0) return;
-    if (biologyAttempted >= 2) {
-      chemistryPrefetchDone.current = true;
-      prefetchChemistry();
-    }
+    if (biologyAttempted < 6) return;
+    void ensureSectionLoaded("chemistry");
   }, [biologyAttempted, biologyCount, chemistryCount]);
 
-  // Prefetch physics
+  // Start Physics generation once user attempts at least 6 Chemistry questions.
   useEffect(() => {
     if (chemistryCount === 0) return;
-    if (physicsPrefetchDone.current) return;
     if (physicsCount > 0) return;
-    if (chemistryAttempted >= 2) {
-      physicsPrefetchDone.current = true;
-      prefetchPhysics();
-    }
-  }, [chemistryAttempted, biologyCount, chemistryCount, physicsCount]);
+    if (chemistryAttempted < 6) return;
+    void ensureSectionLoaded("physics");
+  }, [chemistryAttempted, chemistryCount, physicsCount]);
 
-  // Poll for next section
-  useEffect(() => {
-    if (!loadingNextSection || !pendingSection) return;
-    let attempts = 0;
-    const id = setInterval(() => {
-      attempts += 1;
-      const data = loadQuizData();
-      const nextLoaded = data[pendingSection].length > 0;
-      if (nextLoaded) {
-        setQuizData(data);
-        if (pendingSection === "chemistry") {
-          setCurrentIndex(data.biology.length);
-        } else {
-          setCurrentIndex(data.biology.length + data.chemistry.length);
-        }
-        setPendingSection(null);
-        setLoadingNextSection(false);
-        setSectionLoadError(null);
-        return;
-      }
-
-      if (attempts >= 30) {
-        setLoadingNextSection(false);
-        setSectionLoadError(
-          `Could not load ${pendingSection} questions right now. Please retry.`
-        );
-      }
-    }, 500);
-    return () => clearInterval(id);
-  }, [loadingNextSection, pendingSection]);
-
-  const retryPendingSectionLoad = () => {
+  const retryPendingSectionLoad = async () => {
     if (!pendingSection) return;
     setSectionLoadError(null);
 
-    const fresh = loadQuizData();
-    const nextLoaded = fresh[pendingSection].length > 0;
-    if (nextLoaded) {
+    setLoadingNextSection(true);
+    const loaded = await ensureSectionLoaded(pendingSection);
+    if (loaded) {
+      const fresh = loadQuizData();
       setQuizData(fresh);
       if (pendingSection === "chemistry") {
         setCurrentIndex(fresh.biology.length);
@@ -281,32 +276,47 @@ export default function QuizPage() {
       return;
     }
 
-    setLoadingNextSection(true);
+    setLoadingNextSection(false);
+    setSectionLoadError(`Could not load ${pendingSection} questions right now. Please retry.`);
   };
 
-  const goNext = () => {
+  const goNext = async () => {
     if (isLast) return;
     setSectionLoadError(null);
     if (atEndOfBiology && chemistryCount === 0) {
-      const fresh = loadQuizData();
-      if (fresh.chemistry.length > 0) {
-        setQuizData(fresh);
-        setCurrentIndex(fresh.biology.length);
-        return;
-      }
       setLoadingNextSection(true);
       setPendingSection("chemistry");
+
+      const loaded = await ensureSectionLoaded("chemistry");
+      if (loaded) {
+        const fresh = loadQuizData();
+        setQuizData(fresh);
+        setCurrentIndex(fresh.biology.length);
+        setPendingSection(null);
+        setLoadingNextSection(false);
+        return;
+      }
+
+      setLoadingNextSection(false);
+      setSectionLoadError("Could not load chemistry questions right now. Please retry.");
       return;
     }
     if (atEndOfChemistry && physicsCount === 0) {
-      const fresh = loadQuizData();
-      if (fresh.physics.length > 0) {
-        setQuizData(fresh);
-        setCurrentIndex(fresh.biology.length + fresh.chemistry.length);
-        return;
-      }
       setLoadingNextSection(true);
       setPendingSection("physics");
+
+      const loaded = await ensureSectionLoaded("physics");
+      if (loaded) {
+        const fresh = loadQuizData();
+        setQuizData(fresh);
+        setCurrentIndex(fresh.biology.length + fresh.chemistry.length);
+        setPendingSection(null);
+        setLoadingNextSection(false);
+        return;
+      }
+
+      setLoadingNextSection(false);
+      setSectionLoadError("Could not load physics questions right now. Please retry.");
       return;
     }
     setCurrentIndex((i) => i + 1);
@@ -318,6 +328,10 @@ export default function QuizPage() {
 
   const handleSubmitQuiz = async () => {
     if (submitting) return;
+    if (!allQuestionsAttempted) {
+      setSubmitError("Please attempt all questions before submitting.");
+      return;
+    }
     setSubmitError(null);
     setSubmitting(true);
     try {
@@ -326,6 +340,7 @@ export default function QuizPage() {
       let biologyCorrect = 0;
       let chemistryCorrect = 0;
       let physicsCorrect = 0;
+      const wrongIndexes: number[] = [];
       questions.forEach((q, i) => {
         const chosen = answers[i];
         if (chosen != null && chosen === q.correctIndex) {
@@ -333,6 +348,8 @@ export default function QuizPage() {
           if (i < biologyCount) biologyCorrect++;
           else if (i < biologyCount + chemistryCount) chemistryCorrect++;
           else physicsCorrect++;
+        } else {
+          wrongIndexes.push(i);
         }
       });
       saveQuizScore({
@@ -345,8 +362,28 @@ export default function QuizPage() {
         physicsCorrect,
         physicsTotal: physicsCount,
       });
+      const answeredCount = Object.keys(answers).length;
+      const wrongCount = total - correct;
+      const wrongQuestionNumbers = wrongIndexes.map((idx) => idx + 1);
+      const answeredQuestionNumbers = Array.from({ length: total }, (_, idx) => idx + 1).filter(
+        (questionNumber) => answers[questionNumber - 1] != null
+      );
       const scoreStr = `${correct}/${total}`;
       const responcemodel = {
+        quizType: "trial",
+        score: {
+          value: scoreStr,
+          correct,
+          wrong: wrongCount,
+          total,
+          percentage: total > 0 ? Number(((correct / total) * 100).toFixed(2)) : 0,
+        },
+        counts: {
+          answered: answeredCount,
+          unanswered: total - answeredCount,
+        },
+        answeredQuestionNumbers,
+        wrongQuestionNumbers,
         quizData: {
           biology: quizData.biology,
           chemistry: quizData.chemistry,
@@ -355,8 +392,9 @@ export default function QuizPage() {
         userAnswers: answers,
         summary: {
           totalQuestions: total,
-          answered: Object.keys(answers).length,
+          answered: answeredCount,
           correct,
+          wrong: wrongCount,
         },
       };
       const { error: insertError } = await supabase.from("trailquiz").insert({
@@ -373,15 +411,24 @@ export default function QuizPage() {
           .update({ score: scoreStr })
           .eq("id", userId);
         if (updateError) {
-          throw new Error(updateError.message || "Could not update score.");
+          if (!isMissingScoreColumnError(updateError.message)) {
+            throw new Error(updateError.message || "Could not update score.");
+          }
+          console.warn("Skipping trailpeoples.score update because the score column is not available in schema cache.");
         }
       }
-      router.push("/quiz/thank-you");
+      setWrongQuestionIndexes(wrongIndexes);
+      setReviewMode(true);
+      setCurrentIndex(0);
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : "Could not submit quiz. Please try again.");
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const goToThankYou = () => {
+    router.push("/quiz/thank-you");
   };
 
   // Loading state
@@ -629,7 +676,7 @@ export default function QuizPage() {
 
           {/* Question card */}
           <AnimatePresence mode="wait">
-            {!loadingNextSection && question && (
+            {!reviewMode && !loadingNextSection && question && (
               <motion.div
                 key={currentIndex}
                 variants={cardVariants}
@@ -666,8 +713,8 @@ export default function QuizPage() {
                   {question.options.map((opt, idx) => {
                     const isSelected = selectedOption === idx;
                     const isCorrectOption = idx === question.correctIndex;
-                    const showAsCorrect = hasAnswered && isCorrectOption;
-                    const showAsWrong = hasAnswered && isSelected && !isCorrectOption;
+                    const showAsCorrect = reviewMode && hasAnswered && isCorrectOption;
+                    const showAsWrong = reviewMode && hasAnswered && isSelected && !isCorrectOption;
 
                     return (
                       <motion.li
@@ -680,9 +727,9 @@ export default function QuizPage() {
                         <motion.button
                           type="button"
                           onClick={() => setSelectedOption(idx)}
-                          whileHover={{ scale: hasAnswered ? 1 : 1.01 }}
-                          whileTap={{ scale: hasAnswered ? 1 : 0.99 }}
-                          disabled={hasAnswered}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                          disabled={reviewMode}
                           className={`w-full text-left flex items-center gap-4 p-4 sm:p-5 rounded-xl border-2 transition-all duration-300 ${
                             showAsWrong
                               ? "border-amber-400 bg-amber-50 shadow-[0_0_20px_-4px_rgba(251,191,36,0.3)]"
@@ -691,7 +738,7 @@ export default function QuizPage() {
                                 : isSelected
                                   ? "border-primary bg-primary/5 shadow-[0_0_24px_-4px_rgba(123,187,255,0.4)]"
                                   : "border-transparent bg-white/70 hover:bg-white hover:border-primary/30 hover:shadow-lg"
-                          } ${hasAnswered && !isSelected && !showAsCorrect ? "opacity-60" : ""}`}
+                          }`}
                         >
                           <span
                             className={`flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center text-sm sm:text-base font-bold transition-all ${
@@ -751,11 +798,78 @@ export default function QuizPage() {
             )}
           </AnimatePresence>
 
+          <AnimatePresence mode="wait">
+            {reviewMode && (
+              <motion.div
+                key="review"
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="glass-tile p-5 sm:p-8 md:p-10"
+              >
+                <h2 className="text-xl sm:text-2xl font-display font-bold text-foreground mb-2">
+                  Quiz Review
+                </h2>
+                <p className="text-sm text-muted-foreground mb-6">
+                  You got {total - wrongQuestionIndexes.length} out of {total} correct.
+                </p>
+
+                {wrongQuestionIndexes.length === 0 ? (
+                  <div className="rounded-xl border border-emerald-400/45 bg-emerald-500/12 p-5 text-emerald-900">
+                    Excellent work. You answered all questions correctly.
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {wrongQuestionIndexes.map((questionIndex) => {
+                      const wrongQuestion = questions[questionIndex];
+                      const chosen = answers[questionIndex];
+                      const selectedText = chosen != null ? wrongQuestion.options[chosen] : "Not answered";
+                      const correctText = wrongQuestion.options[wrongQuestion.correctIndex];
+
+                      return (
+                        <div
+                          key={questionIndex}
+                          className="rounded-xl border border-amber-300 bg-gradient-to-br from-amber-50 to-orange-50 p-4 sm:p-5"
+                        >
+                          <p className="text-xs font-semibold text-amber-700 mb-2">Question {questionIndex + 1}</p>
+                          <p className="text-sm sm:text-base font-medium text-foreground mb-3">{wrongQuestion.question}</p>
+                          <p className="text-sm text-foreground/90 mb-1">
+                            <span className="font-semibold">Your answer:</span> {selectedText}
+                          </p>
+                          <p className="text-sm text-foreground/90 mb-2">
+                            <span className="font-semibold">Correct answer:</span> {correctText}
+                          </p>
+                          <p className="text-sm text-foreground/90 leading-relaxed">
+                            <span className="font-semibold">Explanation:</span>{" "}
+                            {wrongQuestion.explanation || "No explanation available."}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                <div className="mt-8 flex justify-end">
+                  <button
+                    type="button"
+                    onClick={goToThankYou}
+                    className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-bold bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-[0_0_30px_-6px_rgba(52,211,153,0.5)] hover:shadow-[0_0_40px_-6px_rgba(52,211,153,0.6)] transition-all"
+                  >
+                    Continue
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           {/* Navigation */}
-          <motion.div
-            variants={itemVariants}
-            className="flex items-center justify-between mt-8 gap-4"
-          >
+          {!reviewMode && (
+            <motion.div
+              variants={itemVariants}
+              className="flex items-center justify-between mt-8 gap-4"
+            >
             <motion.button
               type="button"
               onClick={goPrev}
@@ -810,9 +924,9 @@ export default function QuizPage() {
               <motion.button
                 type="button"
                 onClick={handleSubmitQuiz}
-                disabled={submitting}
-                whileHover={{ scale: submitting ? 1 : 1.02 }}
-                whileTap={{ scale: submitting ? 1 : 0.98 }}
+                disabled={submitting || !allQuestionsAttempted}
+                whileHover={{ scale: submitting || !allQuestionsAttempted ? 1 : 1.02 }}
+                whileTap={{ scale: submitting || !allQuestionsAttempted ? 1 : 0.98 }}
                 className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-bold bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-[0_0_30px_-6px_rgba(52,211,153,0.5)] hover:shadow-[0_0_40px_-6px_rgba(52,211,153,0.6)] transition-all disabled:opacity-60 disabled:pointer-events-none"
               >
                 {submitting ? (
@@ -840,7 +954,18 @@ export default function QuizPage() {
                 <ChevronRight className="w-5 h-5" />
               </motion.button>
             )}
-          </motion.div>
+            </motion.div>
+          )}
+
+          {!reviewMode && isLast && !allQuestionsAttempted && (
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4 text-sm text-amber-900 rounded-xl border border-amber-400/45 bg-amber-500/12 px-4 py-3"
+            >
+              Please answer all questions before submitting.
+            </motion.p>
+          )}
 
           {submitError && (
             <motion.div
