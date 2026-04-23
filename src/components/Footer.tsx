@@ -3,8 +3,8 @@ import Link from "next/link";
 const Footer = () => {
   const options = [
     { id: 1, name: "Home", link: "/" },
-    { id: 2, name: "About Us", link: "/aboutus" },
-    { id: 3, name: "Contact Us", link: "/contactus" },
+    { id: 2, name: "About Us", link: "/#about" },
+    { id: 3, name: "Contact Us", link: "/#contact" },
     { id: 4, name: "Privacy Policy", link: "/privacypolicy" },
   ];
 
@@ -14,7 +14,7 @@ const Footer = () => {
         <div className="grid gap-8 md:grid-cols-2 md:items-end">
           <div className="text-center md:text-left">
             <img src="/footerlogo.png" alt="Prepzy" className="mx-auto mb-3 h-auto w-24 transition-transform hover:scale-105 md:mx-0" />
-            <p className="mb-1 text-sm text-[#35557c]">Copyright © 2025</p>
+            <p className="mb-1 text-sm text-[#35557c]">Copyright © 2026</p>
             <p className="text-base font-medium text-[#0A0F1E]">Smarter Prep Starts Here</p>
           </div>
 
