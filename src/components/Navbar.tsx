@@ -254,6 +254,12 @@ export function Navbar() {
         </div>
 
         <div className="hidden shrink-0 items-center gap-2 lg:flex">
+          <Link
+            href="https://students.prepzy.tech/signin"
+            className="cta-primary text-sm xl:text-base"
+          >
+            Sign In
+          </Link>
           <button
             type="button"
             onClick={() => setTrialModalOpen(true)}
@@ -313,6 +319,13 @@ export function Navbar() {
                 </div>
 
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: navLinks.length * 0.05 + 0.1 }}>
+                  <Link
+                    href="https://students.prepzy.tech/signin"
+                    onClick={() => setIsOpen(false)}
+                    className="cta-primary mb-3 block w-full text-center"
+                  >
+                    Sign In
+                  </Link>
                   <button
                     type="button"
                     onClick={() => {
